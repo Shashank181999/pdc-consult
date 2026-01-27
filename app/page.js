@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import HomeBanner from './components/Homebanner';
+import HomeBanner from './components/HomeBanner';
 import Header from './components/Header';
 
 export default function Home() {
