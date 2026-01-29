@@ -3,6 +3,14 @@
 import React, { useState } from 'react';
 import HomeBanner from './components/HomeBanner';
 import Header from './components/Header';
+import Services from './components/Services';
+import OrgDiagram from './components/OrgDiagram'
+import FounderSection from './components/FounderSection'
+import OrganizationalChart from './components/Organizationalchart'
+import VisionSection from './components/VisionSection'
+import ProjectShowcase from './components/ProjectShowcase'
+import ProjectBrochure from './components/projectbrochure'
+import Footer from './components/Footer'
 
 export default function Home() {
   const [activeFeature, setActiveFeature] = useState(0);
@@ -66,106 +74,114 @@ export default function Home() {
     <main className="w-full bg-[#050505] selection:bg-[#ed1b24] selection:text-white">
       <Header />
       <HomeBanner />
+     
 
       {/* =================================================================
           1. ABOUT SECTION
           Theme: Dark (Black) | White Text
       ================================================================= */}
-      <section className="relative py-20 lg:py-32 bg-[#0a0a0a] overflow-hidden">
-        {/* Subtle Background Accent */}
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-[#111] skew-x-12 translate-x-20 pointer-events-none opacity-50" />
-        
-        <div className="container mx-auto px-6 sm:px-8 lg:px-16 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-            
-            {/* Left Column: Text Content */}
-            <div className="order-2 lg:order-1">
-              <div className="flex items-center gap-3 mb-6">
-                <span className="h-px w-8 bg-[#ed1b24]"></span>
-                <span className="text-[#ed1b24] font-bold uppercase tracking-widest text-xs">Who We Are</span>
-              </div>
-              
-              <h2 className="text-4xl lg:text-5xl font-bold text-white leading-[1.1] mb-8">
-                Architecting Growth beyond <br className="hidden lg:block"/>
-                <span className="relative inline-block">
-                  <span className="relative z-10">Boundaries.</span>
-                  {/* Underline effect */}
-                  <span className="absolute bottom-2 left-0 w-full h-3 bg-red-900/30 -z-0"></span>
-                </span>
-              </h2>
-
-              <p className="text-gray-400 text-lg leading-relaxed mb-10 font-light">
-                At PDC Consult, we don't just offer advice; we deliver transformation. 
-                Since 2009, we have partnered with industry leaders in Dubai and the MENA 
-                region to navigate complexity and unlock new value streams.
-              </p>
-
-              {/* Interactive Feature List (Dark Mode) */}
-              <div className="space-y-6 mb-10">
-                {features.map((feature, index) => (
-                  <div 
-                    key={index}
-                    className={`group p-6 border transition-all duration-300 cursor-pointer rounded-lg ${
-                      activeFeature === index 
-                        ? 'border-[#ed1b24] bg-red-900/10 shadow-sm' 
-                        : 'border-white/10 hover:border-white/20 hover:bg-white/5'
-                    }`}
-                    onMouseEnter={() => setActiveFeature(index)}
-                  >
-                    <div className="flex items-start gap-5">
-                      <div className={`mt-1 p-2 rounded-lg transition-colors duration-300 ${
-                        activeFeature === index ? 'bg-[#ed1b24] text-white' : 'bg-[#1a1a1a] text-gray-400 group-hover:bg-[#222]'
-                      }`}>
-                        {feature.icon}
-                      </div>
-                      <div>
-                        <h3 className={`text-xl font-bold mb-2 transition-colors duration-300 ${
-                          activeFeature === index ? 'text-white' : 'text-gray-200'
-                        }`}>
-                          {feature.title}
-                        </h3>
-                        <p className="text-gray-500 text-sm leading-relaxed">
-                          {feature.description}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Right Column: Image Composition */}
-            <div className="order-1 lg:order-2 relative">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl z-10 aspect-[4/5] lg:aspect-square group border border-white/5">
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10"></div>
-                <img 
-                  src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=1600&auto=format&fit=crop" 
-                  alt="Corporate Meeting Dubai" 
-                  className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out opacity-80 group-hover:opacity-100"
-                />
-              </div>
-              
-              {/* Red Border Decoration */}
-              <div className="absolute -bottom-6 -right-6 w-full h-full border-2 border-[#ed1b24]/20 rounded-2xl -z-0 hidden lg:block"></div>
-              
-              {/* Floating Stat Card (Dark Mode) */}
-              <div className="absolute -bottom-6 -left-6 sm:-bottom-8 sm:-left-8 bg-[#111] p-6 sm:p-8 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-20 max-w-[240px] border-l-4 border-[#ed1b24] border-t border-r border-white/10">
-                <div className="flex items-end gap-2 mb-2">
-                  <span className="text-4xl sm:text-5xl font-black text-white">15</span>
-                  <span className="text-3xl font-bold text-[#ed1b24] mb-1">+</span>
-                </div>
-                <p className="text-gray-400 font-medium text-xs sm:text-sm uppercase tracking-wider leading-relaxed">
-                  Years of Strategic Excellence
-                </p>
-              </div>
-            </div>
-
-          </div>
+    <section className="relative py-20 lg:py-32 bg-[#0a0a0a] overflow-hidden">
+  {/* Subtle Background Accent */}
+  <div className="absolute top-0 right-0 w-1/3 h-full bg-[#111] skew-x-12 translate-x-20 pointer-events-none opacity-50" />
+  
+  <div className="container mx-auto px-6 sm:px-8 lg:px-16 relative z-10">
+    <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+      
+      {/* Left Column: Text Content */}
+      <div className="order-2 lg:order-1">
+        <div className="flex items-center gap-3 mb-6">
+          <span className="h-px w-8 bg-[#ed1b24]"></span>
+          <span className="text-[#ed1b24] font-bold uppercase tracking-widest text-xs">Who We Are</span>
         </div>
-      </section>
+        
+        <h2 className="text-4xl lg:text-5xl font-bold text-white leading-[1.1] mb-8">
+          Architecting Growth beyond <br className="hidden lg:block"/>
+          <span className="relative inline-block">
+            <span className="relative z-10">Boundaries.</span>
+            {/* Underline effect */}
+            <span className="absolute bottom-2 left-0 w-full h-3 bg-red-900/30 -z-0"></span>
+          </span>
+        </h2>
+
+        <p className="text-gray-400 text-lg leading-relaxed mb-10 font-light">
+          At PDC Consult, we don't just offer advice; we deliver transformation. 
+          Since 2009, we have partnered with industry leaders in Dubai and the MENA 
+          region to navigate complexity and unlock new value streams.
+        </p>
+
+        {/* Interactive Feature List (Dark Mode) - Removed mb-10 */}
+        <div className="space-y-6">
+          {features.map((feature, index) => (
+            <div 
+              key={index}
+              className={`group p-6 border transition-all duration-300 cursor-pointer rounded-lg ${
+                activeFeature === index 
+                  ? 'border-[#ed1b24] bg-red-900/10 shadow-sm' 
+                  : 'border-white/10 hover:border-white/20 hover:bg-white/5'
+              }`}
+              onMouseEnter={() => setActiveFeature(index)}
+            >
+              <div className="flex items-start gap-5">
+                <div className={`mt-1 p-2 rounded-lg transition-colors duration-300 ${
+                  activeFeature === index ? 'bg-[#ed1b24] text-white' : 'bg-[#1a1a1a] text-gray-400 group-hover:bg-[#222]'
+                }`}>
+                  {feature.icon}
+                </div>
+                <div>
+                  <h3 className={`text-xl font-bold mb-2 transition-colors duration-300 ${
+                    activeFeature === index ? 'text-white' : 'text-gray-200'
+                  }`}>
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-500 text-sm leading-relaxed">
+                    {feature.description}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Right Column: Image Composition */}
+      <div className="order-1 lg:order-2 relative">
+        <div className="relative rounded-2xl overflow-hidden shadow-2xl z-10 aspect-[4/5] lg:aspect-square group border border-white/5">
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10"></div>
+          <img 
+            src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=1600&auto=format&fit=crop" 
+            alt="Corporate Meeting Dubai" 
+            className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out opacity-80 group-hover:opacity-100"
+          />
+        </div>
+        
+        {/* Red Border Decoration */}
+        <div className="absolute -bottom-6 -right-6 w-full h-full border-2 border-[#ed1b24]/20 rounded-2xl -z-0 hidden lg:block"></div>
+        
+        {/* Floating Stat Card (Dark Mode) */}
+        <div className="absolute -bottom-6 -left-6 sm:-bottom-8 sm:-left-8 bg-[#111] p-6 sm:p-8 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-20 max-w-[240px] border-l-4 border-[#ed1b24] border-t border-r border-white/10">
+          <div className="flex items-end gap-2 mb-2">
+            <span className="text-4xl sm:text-5xl font-black text-white">15</span>
+            <span className="text-3xl font-bold text-[#ed1b24] mb-1">+</span>
+          </div>
+          <p className="text-gray-400 font-medium text-xs sm:text-sm uppercase tracking-wider leading-relaxed">
+            Years of Strategic Excellence
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<ProjectShowcase />
+<ProjectBrochure />
 
       {/* =================================================================
-          2. PROJECTS SECTION
+          2. SERVICES SECTION
+      ================================================================= */}
+     
+  <Services />
+      {/* =================================================================
+          3. PROJECTS SECTION
           Theme: Deep Black Background
       ================================================================= */}
       <section id="projects" className="py-24 bg-[#050505]">
@@ -250,7 +266,7 @@ export default function Home() {
       </section>
 
       {/* =================================================================
-          3. SERVICES SECTION
+          4. WHY CHOOSE US SECTION
           Theme: Black Background | Red Accents
       ================================================================= */}
       <section className="bg-black py-24 relative overflow-hidden">
@@ -261,7 +277,7 @@ export default function Home() {
         
         <div className="container mx-auto px-6 relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            <h2 className="text-4xl md:text-5xl  text-white mb-6">
               Why Choose <span className="text-[#ed1b24]">PDC Consult?</span>
             </h2>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto font-light">
@@ -300,9 +316,11 @@ export default function Home() {
           </div>
         </div>
       </section>
-
+        <VisionSection />
+  <OrgDiagram/>
+  <FounderSection />
       {/* =================================================================
-          4. CTA SECTION
+          5. CTA SECTION
           Theme: Brand Red | Minimalist
       ================================================================= */}
       <section className="bg-[#ed1b24] py-20 relative overflow-hidden">
@@ -311,7 +329,7 @@ export default function Home() {
         <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-black opacity-10 rounded-full blur-3xl"></div>
         
         <div className="container mx-auto px-6 text-center relative z-10">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+          <h2 className="text-4xl md:text-5xl  text-white mb-6">
             Ready to Transform Your Business?
           </h2>
           <p className="text-white/90 text-lg md:text-xl mb-10 max-w-2xl mx-auto font-light leading-relaxed">
@@ -321,7 +339,14 @@ export default function Home() {
             Schedule a Consultation
           </button>
         </div>
+      
       </section>
+      <OrganizationalChart/>
+
+      <Footer />
+    
+      
     </main>
+    
   );
 }
