@@ -335,156 +335,129 @@ Our experienced designers work with the finest materials and craftsmen to delive
 // ============================================
 const ServiceHero = ({ service }) => {
   const heroRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"]
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 1.15]);
+  // Disable parallax on mobile for smoother experience
+  const y = useTransform(scrollYProgress, [0, 1], isMobile ? [0, 0] : [0, 150]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, isMobile ? 1 : 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.5], [1, isMobile ? 1 : 1.1]);
 
   return (
-    <section ref={heroRef} className="relative h-[85vh] min-h-[600px] flex items-center justify-center bg-black overflow-hidden">
-      {/* Background */}
-      <motion.div style={{ scale }} className="absolute inset-0">
+    <section ref={heroRef} className="relative min-h-[100svh] flex flex-col justify-end md:justify-center bg-black overflow-hidden">
+      {/* Background - Fixed on mobile */}
+      <div className="absolute inset-0">
         <motion.img
-          initial={{ scale: 1.2, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
           src={service.heroImage}
           alt={service.title}
           className="w-full h-full object-cover"
+          style={{ transform: isMobile ? 'none' : `scale(${scale})` }}
         />
-        <div className="absolute inset-0 bg-black/70"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
-      </motion.div>
+        {/* Darker overlay on mobile for better text readability */}
+        <div className="absolute inset-0 bg-black/60 md:bg-black/50"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/30 md:via-black/40 md:to-transparent"></div>
+      </div>
 
       {/* Content */}
-      <motion.div style={{ y, opacity }} className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
+      <motion.div
+        style={isMobile ? {} : { y, opacity }}
+        className="relative z-10 container mx-auto px-5 sm:px-6 lg:px-8 pt-24 pb-8 md:py-0"
+      >
         <div className="max-w-4xl">
-          {/* Breadcrumb */}
+          {/* Breadcrumb - Hidden on mobile */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-            className="flex items-center gap-2 text-sm text-gray-400 mb-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="hidden md:flex items-center gap-2 text-sm text-gray-400 mb-8"
           >
             <Link href="/services" className="hover:text-white transition-colors duration-300">Services</Link>
-            <motion.span
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4, delay: 0.4 }}
-            >/</motion.span>
-            <motion.span
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              className="text-white"
-            >{service.title}</motion.span>
+            <span>/</span>
+            <span className="text-white line-clamp-1">{service.title}</span>
           </motion.div>
 
-          {/* Number Badge */}
+          {/* Number Badge - Simplified on mobile */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
-            className="inline-flex items-center gap-4 mb-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="flex items-center gap-3 md:gap-4 mb-4 md:mb-8"
           >
-            <motion.span
-              initial={{ scale: 0, rotate: -180 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.5 }}
-              className="text-6xl sm:text-7xl font-bold text-[#ed1b24]"
-            >
+            <span className="text-4xl md:text-6xl lg:text-7xl font-bold text-[#ed1b24]">
               {service.number}
-            </motion.span>
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: 48 }}
-              transition={{ duration: 0.6, delay: 0.7 }}
-              className="h-px bg-white/30"
-            ></motion.div>
-            <motion.span
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.8 }}
-              className="text-white/70 uppercase tracking-widest text-sm"
-            >{service.subtitle}</motion.span>
+            </span>
+            <div className="h-px w-8 md:w-12 bg-white/30"></div>
+            <span className="text-white/70 uppercase tracking-widest text-xs md:text-sm">
+              {service.subtitle}
+            </span>
           </motion.div>
 
           {/* Title */}
-          <div className="overflow-hidden mb-8">
-            <motion.h1
-              initial={{ y: 150, opacity: 0, skewY: 5 }}
-              animate={{ y: 0, opacity: 1, skewY: 0 }}
-              transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.4 }}
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light text-white leading-[1.1]"
-            >
-              {service.title}
-            </motion.h1>
-          </div>
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light text-white leading-[1.15] mb-4 md:mb-6"
+          >
+            {service.title}
+          </motion.h1>
 
           {/* Description */}
           <motion.p
-            initial={{ opacity: 0, y: 50 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.6 }}
-            className="text-gray-300 text-lg sm:text-xl max-w-2xl leading-relaxed"
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="text-gray-300 text-base md:text-lg lg:text-xl max-w-2xl leading-relaxed mb-6 md:mb-10"
           >
             {service.description}
           </motion.p>
 
           {/* CTA Button */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.8 }}
-            className="mt-10"
+            transition={{ duration: 0.5, delay: 0.4 }}
           >
             <Link href="/contact">
-              <motion.button
-                whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(237, 27, 36, 0.3)" }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 bg-[#ed1b24] text-white font-semibold rounded-full transition-all duration-500 flex items-center gap-3"
-              >
-                <span>Get Started</span>
-                <motion.svg
-                  initial={{ x: 0 }}
-                  whileHover={{ x: 5 }}
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+              <button className="px-6 md:px-8 py-3 md:py-4 bg-[#ed1b24] text-white font-semibold rounded-full transition-all duration-300 flex items-center gap-2 md:gap-3 active:scale-95 hover:bg-[#c41119]">
+                <span className="text-sm md:text-base">Get Started</span>
+                <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </motion.svg>
-              </motion.button>
+                </svg>
+              </button>
             </Link>
           </motion.div>
         </div>
       </motion.div>
 
-      {/* Scroll Indicator */}
+      {/* Scroll Indicator - Hidden on mobile */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.2, duration: 0.8 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1, duration: 0.5 }}
+        className="hidden md:flex absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex-col items-center gap-2"
       >
+        <span className="text-white/40 text-xs uppercase tracking-[0.2em]">Scroll</span>
         <motion.div
-          animate={{ y: [0, 12, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="flex flex-col items-center gap-3"
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          className="w-5 h-8 border border-white/20 rounded-full flex justify-center pt-1.5"
         >
-          <span className="text-white/40 text-xs uppercase tracking-[0.3em]">Scroll</span>
-          <div className="w-6 h-10 border-2 border-white/20 rounded-full flex justify-center pt-2">
-            <motion.div
-              animate={{ y: [0, 12, 0], opacity: [1, 0, 1] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              className="w-1.5 h-1.5 bg-[#ed1b24] rounded-full"
-            />
-          </div>
+          <div className="w-1 h-1 bg-[#ed1b24] rounded-full" />
         </motion.div>
       </motion.div>
     </section>

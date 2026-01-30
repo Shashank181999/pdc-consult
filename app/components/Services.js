@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import CountUp from 'react-countup';
 import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
 
 export default function Services() {
   const [activeService, setActiveService] = useState(0);
@@ -61,6 +62,7 @@ export default function Services() {
   /* ================= DATA ================= */
   const services = [
     {
+      id: 'project-development',
       number: '01',
       title: 'Projects Development & Management',
       description:
@@ -69,6 +71,7 @@ export default function Services() {
       icon: '🏗️',
     },
     {
+      id: 'architectural-design',
       number: '02',
       title: 'Architectural Design & Urban Planning',
       description:
@@ -77,6 +80,7 @@ export default function Services() {
       icon: '🏛️',
     },
     {
+      id: 'hospitality-consultancy',
       number: '03',
       title: 'Hospitality Consultancy',
       description:
@@ -85,6 +89,7 @@ export default function Services() {
       icon: '🏨',
     },
     {
+      id: 'cost-management',
       number: '04',
       title: 'Cost Management & Value Engineering',
       description:
@@ -93,6 +98,7 @@ export default function Services() {
       icon: '💰',
     },
     {
+      id: 'pm-training',
       number: '05',
       title: 'PM Training Services',
       description:
@@ -443,25 +449,27 @@ export default function Services() {
                       </div>
                     </motion.div>
 
-                    <motion.button
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 0.6 }}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="learn-more-btn px-6 sm:px-8 py-3 sm:py-4 rounded-full text-white font-semibold text-sm sm:text-base inline-flex items-center gap-2"
-                    >
-                      Learn More
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
+                    <Link href={`/services/${services[activeService].id}`}>
+                      <motion.button
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.6 }}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="learn-more-btn px-6 sm:px-8 py-3 sm:py-4 rounded-full text-white font-semibold text-sm sm:text-base inline-flex items-center gap-2"
                       >
-                        <path d="M5 12h14M12 5l7 7-7 7" />
-                      </svg>
-                    </motion.button>
+                        Learn More
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                      </motion.button>
+                    </Link>
                   </div>
                 </div>
               </motion.div>

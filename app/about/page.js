@@ -163,7 +163,7 @@ const OurStorySection = () => {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={isInView ? { opacity: 1, scale: 1 } : {}}
               transition={{ duration: 0.6, delay: 0.5, type: "spring" }}
-              className="absolute -bottom-6 -right-6 bg-[#ed1b24] p-6 rounded-2xl shadow-2xl shadow-red-900/30"
+              className="absolute -bottom-6 -right-6 bg-[#ed1b24] p-6 rounded-2xl shadow-2xl"
             >
               <div className="text-center">
                 <span className="text-4xl font-bold text-white">15+</span>
@@ -471,21 +471,22 @@ const AchievementsSection = () => {
 };
 
 // ============================================
-// TEAM SECTION
+// FOUNDER SECTION - Premium Design
 // ============================================
-const TeamSection = () => {
+const FounderSection = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
-  const team = [
-    { name: 'Marwa Abd El Aziz', role: 'Founder & Managing Director', image: '/Owner.png' },
-    { name: 'Ahmed Hassan', role: 'Director of Operations', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop' },
-    { name: 'Sara Al Maktoum', role: 'Head of Strategy', image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&auto=format&fit=crop' },
-    { name: 'Omar Khalil', role: 'Chief Financial Officer', image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=400&auto=format&fit=crop' }
-  ];
-
   return (
     <section ref={sectionRef} className="relative py-24 lg:py-32 bg-[#050505] overflow-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
+          backgroundSize: '40px 40px'
+        }}></div>
+      </div>
+
       <div className="container mx-auto px-4 sm:px-6 lg:px-16 relative z-10">
         {/* Header */}
         <motion.div
@@ -496,57 +497,242 @@ const TeamSection = () => {
         >
           <span className="text-[#ed1b24] font-semibold uppercase tracking-[0.2em] text-sm">Leadership</span>
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-light text-white mt-4">
-            Meet the <span className="font-normal text-[#ed1b24]">Team</span>
+            Meet Our <span className="font-normal text-[#ed1b24]">Founder</span>
           </h2>
         </motion.div>
 
-        {/* Team Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-          {team.map((member, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              whileHover={{ y: -10 }}
-              className="group"
-            >
-              <div className="relative overflow-hidden rounded-2xl">
-                {/* Image */}
-                <div className="aspect-[3/4] overflow-hidden">
-                  <motion.img
-                    whileHover={{ scale: 1.1 }}
-                    transition={{ duration: 0.6 }}
-                    src={member.image}
-                    alt={member.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+        {/* Founder Card - Centered with enhanced design */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="max-w-sm mx-auto"
+        >
+          <div className="relative group">
+            {/* Decorative frame */}
+            <div className="absolute -inset-3 bg-gradient-to-br from-[#ed1b24]/20 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="absolute -inset-1 bg-gradient-to-br from-[#ed1b24]/30 via-transparent to-[#ed1b24]/10 rounded-2xl"></div>
 
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent"></div>
-
-                {/* Info */}
-                <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <h3 className="text-xl font-bold text-white group-hover:text-[#ed1b24] transition-colors">
-                    {member.name}
-                  </h3>
-                  <p className="text-gray-400 text-sm mt-1">{member.role}</p>
-                </div>
-
-                {/* LinkedIn */}
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileHover={{ opacity: 1, scale: 1 }}
-                  className="absolute top-4 right-4 w-10 h-10 bg-[#ed1b24] rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
-                >
-                  <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                  </svg>
-                </motion.div>
+            <div className="relative overflow-hidden rounded-2xl bg-[#0a0a0a]">
+              <div className="aspect-[3/4] overflow-hidden">
+                <motion.img
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.6 }}
+                  src="/owner1.png"
+                  alt="Marwa Abd El Aziz"
+                  className="w-full h-full object-cover"
+                />
               </div>
-            </motion.div>
-          ))}
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+
+              {/* Content overlay */}
+              <div className="absolute bottom-0 left-0 right-0 p-6 text-center">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#ed1b24] rounded-full mb-3">
+                  <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>
+                  <span className="text-white text-xs font-medium uppercase tracking-wider">Founder</span>
+                </div>
+                <h3 className="text-2xl font-bold text-white">
+                  Marwa Abd El Aziz
+                </h3>
+                <p className="text-gray-300 text-sm mt-2">Managing Director</p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+// ============================================
+// TEAM SECTION - Premium Design
+// ============================================
+const TeamSection = () => {
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+
+  // Leadership team
+  const leadership = [
+    { name: 'Director', role: 'Director', image: '/team/director-Dtj-i9SA.jpeg', department: 'Executive' },
+    { name: 'General Manager', role: 'General Manager', image: '/team/GM.jpg.jpeg', department: 'Operations' },
+  ];
+
+  // Other team members with departments
+  const team = [
+    { name: 'Project Manager', role: 'Project Manager', image: '/team/Project Manager.jpg.jpeg', department: 'Projects' },
+    { name: 'Architect', role: 'Architect', image: '/team/Architect.jpg.jpeg', department: 'Design' },
+    { name: 'Accountant', role: 'Accountant', image: '/team/Accountant.jpg.jpeg', department: 'Finance' },
+    { name: 'Full-Stack Developer', role: 'Developer', image: '/team/Full-Stack Developer.jpg.jpeg', department: 'Technology' },
+    { name: 'Graphic Designer', role: 'Designer', image: '/team/Graphic Designers.jpg.jpeg', department: 'Creative' },
+    { name: 'IT Support', role: 'IT Engineer', image: '/team/IT Support Engineer.jpg.jpeg', department: 'Technology' },
+  ];
+
+  // Leadership Card Component
+  const LeadershipCard = ({ member, index }) => (
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay: index * 0.15 }}
+      className="group"
+    >
+      <div className="relative">
+        {/* Glow effect on hover */}
+        <div className="absolute -inset-1 bg-gradient-to-r from-[#ed1b24]/20 to-[#ed1b24]/0 rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-all duration-500"></div>
+
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-b from-[#111] to-[#0a0a0a] border border-white/5 group-hover:border-[#ed1b24]/30 transition-all duration-500">
+          {/* Image */}
+          <div className="aspect-[4/5] overflow-hidden">
+            <motion.img
+              whileHover={{ scale: 1.08 }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
+              src={member.image}
+              alt={member.role}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+          </div>
+
+          {/* Department badge */}
+          <div className="absolute top-4 left-4">
+            <span className="px-3 py-1.5 bg-black/60 backdrop-blur-md text-white/80 text-xs font-medium uppercase tracking-wider rounded-full border border-white/10">
+              {member.department}
+            </span>
+          </div>
+
+          {/* Content */}
+          <div className="absolute bottom-0 left-0 right-0 p-6">
+            <div className="flex items-end justify-between">
+              <div>
+                <h3 className="text-xl font-bold text-white group-hover:text-[#ed1b24] transition-colors duration-300">
+                  {member.name}
+                </h3>
+                <p className="text-gray-400 text-sm mt-1">{member.role}</p>
+              </div>
+              {/* Hover arrow */}
+              <motion.div
+                initial={{ opacity: 0, x: -10 }}
+                whileHover={{ opacity: 1, x: 0 }}
+                className="w-10 h-10 rounded-full bg-[#ed1b24] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300"
+              >
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+
+  // Team Card Component
+  const TeamCard = ({ member, index }) => (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={isInView ? { opacity: 1, scale: 1 } : {}}
+      transition={{ duration: 0.5, delay: 0.3 + index * 0.08 }}
+      whileHover={{ y: -8 }}
+      className="group cursor-pointer"
+    >
+      <div className="relative overflow-hidden rounded-xl bg-[#0a0a0a] border border-white/5 group-hover:border-[#ed1b24]/40 transition-all duration-300">
+        {/* Image with overlay */}
+        <div className="aspect-square overflow-hidden relative">
+          <motion.img
+            whileHover={{ scale: 1.15 }}
+            transition={{ duration: 0.5 }}
+            src={member.image}
+            alt={member.role}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+
+          {/* Hover overlay with department */}
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <span className="px-3 py-1.5 bg-[#ed1b24] text-white text-xs font-bold uppercase tracking-wider rounded-full">
+              {member.department}
+            </span>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="p-4 text-center bg-gradient-to-t from-[#0a0a0a] to-transparent">
+          <h3 className="text-sm sm:text-base font-semibold text-white group-hover:text-[#ed1b24] transition-colors line-clamp-1">
+            {member.name}
+          </h3>
+          <p className="text-gray-500 text-xs mt-1">{member.role}</p>
+        </div>
+      </div>
+    </motion.div>
+  );
+
+  return (
+    <section ref={sectionRef} className="relative py-24 lg:py-32 bg-black overflow-hidden">
+      {/* Decorative elements */}
+      <div className="absolute top-0 left-0 w-72 h-72 bg-[#ed1b24]/5 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#ed1b24]/5 rounded-full blur-3xl"></div>
+
+      <div className="container mx-auto px-4 sm:px-6 lg:px-16 relative z-10">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-20"
+        >
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={isInView ? { scale: 1 } : {}}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="inline-flex items-center gap-3 mb-6"
+          >
+            <div className="h-[1px] w-12 bg-gradient-to-r from-transparent to-[#ed1b24]"></div>
+            <span className="text-[#ed1b24] font-semibold uppercase tracking-[0.3em] text-xs">The People Behind PDC</span>
+            <div className="h-[1px] w-12 bg-gradient-to-l from-transparent to-[#ed1b24]"></div>
+          </motion.div>
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-light text-white">
+            Meet Our <span className="font-normal text-transparent bg-clip-text bg-gradient-to-r from-[#ed1b24] to-[#ff6b6b]">Team</span>
+          </h2>
+          <p className="text-gray-400 mt-6 max-w-2xl mx-auto text-lg">
+            A diverse team of experts dedicated to delivering excellence in every project
+          </p>
+        </motion.div>
+
+        {/* Leadership Grid */}
+        <div className="mb-20">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.6 }}
+            className="flex items-center justify-center gap-4 mb-10"
+          >
+            <div className="h-[1px] flex-1 max-w-[100px] bg-gradient-to-r from-transparent to-white/20"></div>
+            <h3 className="text-sm text-white/50 uppercase tracking-[0.3em] font-medium">Leadership Team</h3>
+            <div className="h-[1px] flex-1 max-w-[100px] bg-gradient-to-l from-transparent to-white/20"></div>
+          </motion.div>
+          <div className="grid sm:grid-cols-2 max-w-3xl mx-auto gap-8">
+            {leadership.map((member, index) => (
+              <LeadershipCard key={index} member={member} index={index} />
+            ))}
+          </div>
+        </div>
+
+        {/* Team Grid */}
+        <div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="flex items-center justify-center gap-4 mb-10"
+          >
+            <div className="h-[1px] flex-1 max-w-[100px] bg-gradient-to-r from-transparent to-white/20"></div>
+            <h3 className="text-sm text-white/50 uppercase tracking-[0.3em] font-medium">Our Experts</h3>
+            <div className="h-[1px] flex-1 max-w-[100px] bg-gradient-to-l from-transparent to-white/20"></div>
+          </motion.div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 lg:gap-5">
+            {team.map((member, index) => (
+              <TeamCard key={index} member={member} index={index} />
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -781,6 +967,7 @@ export default function AboutPage() {
       <WhatWeDoSection />
       <WhyChooseUsSection />
       <AchievementsSection />
+      <FounderSection />
       <TeamSection />
       <ClientsSection />
       <CTASection />
