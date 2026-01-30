@@ -560,40 +560,138 @@ const ClientsSection = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
+  // All client logos from public/logo folder
+  const clientLogos = [
+    { src: '/logo/Government_of_Dubai_logo.svg', name: 'Government of Dubai' },
+    { src: '/logo/the_private_office_of_sheikh_saeed_al_maktoum_logo.jpeg', name: 'Private Office of Sheikh Saeed Al Maktoum' },
+    { src: '/logo/EMIRATESNBD.AE_BIG-5d0a63c2.png.webp', name: 'Emirates NBD' },
+    { src: '/logo/NBAD_logo.jpg', name: 'NBAD' },
+    { src: '/logo/etisalat-by-eand-en-1920x363_tcm771-311270.png', name: 'Etisalat' },
+    { src: '/logo/ecc.jpg', name: 'ECC' },
+    { src: '/logo/almajal_holding_1.png', name: 'Al Majal Holding' },
+    { src: '/logo/abdulsamad_al_qurashi_0.jpg', name: 'Abdul Samad Al Qurashi' },
+    { src: '/logo/3142F6tlt5L._SY400_.jpg', name: 'Client' },
+    { src: '/logo/brand.gif', name: 'Client' },
+    { src: '/logo/images.jpeg', name: 'Client' },
+    { src: '/logo/images.png', name: 'Client' },
+    { src: '/logo/images-2.jpeg', name: 'Client' },
+    { src: '/logo/images-2.png', name: 'Client' },
+    { src: '/logo/images-3.jpeg', name: 'Client' },
+    { src: '/logo/images-3.png', name: 'Client' },
+    { src: '/logo/images-4.jpeg', name: 'Client' },
+    { src: '/logo/images-4.png', name: 'Client' },
+  ];
+
+  // Split logos for two rows
+  const firstRow = clientLogos.slice(0, 9);
+  const secondRow = clientLogos.slice(9);
+
   return (
-    <section ref={sectionRef} className="relative py-24 lg:py-32 bg-black overflow-hidden">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-16 relative z-10">
+    <section ref={sectionRef} className="relative py-16 sm:py-20 lg:py-32 bg-black overflow-hidden">
+      <div className="relative z-10">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-12 sm:mb-16 px-4"
         >
-          <span className="text-[#ed1b24] font-semibold uppercase tracking-[0.2em] text-sm">Trusted By</span>
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-light text-white mt-4">
+          <span className="text-[#ed1b24] font-semibold uppercase tracking-[0.2em] text-xs sm:text-sm">Trusted By</span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-white mt-3 sm:mt-4">
             Our <span className="font-normal text-[#ed1b24]">Partners</span>
           </h2>
+          <p className="text-gray-400 mt-4 max-w-2xl mx-auto text-sm sm:text-base">
+            Trusted by leading organizations across the UAE and MENA region
+          </p>
         </motion.div>
 
-        {/* Logo Grid - Placeholder Images */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8">
-          {[...Array(6)].map((_, index) => (
+        {/* Infinite Marquee - First Row */}
+        <div className="relative mb-4 sm:mb-6">
+          <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-r from-black to-transparent z-10"></div>
+          <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-l from-black to-transparent z-10"></div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="flex overflow-hidden"
+          >
             <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ scale: 1.1 }}
-              className="flex items-center justify-center p-6 bg-white/5 rounded-xl border border-white/5 hover:border-[#ed1b24]/30 transition-all"
+              animate={{ x: ['0%', '-50%'] }}
+              transition={{ duration: 50, repeat: Infinity, ease: 'linear' }}
+              className="flex gap-4 sm:gap-6 lg:gap-8 shrink-0"
             >
-              <div className="text-gray-500 text-center">
-                <div className="w-16 h-16 bg-white/10 rounded-lg mx-auto mb-2"></div>
-                <span className="text-xs">Partner {index + 1}</span>
-              </div>
+              {[...firstRow, ...firstRow].map((logo, index) => (
+                <div
+                  key={index}
+                  className="flex items-center justify-center w-28 h-20 sm:w-36 sm:h-24 md:w-44 md:h-28 lg:w-52 lg:h-32 bg-white/5 backdrop-blur-sm rounded-lg sm:rounded-xl border border-white/5 hover:border-[#ed1b24]/30 hover:bg-white/10 transition-all duration-300 shrink-0 p-3 sm:p-4 lg:p-6 group"
+                >
+                  <img
+                    src={logo.src}
+                    alt={logo.name}
+                    className="max-w-full max-h-full object-contain opacity-80 group-hover:opacity-100 transition-all duration-300"
+                  />
+                </div>
+              ))}
             </motion.div>
-          ))}
+          </motion.div>
         </div>
+
+        {/* Infinite Marquee - Second Row (Reverse Direction) */}
+        <div className="relative">
+          <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-r from-black to-transparent z-10"></div>
+          <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-l from-black to-transparent z-10"></div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="flex overflow-hidden"
+          >
+            <motion.div
+              animate={{ x: ['-50%', '0%'] }}
+              transition={{ duration: 45, repeat: Infinity, ease: 'linear' }}
+              className="flex gap-4 sm:gap-6 lg:gap-8 shrink-0"
+            >
+              {[...secondRow, ...secondRow, ...secondRow, ...secondRow].map((logo, index) => (
+                <div
+                  key={index}
+                  className="flex items-center justify-center w-28 h-20 sm:w-36 sm:h-24 md:w-44 md:h-28 lg:w-52 lg:h-32 bg-white/5 backdrop-blur-sm rounded-lg sm:rounded-xl border border-white/5 hover:border-[#ed1b24]/30 hover:bg-white/10 transition-all duration-300 shrink-0 p-3 sm:p-4 lg:p-6 group"
+                >
+                  <img
+                    src={logo.src}
+                    alt={logo.name}
+                    className="max-w-full max-h-full object-contain opacity-80 group-hover:opacity-100 transition-all duration-300"
+                  />
+                </div>
+              ))}
+            </motion.div>
+          </motion.div>
+        </div>
+
+        {/* Static Grid for Mobile Alternative (hidden on larger screens) */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="hidden mt-12 px-4 sm:px-6"
+        >
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 sm:gap-4">
+            {clientLogos.map((logo, index) => (
+              <motion.div
+                key={index}
+                whileHover={{ scale: 1.05 }}
+                className="flex items-center justify-center aspect-[4/3] bg-white/5 rounded-lg border border-white/5 hover:border-[#ed1b24]/30 transition-all p-3"
+              >
+                <img
+                  src={logo.src}
+                  alt={logo.name}
+                  className="max-w-full max-h-full object-contain opacity-80 hover:opacity-100 transition-all duration-300"
+                />
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );

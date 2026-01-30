@@ -240,7 +240,7 @@ const FounderSection = () => {
                 <div className="aspect-[3/4] sm:aspect-[4/5] md:aspect-square bg-gradient-to-br from-gray-900 via-gray-800 to-black rounded-3xl overflow-hidden border border-white/5">
                   {/* Owner Image */}
                   <img 
-                    src="/Owner.png" 
+                    src="/owner1.png" 
                     alt="Marwa Abd El Aziz - Founder & Managing Director"
                     className="w-full h-full object-cover"
                   />

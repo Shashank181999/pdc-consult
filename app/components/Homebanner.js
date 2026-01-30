@@ -158,25 +158,25 @@ const HomeBanner = () => {
               </div>
             </div>
 
-            {/* --- RIGHT SIDE: FEATURE LIST --- */}
-            <div className={`lg:col-span-5 flex flex-col justify-center pt-8 lg:pt-0 transition-all duration-1000 delay-500 ${loaded ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'}`}>
-              
+            {/* --- RIGHT SIDE: FEATURE LIST (Hidden on small mobile, shown on tablets and up) --- */}
+            <div className={`hidden sm:flex lg:col-span-5 flex-col justify-center pt-8 lg:pt-0 transition-all duration-1000 delay-500 ${loaded ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'}`}>
+
               <div className="relative">
-                <div className="flex flex-col gap-3 md:gap-5 relative z-10">
-                  {content?.services && content.services.map((service, i) => (
-                    <div 
-                      key={i} 
+                <div className="flex flex-col gap-3 md:gap-4 relative z-10">
+                  {content?.services && content.services.slice(0, 4).map((service, i) => (
+                    <div
+                      key={i}
                       className="group relative cursor-pointer"
                     >
-                      <div className="p-4 md:p-6 bg-black/60 backdrop-blur-xl border border-white/10 rounded-sm hover:border-[#ed1b24] transition-all duration-300 hover:-translate-x-2 shadow-2xl">
-                        <div className="absolute left-0 top-0 bottom-0 w-[2px] md:w-[3px] bg-[#ed1b24] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      <div className="p-4 md:p-5 lg:p-6 bg-black/60 backdrop-blur-xl border border-white/10 rounded-lg hover:border-[#ed1b24] transition-all duration-300 hover:-translate-x-2 shadow-2xl">
+                        <div className="absolute left-0 top-0 bottom-0 w-[2px] md:w-[3px] bg-[#ed1b24] opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-l-lg"></div>
 
                         <div className="flex justify-between items-start">
-                          <h3 className="text-base md:text-lg font-medium text-white mb-1 md:mb-2 group-hover:text-[#ed1b24] transition-colors" style={{ fontFamily: "'Archivo', sans-serif" }}>
+                          <h3 className="text-sm sm:text-base md:text-lg font-medium text-white mb-1 md:mb-2 group-hover:text-[#ed1b24] transition-colors line-clamp-1" style={{ fontFamily: "'Archivo', sans-serif" }}>
                             {service.title}
                           </h3>
                         </div>
-                        <p className="text-xs md:text-sm text-gray-400 font-light leading-relaxed group-hover:text-gray-300 transition-colors" style={{ fontFamily: "'Archivo', sans-serif" }}>
+                        <p className="text-xs md:text-sm text-gray-400 font-light leading-relaxed group-hover:text-gray-300 transition-colors line-clamp-2" style={{ fontFamily: "'Archivo', sans-serif" }}>
                           {service.description}
                         </p>
                       </div>
@@ -184,7 +184,7 @@ const HomeBanner = () => {
                   ))}
                 </div>
               </div>
-            
+
             </div>
           </div>
         </div>

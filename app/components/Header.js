@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -18,6 +17,30 @@ const Header = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Close mobile menu on window resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setIsMobileMenuOpen(false);
+        setMobileDropdownOpen({});
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileMenuOpen]);
 
   const menuItems = [
     { name: 'Home', href: '/' },
@@ -94,13 +117,10 @@ const Header = () => {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3 group">
-              <Image
+              <img
                 src="/pdc-consult-logo.svg"
                 alt="PDC Consult"
-                width={150}
-                height={50}
-                className="h-10 md:h-12 w-auto transition-transform duration-300 group-hover:scale-105"
-                priority
+                className="h-10 md:h-12 lg:h-14 transition-transform duration-300 group-hover:scale-105"
               />
             </Link>
 
@@ -191,71 +211,98 @@ const Header = () => {
             </button>
           </div>
 
-          {/* Mobile Menu */}
+          {/* Mobile Menu - Full Screen Overlay */}
           <div
-            className={`lg:hidden overflow-hidden transition-all duration-500 ${
-              isMobileMenuOpen ? 'max-h-screen mt-6' : 'max-h-0'
+            className={`lg:hidden fixed inset-0 top-0 left-0 right-0 bottom-0 bg-black/98 backdrop-blur-xl z-50 transition-all duration-500 ${
+              isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
             }`}
+            style={{ height: '100dvh' }}
           >
-            <nav className="flex flex-col gap-2 pb-6">
-              {menuItems.map((item, index) => (
-                <div key={index}>
-                  <div className="flex items-center justify-between">
-                    <Link
-                      href={item.href}
-                      className="flex-1 block px-4 py-3 text-white hover:bg-red-600/20 hover:text-red-600 transition-all duration-200"
-                      onClick={() => !item.dropdown && setIsMobileMenuOpen(false)}
-                    >
-                      {item.name}
-                    </Link>
-                    {item.dropdown && (
-                      <button
-                        onClick={() => toggleMobileDropdown(item.name)}
-                        className="px-4 py-3 text-white hover:text-red-600 transition-colors"
-                        aria-label={`Toggle ${item.name} dropdown`}
+            {/* Close Button */}
+            <button
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="absolute top-6 right-4 sm:right-6 w-12 h-12 flex items-center justify-center text-white hover:text-red-600 transition-colors z-50"
+              aria-label="Close menu"
+            >
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* Menu Content */}
+            <nav className="flex flex-col h-full pt-24 pb-8 px-6 overflow-y-auto hide-scrollbar">
+              <div className="flex-1 space-y-2">
+                {menuItems.map((item, index) => (
+                  <div key={index} className="border-b border-white/10 last:border-b-0">
+                    <div className="flex items-center justify-between">
+                      <Link
+                        href={item.href}
+                        className="flex-1 block py-4 text-xl font-medium text-white hover:text-red-600 transition-all duration-200"
+                        onClick={() => !item.dropdown && setIsMobileMenuOpen(false)}
                       >
-                        <svg
-                          className={`w-4 h-4 transition-transform duration-300 ${
-                            mobileDropdownOpen[item.name] ? 'rotate-180' : ''
-                          }`}
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
+                        {item.name}
+                      </Link>
+                      {item.dropdown && (
+                        <button
+                          onClick={() => toggleMobileDropdown(item.name)}
+                          className="p-4 text-white hover:text-red-600 transition-colors"
+                          aria-label={`Toggle ${item.name} dropdown`}
                         >
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </button>
+                          <svg
+                            className={`w-5 h-5 transition-transform duration-300 ${
+                              mobileDropdownOpen[item.name] ? 'rotate-180' : ''
+                            }`}
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </button>
+                      )}
+                    </div>
+                    {item.dropdown && (
+                      <div
+                        className={`overflow-hidden transition-all duration-300 ${
+                          mobileDropdownOpen[item.name] ? 'max-h-[500px] pb-4' : 'max-h-0'
+                        }`}
+                      >
+                        <div className="pl-4 space-y-1">
+                          {item.dropdown.map((subItem, subIndex) => (
+                            <Link
+                              key={subIndex}
+                              href={subItem.href}
+                              className="block px-4 py-3 text-base text-gray-400 hover:text-white hover:bg-red-600/10 rounded-lg transition-all duration-200 border-l-2 border-transparent hover:border-red-600"
+                              onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                              {subItem.name}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
                     )}
                   </div>
-                  {item.dropdown && (
-                    <div
-                      className={`overflow-hidden transition-all duration-300 ${
-                        mobileDropdownOpen[item.name] ? 'max-h-96' : 'max-h-0'
-                      }`}
-                    >
-                      <div className="pl-4 bg-black/50">
-                        {item.dropdown.map((subItem, subIndex) => (
-                          <Link
-                            key={subIndex}
-                            href={subItem.href}
-                            className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-red-600/10 transition-all duration-200 border-l-2 border-transparent hover:border-red-600"
-                            onClick={() => setIsMobileMenuOpen(false)}
-                          >
-                            {subItem.name}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                ))}
+              </div>
+
+              {/* CTA Button */}
+              <div className="pt-6 mt-auto">
+                <Link
+                  href="/contact"
+                  className="block w-full px-8 py-4 bg-gradient-to-r from-red-600 to-red-700 text-white font-semibold text-center text-lg rounded-xl hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-lg shadow-red-900/30"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Get Started
+                </Link>
+
+                {/* Contact Info */}
+                <div className="mt-8 pt-6 border-t border-white/10 text-center">
+                  <p className="text-gray-500 text-sm mb-2">Need help?</p>
+                  <a href="tel:+97142775734" className="text-white hover:text-red-600 transition-colors">
+                    +971 4 277 5734
+                  </a>
                 </div>
-              ))}
-              <Link
-                href="/contact"
-                className="mt-4 mx-4 px-6 py-3 bg-red-600 text-white font-semibold text-center hover:bg-white hover:text-red-600 transition-all duration-300 rounded-sm"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Get Started
-              </Link>
+              </div>
             </nav>
           </div>
         </div>

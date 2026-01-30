@@ -373,8 +373,7 @@ export default function Services() {
             initial={{ opacity: 0, x: 50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.5 }}
-            className="lg:col-span-7 relative"
-            style={{ minHeight: '600px' }}
+            className="lg:col-span-7 relative min-h-[400px] sm:min-h-[500px] lg:min-h-[600px]"
           >
             <AnimatePresence mode="wait">
               <motion.div

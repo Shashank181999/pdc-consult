@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -101,18 +100,16 @@ const Footer = () => {
         {/* Main Footer Content */}
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-8">
           {/* Top Section */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 lg:gap-8 mb-12">
+          <div className="grid grid-cols-1 lg:grid-cols-6 gap-8 lg:gap-8 mb-12">
 
             {/* Brand Section with Contact */}
             <div className="lg:col-span-2">
               {/* Logo */}
               <Link href="/" className="flex items-center gap-3 group mb-6">
-                <Image
+                <img
                   src="/pdc-consult-logo.svg"
                   alt="PDC Consult"
-                  width={160}
-                  height={60}
-                  className="h-12 w-auto transition-transform duration-300 group-hover:scale-105"
+                  className="h-10 lg:h-14 transition-transform duration-300 group-hover:scale-105"
                 />
               </Link>
 
@@ -164,27 +161,29 @@ const Footer = () => {
               </div>
             </div>
 
-            {/* Footer Links Sections */}
-            {footerSections.map((section, index) => (
-              <div key={index} className="lg:col-span-1">
-                <h3 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">
-                  {section.title}
-                </h3>
-                <ul className="space-y-2">
-                  {section.links.map((link, linkIndex) => (
-                    <li key={linkIndex}>
-                      <Link
-                        href={link.href}
-                        className="text-gray-400 text-sm hover:text-red-600 transition-colors duration-300 inline-flex items-center group"
-                      >
-                        <span className="w-0 h-[1px] bg-red-600 group-hover:w-3 transition-all duration-300 mr-0 group-hover:mr-2"></span>
-                        {link.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+            {/* Footer Links Sections - Responsive Grid */}
+            <div className="lg:col-span-4 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-6 lg:gap-4">
+              {footerSections.map((section, index) => (
+                <div key={index}>
+                  <h3 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">
+                    {section.title}
+                  </h3>
+                  <ul className="space-y-2">
+                    {section.links.map((link, linkIndex) => (
+                      <li key={linkIndex}>
+                        <Link
+                          href={link.href}
+                          className="text-gray-400 text-sm hover:text-red-600 transition-colors duration-300 inline-flex items-center group"
+                        >
+                          <span className="w-0 h-[1px] bg-red-600 group-hover:w-3 transition-all duration-300 mr-0 group-hover:mr-2"></span>
+                          <span className="line-clamp-1">{link.name}</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Bottom Section */}

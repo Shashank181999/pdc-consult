@@ -6,11 +6,34 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+import { supabase } from '../../admin/supabase';
 
 // ============================================
-// DUMMY PROJECT DATA (Will be replaced with Firebase)
+// DEFAULT/FALLBACK IMAGES BY CATEGORY
 // ============================================
-const projectsData = {
+const defaultImages = {
+  hospitality: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=2000&auto=format&fit=crop',
+  residential: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2000&auto=format&fit=crop',
+  commercial: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2000&auto=format&fit=crop',
+  'mixed-use': 'https://images.unsplash.com/photo-1486718448742-163732cd1544?q=80&w=2000&auto=format&fit=crop',
+  renovations: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?q=80&w=2000&auto=format&fit=crop',
+  default: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?q=80&w=2000&auto=format&fit=crop'
+};
+
+// Default gallery images
+const defaultGalleryImages = [
+  'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1200&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=1200&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1200&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=1200&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1200&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1200&auto=format&fit=crop'
+];
+
+// ============================================
+// STATIC PROJECT DATA (FALLBACK)
+// ============================================
+const staticProjectsData = {
   '1': {
     id: '1',
     title: 'The Royal Atlantis',
@@ -232,6 +255,339 @@ const projectsData = {
     ],
     services: ['Resort Development', 'Hospitality Consulting', 'Beach Engineering', 'Landscape Design'],
     tags: ['Hospitality', 'Beach Resort', 'Luxury', 'Waterfront']
+  },
+  '7': {
+    id: '7',
+    title: 'Business Bay Complex',
+    subtitle: 'The Future of Mixed-Use Development',
+    category: 'Mixed Use Development',
+    location: 'Business Bay, Dubai',
+    client: 'Dubai Properties Group',
+    year: '2024',
+    duration: '40 Months',
+    value: '$750 Million',
+    area: '280,000 sqm',
+    status: 'In Progress',
+    heroImage: 'https://images.unsplash.com/photo-1486718448742-163732cd1544?q=80&w=2000&auto=format&fit=crop',
+    description: 'An ambitious mixed-use development that seamlessly integrates premium office spaces, luxury residences, retail areas, and hospitality facilities into one cohesive urban destination.',
+    challenge: 'Creating a harmonious blend of diverse functions while ensuring each component maintains its distinct identity and operational efficiency.',
+    solution: 'Implemented a vertically integrated design approach with dedicated zones for each function, connected by shared amenities and smart building systems.',
+    features: [
+      'Grade A office spaces',
+      'Luxury apartments',
+      'Boutique hotel',
+      'Retail podium',
+      'Sky garden',
+      'Underground parking',
+      'Waterfront promenade',
+      'Smart building systems'
+    ],
+    gallery: [
+      'https://images.unsplash.com/photo-1486718448742-163732cd1544?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1497366811353-6870744d04b2?q=80&w=1200&auto=format&fit=crop'
+    ],
+    services: ['Master Planning', 'Project Development', 'Construction Management', 'MEP Coordination'],
+    tags: ['Mixed-Use', 'High-Rise', 'Commercial', 'Residential']
+  },
+  '8': {
+    id: '8',
+    title: 'Creek Harbor Mall',
+    subtitle: 'Redefining Retail Experiences',
+    category: 'Retail & Commercial',
+    location: 'Dubai Creek, Dubai',
+    client: 'Emaar Properties',
+    year: '2023',
+    duration: '32 Months',
+    value: '$420 Million',
+    area: '150,000 sqm',
+    status: 'Completed',
+    heroImage: 'https://images.unsplash.com/photo-1519501025264-65ba15a82390?q=80&w=2000&auto=format&fit=crop',
+    description: 'A world-class shopping destination featuring over 400 retail outlets, entertainment zones, and dining experiences with stunning views of Dubai Creek and the iconic Tower.',
+    challenge: 'Designing a retail environment that competes with established malls while leveraging the unique waterfront location and Creek Tower views.',
+    solution: 'Created an open-air retail concept that maximizes waterfront views while providing comfortable climate-controlled zones throughout.',
+    features: [
+      '400+ retail outlets',
+      'Waterfront dining',
+      'Entertainment complex',
+      'Hypermarket',
+      'Cinema multiplex',
+      'Indoor theme park',
+      'Creek views',
+      'Public transit connection'
+    ],
+    gallery: [
+      'https://images.unsplash.com/photo-1519501025264-65ba15a82390?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1567449303078-57ad995bd329?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1200&auto=format&fit=crop'
+    ],
+    services: ['Retail Planning', 'Construction Management', 'Tenant Coordination', 'Handover Management'],
+    tags: ['Retail', 'Commercial', 'Waterfront', 'Entertainment']
+  },
+  '9': {
+    id: '9',
+    title: 'Al Barari Villas',
+    subtitle: 'Nature-Inspired Luxury Living',
+    category: 'Luxury Villas',
+    location: 'Al Barari, Dubai',
+    client: 'Al Barari Development',
+    year: '2022',
+    duration: '28 Months',
+    value: '$85 Million',
+    area: '25,000 sqm',
+    status: 'Completed',
+    heroImage: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2000&auto=format&fit=crop',
+    description: 'An exclusive collection of 12 bespoke villas nestled within Dubai\'s greenest community. Each villa is designed to harmonize with the lush botanical surroundings while offering unparalleled luxury.',
+    challenge: 'Building luxury homes that complement the existing botanical environment without disturbing the established ecosystem and gardens.',
+    solution: 'Adopted a sensitive construction approach with minimal environmental impact, incorporating sustainable materials and preserving mature trees throughout.',
+    features: [
+      'Private gardens',
+      'Natural swimming pools',
+      'Sustainable design',
+      'Smart home systems',
+      'Underground parking',
+      'Mature landscaping',
+      'Custom interiors',
+      'Wellness facilities'
+    ],
+    gallery: [
+      'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1616137466211-f939a420be84?q=80&w=1200&auto=format&fit=crop'
+    ],
+    services: ['Villa Development', 'Landscape Coordination', 'Interior Design', 'Sustainable Construction'],
+    tags: ['Residential', 'Villas', 'Sustainable', 'Luxury']
+  },
+  '10': {
+    id: '10',
+    title: 'Dubai Healthcare City',
+    subtitle: 'Excellence in Healthcare Infrastructure',
+    category: 'Healthcare Facility',
+    location: 'Healthcare City, Dubai',
+    client: 'Dubai Healthcare City Authority',
+    year: '2023',
+    duration: '36 Months',
+    value: '$350 Million',
+    area: '120,000 sqm',
+    status: 'Completed',
+    heroImage: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=2000&auto=format&fit=crop',
+    description: 'A state-of-the-art medical campus featuring multiple specialized clinics, a 400-bed hospital, research facilities, and medical education centers.',
+    challenge: 'Meeting stringent healthcare facility standards while creating a welcoming environment for patients and medical professionals.',
+    solution: 'Implemented healthcare-specific design principles with advanced HVAC systems, specialized medical gas installations, and patient-centered layouts.',
+    features: [
+      '400-bed hospital',
+      'Specialized clinics',
+      'Research laboratories',
+      'Medical university',
+      'Helipad',
+      'Advanced diagnostics',
+      'Patient gardens',
+      'Staff facilities'
+    ],
+    gallery: [
+      'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1538108149393-fbbd81895907?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1551076805-e1869033e561?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1497366811353-6870744d04b2?q=80&w=1200&auto=format&fit=crop'
+    ],
+    services: ['Healthcare Planning', 'MEP Engineering', 'Construction Management', 'Commissioning'],
+    tags: ['Healthcare', 'Medical', 'Institutional', 'Research']
+  },
+  '11': {
+    id: '11',
+    title: 'Jumeirah Beach Hotel Renovation',
+    subtitle: 'Iconic Restoration & Modernization',
+    category: 'Hotel Renovation',
+    location: 'Jumeirah Beach, Dubai',
+    client: 'Jumeirah Group',
+    year: '2023',
+    duration: '18 Months',
+    value: '$180 Million',
+    area: '85,000 sqm',
+    status: 'Completed',
+    heroImage: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?q=80&w=2000&auto=format&fit=crop',
+    description: 'A comprehensive renovation of the iconic wave-shaped hotel, updating 600 rooms and suites while preserving the landmark\'s distinctive character.',
+    challenge: 'Executing a full-scale renovation while keeping portions of the hotel operational and maintaining the iconic architectural identity.',
+    solution: 'Developed a phased renovation approach that allowed continuous hotel operations while systematically upgrading each section to modern standards.',
+    features: [
+      '600 renovated rooms',
+      'New F&B concepts',
+      'Updated spa facilities',
+      'Enhanced pool deck',
+      'Smart room technology',
+      'Improved accessibility',
+      'Sustainable upgrades',
+      'Preserved heritage'
+    ],
+    gallery: [
+      'https://images.unsplash.com/photo-1571896349842-33c89424de2d?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1540541338287-41700207dee6?q=80&w=1200&auto=format&fit=crop'
+    ],
+    services: ['Renovation Management', 'FF&E Procurement', 'Heritage Preservation', 'Operations Coordination'],
+    tags: ['Renovation', 'Hospitality', 'Heritage', 'Luxury']
+  },
+  '12': {
+    id: '12',
+    title: 'Knowledge Village Campus',
+    subtitle: 'Shaping Future Education',
+    category: 'Educational Campus',
+    location: 'Dubai Knowledge Park',
+    client: 'TECOM Group',
+    year: '2024',
+    duration: '30 Months',
+    value: '$220 Million',
+    area: '95,000 sqm',
+    status: 'In Progress',
+    heroImage: 'https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=2000&auto=format&fit=crop',
+    description: 'A modern educational campus designed to house multiple international universities and training institutes, featuring cutting-edge learning facilities.',
+    challenge: 'Creating flexible spaces that accommodate diverse educational methodologies while fostering collaboration between different institutions.',
+    solution: 'Designed modular learning spaces with adaptable configurations, shared facilities, and advanced technology infrastructure for hybrid learning.',
+    features: [
+      'Smart classrooms',
+      'Research centers',
+      'Innovation hub',
+      'Student housing',
+      'Sports facilities',
+      'Libraries',
+      'Collaborative spaces',
+      'Outdoor learning areas'
+    ],
+    gallery: [
+      'https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1497366811353-6870744d04b2?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1200&auto=format&fit=crop'
+    ],
+    services: ['Educational Planning', 'Campus Development', 'Technology Integration', 'Sustainability Consulting'],
+    tags: ['Education', 'Campus', 'Innovation', 'Institutional']
+  },
+  '13': {
+    id: '13',
+    title: 'Jebel Ali Port Expansion',
+    subtitle: 'Gateway to Global Trade',
+    category: 'Infrastructure',
+    location: 'Jebel Ali, Dubai',
+    client: 'DP World',
+    year: '2024',
+    duration: '48 Months',
+    value: '$1.2 Billion',
+    area: '500,000 sqm',
+    status: 'In Progress',
+    heroImage: 'https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?q=80&w=2000&auto=format&fit=crop',
+    description: 'A major infrastructure expansion project adding new container terminals, automated cargo handling systems, and supporting logistics facilities.',
+    challenge: 'Expanding port capacity while maintaining continuous operations and meeting strict maritime safety and environmental regulations.',
+    solution: 'Implemented modular construction techniques and phased integration to seamlessly add new capacity without disrupting ongoing port operations.',
+    features: [
+      'Automated terminals',
+      'Deep-water berths',
+      'Cargo handling systems',
+      'Logistics warehouses',
+      'Rail connectivity',
+      'Green technology',
+      'Smart port systems',
+      'Future expansion ready'
+    ],
+    gallery: [
+      'https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1578575437130-527eed3abbec?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1519501025264-65ba15a82390?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=1200&auto=format&fit=crop'
+    ],
+    services: ['Infrastructure Development', 'Marine Engineering', 'Project Management', 'Systems Integration'],
+    tags: ['Infrastructure', 'Maritime', 'Logistics', 'Industrial']
+  },
+  '14': {
+    id: '14',
+    title: 'Palm Residences',
+    subtitle: 'Exclusive Island Living',
+    category: 'Luxury Villas',
+    location: 'Palm Jumeirah, Dubai',
+    client: 'Nakheel Properties',
+    year: '2022',
+    duration: '26 Months',
+    value: '$95 Million',
+    area: '18,000 sqm',
+    status: 'Completed',
+    heroImage: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2000&auto=format&fit=crop',
+    description: 'A collection of 8 ultra-luxury signature villas on the fronds of Palm Jumeirah, each featuring private beaches, infinity pools, and bespoke interiors.',
+    challenge: 'Constructing on Palm Jumeirah\'s unique reclaimed land while meeting ultra-high-net-worth client expectations for absolute luxury.',
+    solution: 'Engaged specialist marine foundation contractors and international luxury interior designers to deliver uncompromising quality.',
+    features: [
+      'Private beach access',
+      'Infinity edge pools',
+      'Yacht berths',
+      'Smart home automation',
+      'Staff quarters',
+      'Home cinema',
+      'Wine cellars',
+      'Rooftop terraces'
+    ],
+    gallery: [
+      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1616137466211-f939a420be84?q=80&w=1200&auto=format&fit=crop'
+    ],
+    services: ['Villa Development', 'Marine Construction', 'Interior Coordination', 'Handover Management'],
+    tags: ['Residential', 'Villas', 'Waterfront', 'Ultra-Luxury']
+  },
+  '15': {
+    id: '15',
+    title: 'City Walk Extension',
+    subtitle: 'Urban Lifestyle Destination',
+    category: 'Mixed Use Development',
+    location: 'City Walk, Dubai',
+    client: 'Meraas',
+    year: '2023',
+    duration: '34 Months',
+    value: '$580 Million',
+    area: '210,000 sqm',
+    status: 'Completed',
+    heroImage: 'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?q=80&w=2000&auto=format&fit=crop',
+    description: 'An expansion of the popular City Walk district, adding premium retail, dining, entertainment venues, and boutique hotel rooms in a contemporary urban setting.',
+    challenge: 'Seamlessly extending the existing City Walk character while introducing fresh concepts and improving pedestrian connectivity.',
+    solution: 'Created cohesive architectural language that bridges old and new sections while introducing covered walkways and enhanced public spaces.',
+    features: [
+      'Premium retail',
+      'Al fresco dining',
+      'Boutique hotel',
+      'Entertainment zone',
+      'Art installations',
+      'Green spaces',
+      'Covered walkways',
+      'Underground parking'
+    ],
+    gallery: [
+      'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1519501025264-65ba15a82390?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1567449303078-57ad995bd329?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1486718448742-163732cd1544?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1200&auto=format&fit=crop'
+    ],
+    services: ['Retail Development', 'Master Planning', 'Construction Management', 'Tenant Coordination'],
+    tags: ['Mixed-Use', 'Retail', 'Urban', 'Lifestyle']
   }
 };
 
@@ -240,7 +596,18 @@ const relatedProjects = [
   { id: '1', title: 'The Royal Atlantis', category: 'Luxury Hotel', image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=600&auto=format&fit=crop' },
   { id: '2', title: 'Marina Gate Towers', category: 'Residential', image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=600&auto=format&fit=crop' },
   { id: '3', title: 'DIFC Innovation Hub', category: 'Commercial', image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=600&auto=format&fit=crop' },
-  { id: '4', title: 'Emirates Hills Estate', category: 'Private Villa', image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=600&auto=format&fit=crop' }
+  { id: '4', title: 'Emirates Hills Estate', category: 'Private Villa', image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=600&auto=format&fit=crop' },
+  { id: '5', title: 'Burj Vista Tower', category: 'Residential', image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=600&auto=format&fit=crop' },
+  { id: '6', title: 'Palm Jumeirah Resort', category: 'Hospitality', image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=600&auto=format&fit=crop' },
+  { id: '7', title: 'Business Bay Complex', category: 'Mixed Use', image: 'https://images.unsplash.com/photo-1486718448742-163732cd1544?q=80&w=600&auto=format&fit=crop' },
+  { id: '8', title: 'Creek Harbor Mall', category: 'Retail', image: 'https://images.unsplash.com/photo-1519501025264-65ba15a82390?q=80&w=600&auto=format&fit=crop' },
+  { id: '9', title: 'Al Barari Villas', category: 'Luxury Villa', image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=600&auto=format&fit=crop' },
+  { id: '10', title: 'Dubai Healthcare City', category: 'Healthcare', image: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=600&auto=format&fit=crop' },
+  { id: '11', title: 'Jumeirah Beach Hotel Renovation', category: 'Renovation', image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?q=80&w=600&auto=format&fit=crop' },
+  { id: '12', title: 'Knowledge Village Campus', category: 'Education', image: 'https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=600&auto=format&fit=crop' },
+  { id: '13', title: 'Jebel Ali Port Expansion', category: 'Infrastructure', image: 'https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?q=80&w=600&auto=format&fit=crop' },
+  { id: '14', title: 'Palm Residences', category: 'Luxury Villa', image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=600&auto=format&fit=crop' },
+  { id: '15', title: 'City Walk Extension', category: 'Mixed Use', image: 'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?q=80&w=600&auto=format&fit=crop' }
 ];
 
 // ============================================
@@ -861,14 +1228,90 @@ const ProjectCTA = () => {
 export default function ProjectDetailsPage() {
   const params = useParams();
   const projectId = params.id;
+  const [project, setProject] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // Scroll to top on page load
+  // Scroll to top instantly on page load
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, [projectId]);
 
-  // Get project data (will be replaced with Firebase fetch)
-  const project = projectsData[projectId];
+  // Fetch project from Supabase or use static data
+  useEffect(() => {
+    const fetchProject = async () => {
+      setLoading(true);
+
+      // First check if it's a static project ID (1-15)
+      if (staticProjectsData[projectId]) {
+        setProject(staticProjectsData[projectId]);
+        setLoading(false);
+        return;
+      }
+
+      // Try to fetch from Supabase
+      try {
+        const { data, error } = await supabase
+          .from('projects')
+          .select('*')
+          .eq('id', projectId)
+          .single();
+
+        if (error) throw error;
+
+        if (data) {
+          // Transform Supabase data to match expected format
+          const heroImage = data.hero_image || data.image_url || defaultImages[data.category] || defaultImages.default;
+          const transformedProject = {
+            id: data.id.toString(),
+            title: data.title || 'Untitled Project',
+            subtitle: data.subtitle || data.description?.substring(0, 50) || 'Project Details',
+            category: data.category || 'Commercial',
+            location: data.location || 'Dubai',
+            client: data.client || 'Private Client',
+            year: data.year || new Date().getFullYear().toString(),
+            duration: data.duration || '24 Months',
+            value: data.value || 'N/A',
+            area: data.area || 'N/A',
+            status: data.status || 'In Progress',
+            heroImage: heroImage,
+            description: data.description || 'A prestigious project showcasing excellence in construction and design.',
+            challenge: data.challenge || 'Delivering exceptional quality while meeting strict timelines and budget constraints.',
+            solution: data.solution || 'Our team implemented innovative solutions and maintained rigorous quality control throughout the project lifecycle.',
+            features: data.features || [
+              'Premium quality materials',
+              'Sustainable design',
+              'Smart building systems',
+              'Modern architecture',
+              'Quality assurance',
+              'Timely delivery'
+            ],
+            gallery: data.gallery || [heroImage, ...defaultGalleryImages.slice(0, 5)],
+            services: data.services || ['Project Development', 'Construction Management', 'Quality Assurance', 'Cost Control'],
+            tags: data.tags || [data.category || 'Commercial', data.sector || 'High-Rise', 'Premium']
+          };
+          setProject(transformedProject);
+        } else {
+          setProject(null);
+        }
+      } catch (error) {
+        console.error('Error fetching project:', error);
+        setProject(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProject();
+  }, [projectId]);
+
+  // Loading state
+  if (loading) {
+    return (
+      <main className="w-full min-h-screen bg-black flex items-center justify-center" style={{ fontFamily: "'Archivo', sans-serif" }}>
+        <div className="w-12 h-12 border-4 border-[#ed1b24] border-t-transparent rounded-full animate-spin"></div>
+      </main>
+    );
+  }
 
   // Handle project not found
   if (!project) {

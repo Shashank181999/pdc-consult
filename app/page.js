@@ -211,12 +211,12 @@ export default function Home() {
           </div>
 
           {/* Projects Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {projects.map((project, index) => (
-              <article 
+              <article
                 key={index}
-                className={`group relative overflow-hidden rounded-xl cursor-pointer shadow-lg h-[400px] border border-white/5 ${
-                  project.size === 'large' ? 'md:col-span-2' : 'md:col-span-1'
+                className={`group relative overflow-hidden rounded-xl cursor-pointer shadow-lg h-[280px] sm:h-[350px] lg:h-[400px] border border-white/5 ${
+                  project.size === 'large' ? 'sm:col-span-2 lg:col-span-2' : 'col-span-1'
                 }`}
               >
                 {/* Image */}
@@ -286,32 +286,32 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {/* Service 1 */}
-            <div className="bg-[#111] p-10 border border-white/5 hover:border-[#ed1b24] transition-all duration-300 group hover:-translate-y-2 rounded-xl">
-              <div className="w-14 h-14 bg-[#ed1b24] text-white flex items-center justify-center mb-8 rounded-lg group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-red-900/20">
-                <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+            <div className="bg-[#111] p-6 sm:p-8 lg:p-10 border border-white/5 hover:border-[#ed1b24] transition-all duration-300 group hover:-translate-y-2 rounded-xl">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#ed1b24] text-white flex items-center justify-center mb-6 sm:mb-8 rounded-lg group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-red-900/20">
+                <svg className="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
               </div>
-              <h3 className="text-2xl font-bold text-white mb-4">Business Strategy</h3>
-              <p className="text-gray-400 leading-relaxed">Strategic planning and execution to help your business achieve sustainable growth.</p>
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4">Business Strategy</h3>
+              <p className="text-gray-400 leading-relaxed text-sm sm:text-base">Strategic planning and execution to help your business achieve sustainable growth.</p>
             </div>
 
             {/* Service 2 */}
-            <div className="bg-[#111] p-10 border border-white/5 hover:border-[#ed1b24] transition-all duration-300 group hover:-translate-y-2 rounded-xl">
-              <div className="w-14 h-14 bg-[#ed1b24] text-white flex items-center justify-center mb-8 rounded-lg group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-red-900/20">
-                <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+            <div className="bg-[#111] p-6 sm:p-8 lg:p-10 border border-white/5 hover:border-[#ed1b24] transition-all duration-300 group hover:-translate-y-2 rounded-xl">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#ed1b24] text-white flex items-center justify-center mb-6 sm:mb-8 rounded-lg group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-red-900/20">
+                <svg className="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
               </div>
-              <h3 className="text-2xl font-bold text-white mb-4">Management Consulting</h3>
-              <p className="text-gray-400 leading-relaxed">Expert guidance on organizational development and change management.</p>
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4">Management Consulting</h3>
+              <p className="text-gray-400 leading-relaxed text-sm sm:text-base">Expert guidance on organizational development and change management.</p>
             </div>
 
             {/* Service 3 */}
-            <div className="bg-[#111] p-10 border border-white/5 hover:border-[#ed1b24] transition-all duration-300 group hover:-translate-y-2 rounded-xl">
-              <div className="w-14 h-14 bg-[#ed1b24] text-white flex items-center justify-center mb-8 rounded-lg group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-red-900/20">
-                <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
+            <div className="bg-[#111] p-6 sm:p-8 lg:p-10 border border-white/5 hover:border-[#ed1b24] transition-all duration-300 group hover:-translate-y-2 rounded-xl sm:col-span-2 lg:col-span-1">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#ed1b24] text-white flex items-center justify-center mb-6 sm:mb-8 rounded-lg group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-red-900/20">
+                <svg className="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
               </div>
-              <h3 className="text-2xl font-bold text-white mb-4">Market Analysis</h3>
-              <p className="text-gray-400 leading-relaxed">In-depth market research and analysis to identify opportunities and mitigate risks.</p>
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4">Market Analysis</h3>
+              <p className="text-gray-400 leading-relaxed text-sm sm:text-base">In-depth market research and analysis to identify opportunities and mitigate risks.</p>
             </div>
           </div>
         </div>
@@ -323,23 +323,23 @@ export default function Home() {
           5. CTA SECTION
           Theme: Brand Red | Minimalist
       ================================================================= */}
-      <section className="bg-[#ed1b24] py-20 relative overflow-hidden">
+      <section className="bg-gradient-to-br from-[#ed1b24] to-[#c41119] py-16 sm:py-20 lg:py-24 relative overflow-hidden">
         {/* Decorative Shapes */}
-        <div className="absolute -left-20 -top-20 w-64 h-64 bg-white opacity-10 rounded-full blur-3xl"></div>
-        <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-black opacity-10 rounded-full blur-3xl"></div>
-        
-        <div className="container mx-auto px-6 text-center relative z-10">
-          <h2 className="text-4xl md:text-5xl  text-white mb-6">
+        <div className="absolute -left-20 -top-20 w-48 sm:w-64 h-48 sm:h-64 bg-white opacity-10 rounded-full blur-3xl"></div>
+        <div className="absolute -right-20 -bottom-20 w-64 sm:w-80 h-64 sm:h-80 bg-black opacity-10 rounded-full blur-3xl"></div>
+
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light text-white mb-4 sm:mb-6">
             Ready to Transform Your Business?
           </h2>
-          <p className="text-white/90 text-lg md:text-xl mb-10 max-w-2xl mx-auto font-light leading-relaxed">
+          <p className="text-white/90 text-base sm:text-lg lg:text-xl mb-8 sm:mb-10 max-w-2xl mx-auto font-light leading-relaxed">
             Let's discuss how PDC Consult can help you achieve your business goals and drive sustainable growth.
           </p>
-          <button className="bg-white text-[#ed1b24] px-10 py-5 font-bold text-lg hover:bg-black hover:text-white transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 rounded-lg">
+          <button className="w-full sm:w-auto bg-white text-[#ed1b24] px-8 sm:px-10 py-4 sm:py-5 font-bold text-base sm:text-lg hover:bg-black hover:text-white transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 rounded-xl">
             Schedule a Consultation
           </button>
         </div>
-      
+
       </section>
       <OrganizationalChart/>
 

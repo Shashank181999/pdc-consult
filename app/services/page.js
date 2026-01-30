@@ -7,9 +7,9 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 // ============================================
-// SERVICES DATA
+// STATIC SERVICES DATA (FALLBACK)
 // ============================================
-const servicesData = [
+const staticServicesData = [
   {
     id: 'project-development',
     number: '01',
@@ -134,9 +134,9 @@ const ServicesHero = () => {
       {/* Content */}
       <motion.div style={{ y, opacity }} className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4 }}
+          initial={{ opacity: 0, y: 20, scale: 0.9 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/5 backdrop-blur-md border border-white/10 rounded-full mb-8"
         >
           <span className="w-2 h-2 bg-[#ed1b24] rounded-full animate-pulse"></span>
@@ -145,9 +145,9 @@ const ServicesHero = () => {
 
         <div className="overflow-hidden mb-4">
           <motion.h1
-            initial={{ y: 100 }}
-            animate={{ y: 0 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ y: 120, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
             className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-light text-white leading-[0.9]"
           >
             Our
@@ -155,9 +155,9 @@ const ServicesHero = () => {
         </div>
         <div className="overflow-hidden mb-8">
           <motion.h1
-            initial={{ y: 100 }}
-            animate={{ y: 0 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+            initial={{ y: 120, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
             className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-light leading-[0.9]"
           >
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ed1b24] to-[#ff6b6b]">Services</span>
@@ -165,9 +165,9 @@ const ServicesHero = () => {
         </div>
 
         <motion.p
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.2 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.35 }}
           className="text-gray-300 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed"
         >
           Comprehensive solutions that transform visions into iconic landmarks
@@ -199,9 +199,19 @@ const ServicesHero = () => {
 // ============================================
 // SERVICES GRID - BENTO STYLE
 // ============================================
-const ServicesGrid = () => {
+const ServicesGrid = ({ services, loading }) => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-50px" });
+
+  if (loading) {
+    return (
+      <section className="relative py-24 lg:py-32 bg-[#050505]">
+        <div className="container mx-auto px-4 flex items-center justify-center">
+          <div className="w-12 h-12 border-4 border-[#ed1b24] border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section ref={sectionRef} className="relative py-24 lg:py-32 bg-[#050505] overflow-hidden">
@@ -224,7 +234,7 @@ const ServicesGrid = () => {
 
         {/* Bento Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {servicesData.map((service, index) => (
+          {services.map((service, index) => (
             <motion.div
               key={service.id}
               initial={{ opacity: 0, y: 40 }}
@@ -516,9 +526,13 @@ const CTASection = () => {
 // MAIN PAGE
 // ============================================
 export default function ServicesPage() {
-  // Scroll to top on page load
+  // Always use static services for the main services page
+  const services = staticServicesData;
+  const loading = false;
+
+  // Scroll to top instantly on page load
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, []);
 
   return (
@@ -529,7 +543,7 @@ export default function ServicesPage() {
 
       <Header />
       <ServicesHero />
-      <ServicesGrid />
+      <ServicesGrid services={services} loading={loading} />
       <ProcessSection />
       <WhyChooseUs />
       <CTASection />

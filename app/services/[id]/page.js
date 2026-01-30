@@ -1,16 +1,105 @@
 'use client';
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+import { supabase } from '../../admin/supabase';
+
+// Smooth animation variants
+const fadeInUp = {
+  hidden: { opacity: 0, y: 60 },
+  visible: (delay = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      delay,
+      ease: [0.22, 1, 0.36, 1]
+    }
+  })
+};
+
+const fadeInLeft = {
+  hidden: { opacity: 0, x: -60 },
+  visible: (delay = 0) => ({
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.8,
+      delay,
+      ease: [0.22, 1, 0.36, 1]
+    }
+  })
+};
+
+const fadeInRight = {
+  hidden: { opacity: 0, x: 60 },
+  visible: (delay = 0) => ({
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.8,
+      delay,
+      ease: [0.22, 1, 0.36, 1]
+    }
+  })
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2
+    }
+  }
+};
+
+const staggerItem = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: [0.22, 1, 0.36, 1]
+    }
+  }
+};
+
+const scaleIn = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: (delay = 0) => ({
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.6,
+      delay,
+      ease: [0.22, 1, 0.36, 1]
+    }
+  })
+};
 
 // ============================================
-// SERVICES DATA
+// DEFAULT IMAGES FOR SERVICES
 // ============================================
-const servicesData = {
+const defaultServiceImages = {
+  'project-development': 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2000&auto=format&fit=crop',
+  'architectural-design': 'https://images.unsplash.com/photo-1486718448742-163732cd1544?q=80&w=2000&auto=format&fit=crop',
+  'hospitality-consultancy': 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2000&auto=format&fit=crop',
+  'cost-management': 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2000&auto=format&fit=crop',
+  'pm-training': 'https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2000&auto=format&fit=crop',
+  default: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2000&auto=format&fit=crop'
+};
+
+// ============================================
+// STATIC SERVICES DATA (FALLBACK)
+// ============================================
+const staticServicesData = {
   'project-development': {
     id: 'project-development',
     number: '01',
@@ -251,15 +340,18 @@ const ServiceHero = ({ service }) => {
     offset: ["start start", "end start"]
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], [0, 150]);
+  const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 1.1]);
+  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 1.15]);
 
   return (
     <section ref={heroRef} className="relative h-[85vh] min-h-[600px] flex items-center justify-center bg-black overflow-hidden">
       {/* Background */}
       <motion.div style={{ scale }} className="absolute inset-0">
-        <img
+        <motion.img
+          initial={{ scale: 1.2, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
           src={service.heroImage}
           alt={service.title}
           className="w-full h-full object-cover"
@@ -273,37 +365,61 @@ const ServiceHero = ({ service }) => {
         <div className="max-w-4xl">
           {/* Breadcrumb */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
             className="flex items-center gap-2 text-sm text-gray-400 mb-8"
           >
-            <Link href="/services" className="hover:text-white transition-colors">Services</Link>
-            <span>/</span>
-            <span className="text-white">{service.title}</span>
+            <Link href="/services" className="hover:text-white transition-colors duration-300">Services</Link>
+            <motion.span
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, delay: 0.4 }}
+            >/</motion.span>
+            <motion.span
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="text-white"
+            >{service.title}</motion.span>
           </motion.div>
 
           {/* Number Badge */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4, delay: 0.1 }}
-            className="inline-flex items-center gap-3 mb-6"
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
+            className="inline-flex items-center gap-4 mb-8"
           >
-            <span className="text-5xl font-bold text-[#ed1b24]">
+            <motion.span
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.5 }}
+              className="text-6xl sm:text-7xl font-bold text-[#ed1b24]"
+            >
               {service.number}
-            </span>
-            <div className="h-px w-12 bg-white/30"></div>
-            <span className="text-white/70 uppercase tracking-widest text-sm">{service.subtitle}</span>
+            </motion.span>
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: 48 }}
+              transition={{ duration: 0.6, delay: 0.7 }}
+              className="h-px bg-white/30"
+            ></motion.div>
+            <motion.span
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.8 }}
+              className="text-white/70 uppercase tracking-widest text-sm"
+            >{service.subtitle}</motion.span>
           </motion.div>
 
           {/* Title */}
-          <div className="overflow-hidden mb-6">
+          <div className="overflow-hidden mb-8">
             <motion.h1
-              initial={{ y: 100 }}
-              animate={{ y: 0 }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light text-white leading-tight"
+              initial={{ y: 150, opacity: 0, skewY: 5 }}
+              animate={{ y: 0, opacity: 1, skewY: 0 }}
+              transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.4 }}
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light text-white leading-[1.1]"
             >
               {service.title}
             </motion.h1>
@@ -311,31 +427,64 @@ const ServiceHero = ({ service }) => {
 
           {/* Description */}
           <motion.p
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.25 }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.6 }}
             className="text-gray-300 text-lg sm:text-xl max-w-2xl leading-relaxed"
           >
             {service.description}
           </motion.p>
+
+          {/* CTA Button */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.8 }}
+            className="mt-10"
+          >
+            <Link href="/contact">
+              <motion.button
+                whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(237, 27, 36, 0.3)" }}
+                whileTap={{ scale: 0.95 }}
+                className="px-8 py-4 bg-[#ed1b24] text-white font-semibold rounded-full transition-all duration-500 flex items-center gap-3"
+              >
+                <span>Get Started</span>
+                <motion.svg
+                  initial={{ x: 0 }}
+                  whileHover={{ x: 5 }}
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </motion.svg>
+              </motion.button>
+            </Link>
+          </motion.div>
         </div>
       </motion.div>
 
       {/* Scroll Indicator */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.2, duration: 0.8 }}
         className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10"
       >
         <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-          className="flex flex-col items-center gap-2"
+          animate={{ y: [0, 12, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className="flex flex-col items-center gap-3"
         >
-          <svg className="w-5 h-5 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-          </svg>
+          <span className="text-white/40 text-xs uppercase tracking-[0.3em]">Scroll</span>
+          <div className="w-6 h-10 border-2 border-white/20 rounded-full flex justify-center pt-2">
+            <motion.div
+              animate={{ y: [0, 12, 0], opacity: [1, 0, 1] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              className="w-1.5 h-1.5 bg-[#ed1b24] rounded-full"
+            />
+          </div>
         </motion.div>
       </motion.div>
     </section>
@@ -351,28 +500,50 @@ const OverviewSection = ({ service }) => {
 
   return (
     <section ref={sectionRef} className="relative py-24 lg:py-32 bg-[#050505] overflow-hidden">
+      {/* Background Decoration */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : {}}
+        transition={{ duration: 1.5 }}
+        className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[#ed1b24]/5 to-transparent pointer-events-none"
+      />
+
       <div className="container mx-auto px-4 sm:px-6 lg:px-16 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
           {/* Left - Content */}
           <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.5 }}
+            variants={fadeInLeft}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            custom={0}
           >
-            <span className="text-[#ed1b24] font-semibold uppercase tracking-[0.2em] text-sm">Overview</span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light text-white mt-4 mb-6 leading-tight">
+            <motion.span
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-[#ed1b24] font-semibold uppercase tracking-[0.2em] text-sm"
+            >
+              Overview
+            </motion.span>
+
+            <motion.h2
+              initial={{ opacity: 0, y: 40 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              className="text-3xl sm:text-4xl lg:text-5xl font-light text-white mt-4 mb-8 leading-tight"
+            >
               About This
               <span className="font-normal text-[#ed1b24]"> Service</span>
-            </h2>
+            </motion.h2>
 
             <div className="prose prose-lg prose-invert">
               {service.longDescription.split('\n\n').map((paragraph, index) => (
                 <motion.p
                   key={index}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 30 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.4, delay: 0.1 + index * 0.1 }}
-                  className="text-gray-400 leading-relaxed mb-4"
+                  transition={{ duration: 0.8, delay: 0.3 + index * 0.15, ease: [0.22, 1, 0.36, 1] }}
+                  className="text-gray-400 leading-relaxed mb-6 text-lg"
                 >
                   {paragraph}
                 </motion.p>
@@ -381,16 +552,16 @@ const OverviewSection = ({ service }) => {
 
             {/* CTA Button */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.4, delay: 0.3 }}
-              className="mt-8"
+              transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              className="mt-10"
             >
               <Link href="/contact">
                 <motion.button
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ scale: 1.05, x: 5 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 bg-[#ed1b24] text-white font-semibold rounded-full transition-all duration-300 flex items-center gap-3 hover:bg-[#c41119]"
+                  className="px-8 py-4 bg-[#ed1b24] text-white font-semibold rounded-full transition-all duration-500 flex items-center gap-3"
                 >
                   Get Started
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -403,27 +574,30 @@ const OverviewSection = ({ service }) => {
 
           {/* Right - Stats */}
           <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            variants={staggerContainer}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            className="grid grid-cols-2 gap-6 content-start"
           >
-            <div className="grid grid-cols-2 gap-6">
-              {service.stats.map((stat, index) => (
+            {service.stats.map((stat, index) => (
+              <motion.div
+                key={index}
+                variants={staggerItem}
+                whileHover={{ y: -8, scale: 1.02 }}
+                transition={{ duration: 0.4 }}
+                className="p-8 bg-white/[0.02] rounded-2xl border border-white/5 hover:border-[#ed1b24]/40 transition-all duration-500 group"
+              >
                 <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.4, delay: 0.3 + index * 0.1 }}
-                  whileHover={{ y: -5 }}
-                  className="p-6 bg-white/[0.02] rounded-2xl border border-white/5 hover:border-[#ed1b24]/30 transition-all"
+                  initial={{ scale: 0.5, opacity: 0 }}
+                  animate={isInView ? { scale: 1, opacity: 1 } : {}}
+                  transition={{ duration: 0.6, delay: 0.4 + index * 0.1, type: "spring" }}
+                  className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#ed1b24] mb-3 group-hover:scale-110 transition-transform duration-500"
                 >
-                  <div className="text-4xl sm:text-5xl font-bold text-[#ed1b24] mb-2">
-                    {stat.value}
-                  </div>
-                  <div className="text-gray-400 text-sm uppercase tracking-wider">{stat.label}</div>
+                  {stat.value}
                 </motion.div>
-              ))}
-            </div>
+                <div className="text-gray-400 text-sm uppercase tracking-wider">{stat.label}</div>
+              </motion.div>
+            ))}
           </motion.div>
         </div>
       </div>
@@ -440,48 +614,77 @@ const FeaturesSection = ({ service }) => {
 
   return (
     <section ref={sectionRef} className="relative py-24 lg:py-32 bg-black overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#ed1b24] rounded-full blur-[300px] opacity-[0.03]"></div>
-      </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-16 relative z-10">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 50 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="text-center mb-20"
         >
-          <span className="text-[#ed1b24] font-semibold uppercase tracking-[0.2em] text-sm">Capabilities</span>
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-light text-white mt-4">
+          <motion.span
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-[#ed1b24] font-semibold uppercase tracking-[0.2em] text-sm"
+          >
+            Capabilities
+          </motion.span>
+          <motion.h2
+            initial={{ opacity: 0, y: 40 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="text-4xl sm:text-5xl lg:text-6xl font-light text-white mt-4"
+          >
             Key <span className="font-normal text-[#ed1b24]">Features</span>
-          </h2>
+          </motion.h2>
         </motion.div>
 
         {/* Features Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
           {service.features.map((feature, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.4, delay: index * 0.08 }}
-              whileHover={{ y: -8 }}
-              className="group p-6 bg-white/[0.02] rounded-2xl border border-white/5 hover:border-[#ed1b24]/30 transition-all duration-300"
+              variants={staggerItem}
+              whileHover={{ y: -12, scale: 1.02 }}
+              transition={{ duration: 0.4 }}
+              className="group p-8 bg-white/[0.02] rounded-2xl border border-white/5 hover:border-[#ed1b24]/40 transition-all duration-500 cursor-pointer"
             >
               {/* Number */}
-              <div className="text-4xl font-bold text-[#ed1b24]/20 group-hover:text-[#ed1b24]/40 transition-opacity mb-4">
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={isInView ? { scale: 1 } : {}}
+                transition={{ duration: 0.5, delay: 0.3 + index * 0.08, type: "spring" }}
+                className="text-5xl font-bold text-[#ed1b24]/20 group-hover:text-[#ed1b24]/50 transition-all duration-500 mb-6"
+              >
                 {String(index + 1).padStart(2, '0')}
-              </div>
+              </motion.div>
 
-              <h3 className="text-xl font-bold text-white mb-2 group-hover:text-[#ed1b24] transition-colors">
+              <h3 className="text-xl font-bold text-white mb-3 group-hover:text-[#ed1b24] transition-colors duration-500">
                 {feature.title}
               </h3>
-              <p className="text-gray-400 text-sm leading-relaxed">{feature.desc}</p>
+              <p className="text-gray-400 leading-relaxed">{feature.desc}</p>
+
+              {/* Hover Arrow */}
+              <motion.div
+                initial={{ opacity: 0, x: -10 }}
+                whileHover={{ opacity: 1, x: 0 }}
+                className="mt-6 flex items-center gap-2 text-[#ed1b24] opacity-0 group-hover:opacity-100 transition-all duration-500"
+              >
+                <span className="text-sm font-semibold">Learn More</span>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </motion.div>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
@@ -499,43 +702,84 @@ const ProcessSection = ({ service }) => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-16 relative z-10">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 50 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="text-center mb-20"
         >
-          <span className="text-[#ed1b24] font-semibold uppercase tracking-[0.2em] text-sm">Methodology</span>
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-light text-white mt-4">
+          <motion.span
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-[#ed1b24] font-semibold uppercase tracking-[0.2em] text-sm"
+          >
+            Methodology
+          </motion.span>
+          <motion.h2
+            initial={{ opacity: 0, y: 40 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="text-4xl sm:text-5xl lg:text-6xl font-light text-white mt-4"
+          >
             Our <span className="font-normal text-[#ed1b24]">Process</span>
-          </h2>
+          </motion.h2>
         </motion.div>
 
         {/* Process Timeline */}
         <div className="relative">
           {/* Timeline Line */}
-          <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={isInView ? { scaleX: 1 } : {}}
+            transition={{ duration: 1.5, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="hidden lg:block absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#ed1b24]/30 to-transparent origin-left"
+          />
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+          >
             {service.process.map((step, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                className="relative"
+                variants={staggerItem}
+                whileHover={{ y: -10 }}
+                className="relative group"
               >
-                <div className="p-6 bg-black rounded-2xl border border-white/5 hover:border-[#ed1b24]/30 transition-all h-full">
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.4 }}
+                  className="p-8 bg-black rounded-2xl border border-white/5 hover:border-[#ed1b24]/40 transition-all duration-500 h-full"
+                >
                   {/* Step Number */}
-                  <div className="w-14 h-14 rounded-xl bg-[#ed1b24] flex items-center justify-center text-white font-bold text-lg mb-4">
+                  <motion.div
+                    initial={{ scale: 0, rotate: -180 }}
+                    animate={isInView ? { scale: 1, rotate: 0 } : {}}
+                    transition={{ duration: 0.6, delay: 0.3 + index * 0.1, type: "spring" }}
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#ed1b24] to-[#c41119] flex items-center justify-center text-white font-bold text-xl mb-6"
+                  >
                     {step.step}
-                  </div>
+                  </motion.div>
 
-                  <h3 className="text-xl font-bold text-white mb-2">{step.title}</h3>
-                  <p className="text-gray-400 text-sm">{step.desc}</p>
-                </div>
+                  <h3 className="text-xl font-bold text-white mb-3 group-hover:text-[#ed1b24] transition-colors duration-500">{step.title}</h3>
+                  <p className="text-gray-400 leading-relaxed">{step.desc}</p>
+                </motion.div>
+
+                {/* Connector Line (hidden on last item in row) */}
+                {index % 3 !== 2 && (
+                  <motion.div
+                    initial={{ scaleX: 0 }}
+                    animate={isInView ? { scaleX: 1 } : {}}
+                    transition={{ duration: 0.8, delay: 0.8 + index * 0.1 }}
+                    className="hidden lg:block absolute top-1/2 -right-4 w-8 h-px bg-[#ed1b24]/30 origin-left"
+                  />
+                )}
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
@@ -543,77 +787,173 @@ const ProcessSection = ({ service }) => {
 };
 
 // ============================================
-// RELATED PROJECTS
+// DUMMY PROJECTS DATA
 // ============================================
-const RelatedProjects = ({ service }) => {
+const dummyProjects = [
+  {
+    id: '1',
+    title: 'The Royal Atlantis',
+    image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=800&auto=format&fit=crop',
+    value: '$1.4B',
+    location: 'Palm Jumeirah, Dubai',
+    category: 'Hospitality'
+  },
+  {
+    id: '2',
+    title: 'Marina Gate Towers',
+    image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=800&auto=format&fit=crop',
+    value: '$890M',
+    location: 'Dubai Marina',
+    category: 'Residential'
+  },
+  {
+    id: '3',
+    title: 'DIFC Innovation Hub',
+    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&auto=format&fit=crop',
+    value: '$620M',
+    location: 'DIFC, Dubai',
+    category: 'Commercial'
+  },
+  {
+    id: '4',
+    title: 'Emirates Hills Estate',
+    image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=800&auto=format&fit=crop',
+    value: '$45M',
+    location: 'Emirates Hills',
+    category: 'Residential'
+  },
+  {
+    id: '5',
+    title: 'Business Bay Complex',
+    image: 'https://images.unsplash.com/photo-1486718448742-163732cd1544?q=80&w=800&auto=format&fit=crop',
+    value: '$750M',
+    location: 'Business Bay',
+    category: 'Mixed-Use'
+  },
+  {
+    id: '6',
+    title: 'Palm Jumeirah Resort',
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=800&auto=format&fit=crop',
+    value: '$380M',
+    location: 'Palm Jumeirah',
+    category: 'Hospitality'
+  }
+];
+
+// ============================================
+// ALL PROJECTS SECTION
+// ============================================
+const AllProjectsSection = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+
+  // Use dummy projects
+  const projects = dummyProjects;
 
   return (
     <section ref={sectionRef} className="relative py-24 lg:py-32 bg-black overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-16 relative z-10">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 50 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="text-center mb-20"
         >
-          <span className="text-[#ed1b24] font-semibold uppercase tracking-[0.2em] text-sm">Portfolio</span>
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-light text-white mt-4">
-            Related <span className="font-normal text-[#ed1b24]">Projects</span>
-          </h2>
+          <motion.span
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-[#ed1b24] font-semibold uppercase tracking-[0.2em] text-sm"
+          >
+            Portfolio
+          </motion.span>
+          <motion.h2
+            initial={{ opacity: 0, y: 40 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="text-4xl sm:text-5xl lg:text-6xl font-light text-white mt-4"
+          >
+            Our <span className="font-normal text-[#ed1b24]">Projects</span>
+          </motion.h2>
         </motion.div>
 
         {/* Projects Grid */}
-        <div className="grid md:grid-cols-3 gap-6">
-          {service.relatedProjects.map((project, index) => (
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+          {projects.map((project, index) => (
             <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.4, delay: index * 0.1 }}
+              key={project.id || index}
+              variants={staggerItem}
               whileHover={{ y: -10 }}
-              className="group cursor-pointer"
+              className="group"
             >
-              <div className="relative overflow-hidden rounded-2xl aspect-[4/5]">
-                <motion.img
-                  whileHover={{ scale: 1.1 }}
-                  transition={{ duration: 0.4 }}
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent"></div>
+              <Link href={`/projects/${project.id}`}>
+                <div className="relative overflow-hidden rounded-2xl aspect-[4/3] bg-[#111]">
+                  <motion.img
+                    initial={{ scale: 1.1 }}
+                    animate={isInView ? { scale: 1 } : {}}
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ duration: 0.6 }}
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-500"></div>
 
-                {/* Value Badge */}
-                <div className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-[#ed1b24] text-white text-sm font-bold">
-                  {project.value}
-                </div>
+                  {/* Value Badge */}
+                  <div className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-white text-sm font-bold">
+                    {project.value}
+                  </div>
 
-                {/* Content */}
-                <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <h3 className="text-xl font-bold text-white group-hover:text-[#ed1b24] transition-colors">
-                    {project.title}
-                  </h3>
+                  {/* Content */}
+                  <div className="absolute bottom-0 left-0 right-0 p-6">
+                    <span className="inline-block px-3 py-1 bg-[#ed1b24] text-white text-xs font-bold uppercase tracking-wider rounded mb-3">
+                      {project.category}
+                    </span>
+                    <h3 className="text-xl font-bold text-white group-hover:text-[#ed1b24] transition-colors duration-300">
+                      {project.title}
+                    </h3>
+                    <div className="flex items-center gap-2 text-gray-400 text-sm mt-2">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      </svg>
+                      {project.location}
+                    </div>
+                  </div>
+
+                  {/* Hover Arrow */}
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    whileHover={{ opacity: 1, scale: 1 }}
+                    className="absolute top-4 left-4 w-10 h-10 bg-[#ed1b24] rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  >
+                    <svg className="w-5 h-5 text-white -rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                  </motion.div>
                 </div>
-              </div>
+              </Link>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* View All Button */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.4, delay: 0.4 }}
-          className="text-center mt-12"
+          transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="text-center mt-16"
         >
           <Link href="/projects">
             <motion.button
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.05, borderColor: "#ed1b24" }}
               whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 bg-transparent border border-white/20 text-white font-semibold rounded-full hover:bg-[#ed1b24] hover:border-[#ed1b24] transition-all duration-300"
+              className="px-10 py-5 bg-transparent border-2 border-white/20 text-white font-semibold rounded-full hover:bg-[#ed1b24] hover:border-[#ed1b24] transition-all duration-500"
             >
               View All Projects
             </motion.button>
@@ -634,42 +974,74 @@ const CTASection = () => {
   return (
     <section ref={sectionRef} className="relative py-24 lg:py-32 overflow-hidden bg-gradient-to-br from-[#ed1b24] via-[#c41119] to-[#8b0000]">
       {/* Pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : {}}
+        transition={{ duration: 1 }}
+        className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:50px_50px]"
+      />
+
+      {/* Floating Shapes */}
+      <motion.div
+        animate={{ y: [-20, 20, -20], rotate: [0, 180, 360] }}
+        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        className="absolute top-20 left-20 w-32 h-32 border border-white/10 rounded-full"
+      />
+      <motion.div
+        animate={{ y: [20, -20, 20], rotate: [360, 180, 0] }}
+        transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+        className="absolute bottom-20 right-20 w-24 h-24 border border-white/10 rounded-full"
+      />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-16 relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 50 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
           className="text-center"
         >
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-light text-white mb-6">
+          <motion.h2
+            initial={{ opacity: 0, y: 40 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="text-4xl sm:text-5xl lg:text-6xl font-light text-white mb-6"
+          >
             Ready to Get Started?
-          </h2>
-          <p className="text-white/90 text-lg sm:text-xl max-w-2xl mx-auto mb-10">
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="text-white/90 text-lg sm:text-xl max-w-2xl mx-auto mb-12"
+          >
             Let's discuss how our expertise can help your project succeed
-          </p>
+          </motion.p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-col sm:flex-row gap-4 justify-center"
+          >
             <Link href="/contact">
               <motion.button
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(0,0,0,0.3)" }}
                 whileTap={{ scale: 0.95 }}
-                className="px-10 py-5 bg-white text-[#ed1b24] font-bold text-lg rounded-full hover:bg-black hover:text-white transition-colors duration-300"
+                className="px-10 py-5 bg-white text-[#ed1b24] font-bold text-lg rounded-full hover:bg-black hover:text-white transition-all duration-500"
               >
                 Contact Us
               </motion.button>
             </Link>
             <Link href="/services">
               <motion.button
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,1)", color: "#ed1b24" }}
                 whileTap={{ scale: 0.95 }}
-                className="px-10 py-5 bg-transparent border-2 border-white text-white font-bold text-lg rounded-full hover:bg-white hover:text-[#ed1b24] transition-colors duration-300"
+                className="px-10 py-5 bg-transparent border-2 border-white text-white font-bold text-lg rounded-full transition-all duration-500"
               >
                 All Services
               </motion.button>
             </Link>
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>
@@ -683,47 +1055,84 @@ const OtherServices = ({ currentServiceId }) => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
-  const otherServices = Object.values(servicesData).filter(s => s.id !== currentServiceId).slice(0, 3);
+  const otherServices = Object.values(staticServicesData).filter(s => s.id !== currentServiceId).slice(0, 3);
 
   return (
     <section ref={sectionRef} className="relative py-24 lg:py-32 bg-[#050505] overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-16 relative z-10">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 50 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="text-center mb-20"
         >
-          <span className="text-[#ed1b24] font-semibold uppercase tracking-[0.2em] text-sm">Explore More</span>
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-light text-white mt-4">
+          <motion.span
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-[#ed1b24] font-semibold uppercase tracking-[0.2em] text-sm"
+          >
+            Explore More
+          </motion.span>
+          <motion.h2
+            initial={{ opacity: 0, y: 40 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="text-4xl sm:text-5xl lg:text-6xl font-light text-white mt-4"
+          >
             Other <span className="font-normal text-[#ed1b24]">Services</span>
-          </h2>
+          </motion.h2>
         </motion.div>
 
         {/* Services */}
-        <div className="grid md:grid-cols-3 gap-6">
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          className="grid md:grid-cols-3 gap-8"
+        >
           {otherServices.map((service, index) => (
             <motion.div
               key={service.id}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.4, delay: index * 0.1 }}
+              variants={staggerItem}
+              whileHover={{ y: -10 }}
             >
               <Link href={`/services/${service.id}`}>
-                <div className="group p-6 bg-black rounded-2xl border border-white/5 hover:border-[#ed1b24]/30 transition-all h-full">
-                  <span className="text-4xl font-bold text-white/10 group-hover:text-[#ed1b24]/20 transition-colors">
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.4 }}
+                  className="group p-8 bg-black rounded-2xl border border-white/5 hover:border-[#ed1b24]/40 transition-all duration-500 h-full cursor-pointer"
+                >
+                  <motion.span
+                    initial={{ scale: 0 }}
+                    animate={isInView ? { scale: 1 } : {}}
+                    transition={{ duration: 0.5, delay: 0.4 + index * 0.1, type: "spring" }}
+                    className="text-5xl font-bold text-white/10 group-hover:text-[#ed1b24]/30 transition-colors duration-500 block"
+                  >
                     {service.number}
-                  </span>
-                  <h3 className="text-xl font-bold text-white mt-4 mb-2 group-hover:text-[#ed1b24] transition-colors">
+                  </motion.span>
+                  <h3 className="text-xl font-bold text-white mt-6 mb-3 group-hover:text-[#ed1b24] transition-colors duration-500">
                     {service.title}
                   </h3>
-                  <p className="text-gray-400 text-sm">{service.subtitle}</p>
-                </div>
+                  <p className="text-gray-400">{service.subtitle}</p>
+
+                  {/* Arrow */}
+                  <motion.div
+                    initial={{ opacity: 0, x: -10 }}
+                    whileHover={{ opacity: 1, x: 0 }}
+                    className="mt-6 flex items-center gap-2 text-[#ed1b24] opacity-0 group-hover:opacity-100 transition-all duration-500"
+                  >
+                    <span className="text-sm font-semibold">Explore</span>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </motion.div>
+                </motion.div>
               </Link>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
@@ -734,22 +1143,135 @@ const OtherServices = ({ currentServiceId }) => {
 // ============================================
 export default function ServiceDetailPage() {
   const params = useParams();
-  const service = servicesData[params.id];
+  const [service, setService] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   // Scroll to top on page load
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, [params.id]);
+
+  // Fetch service from Supabase or use static data
+  useEffect(() => {
+    const fetchService = async () => {
+      setLoading(true);
+
+      // First check if it's a static service ID
+      if (staticServicesData[params.id]) {
+        setService(staticServicesData[params.id]);
+        setLoading(false);
+        return;
+      }
+
+      // Try to fetch from projects table (services are stored there)
+      try {
+        const { data, error } = await supabase
+          .from('projects')
+          .select('*')
+          .eq('id', params.id)
+          .single();
+
+        if (error) throw error;
+
+        if (data) {
+          // Helper function to get image
+          const getServiceImage = () => {
+            if (data.image_url) return data.image_url;
+            const title = (data.title || '').toLowerCase();
+            const category = (data.category || '').toLowerCase();
+            if (title.includes('project') || title.includes('development') || category.includes('development')) {
+              return defaultServiceImages['project-development'];
+            }
+            if (title.includes('architect') || title.includes('design') || category.includes('design')) {
+              return defaultServiceImages['architectural-design'];
+            }
+            if (title.includes('hospital') || title.includes('hotel') || category.includes('hospitality')) {
+              return defaultServiceImages['hospitality-consultancy'];
+            }
+            if (title.includes('cost') || title.includes('consult') || category.includes('consult')) {
+              return defaultServiceImages['cost-management'];
+            }
+            if (title.includes('training') || title.includes('facilit') || category.includes('training')) {
+              return defaultServiceImages['pm-training'];
+            }
+            return defaultServiceImages.default;
+          };
+
+          // Transform project data to service format
+          const transformedService = {
+            id: data.id?.toString() || params.id,
+            number: '01',
+            title: data.title || 'Service',
+            subtitle: data.subtitle || data.short_description || data.category || 'Professional Service',
+            heroImage: getServiceImage(),
+            description: data.description || 'Professional service offering.',
+            longDescription: data.long_description || data.description || 'We provide comprehensive professional services tailored to your needs.\n\nOur team of experts brings years of experience to deliver exceptional results that exceed expectations.',
+            features: data.features || [
+              { title: 'Professional Service', desc: 'Expert team delivering quality results' },
+              { title: 'Quality Assurance', desc: 'Rigorous standards at every step' },
+              { title: 'Timely Delivery', desc: 'Meeting deadlines consistently' },
+              { title: 'Client Focus', desc: 'Your satisfaction is our priority' },
+              { title: 'Innovation', desc: 'Modern solutions for complex challenges' },
+              { title: 'Experience', desc: 'Years of industry expertise' }
+            ],
+            stats: data.stats || [
+              { value: data.value || '100+', label: 'Project Value' },
+              { value: '50+', label: 'Clients Served' },
+              { value: '98%', label: 'Success Rate' },
+              { value: '15+', label: 'Years Experience' }
+            ],
+            process: data.process || [
+              { step: '01', title: 'Consultation', desc: 'Understanding your needs' },
+              { step: '02', title: 'Planning', desc: 'Developing the strategy' },
+              { step: '03', title: 'Execution', desc: 'Implementing the solution' },
+              { step: '04', title: 'Review', desc: 'Quality assurance' },
+              { step: '05', title: 'Refinement', desc: 'Fine-tuning results' },
+              { step: '06', title: 'Delivery', desc: 'Final handover' }
+            ],
+            relatedProjects: data.related_projects || [
+              { title: 'Sample Project 1', image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&auto=format&fit=crop', value: '$500M' },
+              { title: 'Sample Project 2', image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=800&auto=format&fit=crop', value: '$300M' },
+              { title: 'Sample Project 3', image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=800&auto=format&fit=crop', value: '$200M' }
+            ]
+          };
+          setService(transformedService);
+        } else {
+          setService(null);
+        }
+      } catch (error) {
+        console.error('Error fetching service:', error);
+        setService(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchService();
+  }, [params.id]);
+
+  // Loading state
+  if (loading) {
+    return (
+      <main className="w-full bg-black min-h-screen flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-[#ed1b24] border-t-transparent rounded-full animate-spin"></div>
+      </main>
+    );
+  }
 
   if (!service) {
     return (
       <main className="w-full bg-black min-h-screen flex items-center justify-center">
-        <div className="text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center"
+        >
           <h1 className="text-4xl font-bold text-white mb-4">Service Not Found</h1>
           <Link href="/services" className="text-[#ed1b24] hover:underline">
             View All Services
           </Link>
-        </div>
+        </motion.div>
       </main>
     );
   }
@@ -758,6 +1280,29 @@ export default function ServiceDetailPage() {
     <main className="w-full bg-black selection:bg-[#ed1b24] selection:text-white" style={{ fontFamily: "'Archivo', sans-serif" }}>
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;800;900&display=swap');
+
+        /* Smooth scrolling */
+        html {
+          scroll-behavior: smooth;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+          width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+          background: #0a0a0a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+          background: #ed1b24;
+          border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+          background: #c41119;
+        }
       `}</style>
 
       <Header />
@@ -765,7 +1310,7 @@ export default function ServiceDetailPage() {
       <OverviewSection service={service} />
       <FeaturesSection service={service} />
       <ProcessSection service={service} />
-      <RelatedProjects service={service} />
+      <AllProjectsSection />
       <CTASection />
       <OtherServices currentServiceId={service.id} />
       <Footer />
