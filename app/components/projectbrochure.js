@@ -207,25 +207,15 @@ const ProjectBrochure = () => {
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
           className="text-center mb-16 sm:mb-20 md:mb-24"
         >
-          {/* Logo */}
-          <motion.div
-            initial={{ scale: 0, rotate: -180 }}
-            animate={isInView ? { scale: 1, rotate: 0 } : {}}
-            transition={{ duration: 0.8, type: "spring", bounce: 0.4 }}
-            className="mb-8"
-          >
+          {/* Logo - No animation */}
+          <div className="mb-8">
             <div className="inline-flex items-center gap-3 mb-3">
-              <motion.div 
-                className="w-1.5 h-10 bg-[#ed1b24]"
-                initial={{ height: 0 }}
-                animate={isInView ? { height: 40 } : {}}
-                transition={{ duration: 0.6, delay: 0.3 }}
-              ></motion.div>
-              <h3 className="heading-font text-3xl sm:text-4xl  text-white tracking-tight">
+              <div className="w-1.5 h-10 bg-[#ed1b24]"></div>
+              <h3 className="heading-font text-3xl sm:text-4xl text-white tracking-tight">
                 <span className="text-[#ed1b24]">PDC</span> CONSULT
               </h3>
             </div>
-          </motion.div>
+          </div>
 
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}

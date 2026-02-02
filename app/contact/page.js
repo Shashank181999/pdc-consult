@@ -19,45 +19,25 @@ const ContactHero = () => {
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/5 backdrop-blur-md border border-white/10 rounded-full mb-8"
-        >
-          <span className="w-2 h-2 bg-[#ed1b24] rounded-full animate-pulse"></span>
+        <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/5 backdrop-blur-md border border-white/10 rounded-full mb-8">
+          <span className="w-2 h-2 bg-[#ed1b24] rounded-full"></span>
           <span className="text-white/90 text-sm font-medium tracking-wide">Get in Touch</span>
-        </motion.div>
+        </div>
 
-        <div className="overflow-hidden mb-4">
-          <motion.h1
-            initial={{ y: 100 }}
-            animate={{ y: 0 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-light text-white leading-[0.9]"
-          >
+        <div className="mb-4">
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-light text-white leading-[0.9]">
             Contact
-          </motion.h1>
+          </h1>
         </div>
-        <div className="overflow-hidden mb-8">
-          <motion.h1
-            initial={{ y: 100 }}
-            animate={{ y: 0 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-light leading-[0.9]"
-          >
+        <div className="mb-8">
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-light leading-[0.9]">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ed1b24] to-[#ff6b6b]">Us</span>
-          </motion.h1>
+          </h1>
         </div>
 
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-          className="text-gray-300 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed"
-        >
+        <p className="text-gray-300 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed">
           Ready to start your next project? We'd love to hear from you and discuss how we can help bring your vision to life.
-        </motion.p>
+        </p>
       </div>
     </section>
   );
@@ -67,9 +47,6 @@ const ContactHero = () => {
 // CONTACT INFO CARDS
 // ============================================
 const ContactInfoSection = () => {
-  const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
-
   const contactInfo = [
     {
       icon: (
@@ -119,20 +96,16 @@ const ContactInfoSection = () => {
   ];
 
   return (
-    <section ref={sectionRef} className="relative py-20 bg-[#050505] overflow-hidden">
+    <section className="relative py-20 bg-[#050505] overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-16">
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {contactInfo.map((info, index) => (
-            <motion.div
+            <div
               key={index}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              whileHover={{ y: -8 }}
-              className="group relative p-8 bg-black rounded-2xl border border-white/5 hover:border-[#ed1b24]/30 transition-all duration-300"
+              className="group relative p-8 bg-black rounded-2xl border border-white/5 lg:hover:border-[#ed1b24]/30 transition-colors duration-300"
             >
               {/* Icon */}
-              <div className="w-14 h-14 bg-[#ed1b24]/10 rounded-xl flex items-center justify-center text-[#ed1b24] mb-6 group-hover:bg-[#ed1b24] group-hover:text-white transition-all duration-300">
+              <div className="w-14 h-14 bg-[#ed1b24]/10 rounded-xl flex items-center justify-center text-[#ed1b24] mb-6 lg:group-hover:bg-[#ed1b24] lg:group-hover:text-white transition-colors duration-300">
                 {info.icon}
               </div>
 
@@ -147,14 +120,14 @@ const ContactInfoSection = () => {
               {/* Action Link */}
               <a
                 href={info.href}
-                className="inline-flex items-center gap-2 text-[#ed1b24] font-medium text-sm group-hover:gap-3 transition-all"
+                className="inline-flex items-center gap-2 text-[#ed1b24] font-medium text-sm"
               >
                 {info.action}
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
               </a>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
@@ -187,7 +160,6 @@ const ContactFormSection = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate form submission
     await new Promise(resolve => setTimeout(resolve, 1500));
     setIsSubmitting(false);
     setSubmitted(true);
@@ -227,10 +199,8 @@ const ContactFormSection = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-16 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
           {/* Left - Form */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          <div
+            className={`transition-all duration-700 ${isInView ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}
           >
             <div className="flex items-center gap-3 mb-6">
               <span className="h-px w-8 bg-[#ed1b24]"></span>
@@ -246,11 +216,7 @@ const ContactFormSection = () => {
             </p>
 
             {submitted ? (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="bg-green-500/10 border border-green-500/30 rounded-2xl p-10 text-center"
-              >
+              <div className="bg-green-500/10 border border-green-500/30 rounded-2xl p-10 text-center">
                 <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
                   <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -258,7 +224,7 @@ const ContactFormSection = () => {
                 </div>
                 <h3 className="text-2xl font-bold text-white mb-3">Message Sent!</h3>
                 <p className="text-gray-400">Thank you for reaching out. We'll get back to you soon.</p>
-              </motion.div>
+              </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Name & Email Row */}
@@ -271,7 +237,7 @@ const ContactFormSection = () => {
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-[#ed1b24] focus:outline-none focus:ring-1 focus:ring-[#ed1b24] transition-all"
+                      className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-[#ed1b24] focus:outline-none transition-colors"
                       placeholder="John Smith"
                     />
                   </div>
@@ -283,7 +249,7 @@ const ContactFormSection = () => {
                       value={formData.email}
                       onChange={handleChange}
                       required
-                      className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-[#ed1b24] focus:outline-none focus:ring-1 focus:ring-[#ed1b24] transition-all"
+                      className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-[#ed1b24] focus:outline-none transition-colors"
                       placeholder="john@company.com"
                     />
                   </div>
@@ -298,7 +264,7 @@ const ContactFormSection = () => {
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-[#ed1b24] focus:outline-none focus:ring-1 focus:ring-[#ed1b24] transition-all"
+                      className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-[#ed1b24] focus:outline-none transition-colors"
                       placeholder="+971 50 123 4567"
                     />
                   </div>
@@ -309,7 +275,7 @@ const ContactFormSection = () => {
                       name="company"
                       value={formData.company}
                       onChange={handleChange}
-                      className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-[#ed1b24] focus:outline-none focus:ring-1 focus:ring-[#ed1b24] transition-all"
+                      className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-[#ed1b24] focus:outline-none transition-colors"
                       placeholder="Your Company"
                     />
                   </div>
@@ -323,7 +289,7 @@ const ContactFormSection = () => {
                       name="projectType"
                       value={formData.projectType}
                       onChange={handleChange}
-                      className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl text-white focus:border-[#ed1b24] focus:outline-none focus:ring-1 focus:ring-[#ed1b24] transition-all appearance-none cursor-pointer"
+                      className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl text-white focus:border-[#ed1b24] focus:outline-none transition-colors appearance-none cursor-pointer"
                       style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', backgroundSize: '1.5rem' }}
                     >
                       <option value="" className="bg-black">Select Project Type</option>
@@ -338,7 +304,7 @@ const ContactFormSection = () => {
                       name="budget"
                       value={formData.budget}
                       onChange={handleChange}
-                      className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl text-white focus:border-[#ed1b24] focus:outline-none focus:ring-1 focus:ring-[#ed1b24] transition-all appearance-none cursor-pointer"
+                      className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl text-white focus:border-[#ed1b24] focus:outline-none transition-colors appearance-none cursor-pointer"
                       style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', backgroundSize: '1.5rem' }}
                     >
                       <option value="" className="bg-black">Select Budget Range</option>
@@ -358,18 +324,16 @@ const ContactFormSection = () => {
                     onChange={handleChange}
                     required
                     rows={5}
-                    className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-[#ed1b24] focus:outline-none focus:ring-1 focus:ring-[#ed1b24] transition-all resize-none"
+                    className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-[#ed1b24] focus:outline-none transition-colors resize-none"
                     placeholder="Tell us about your project, goals, and timeline..."
                   ></textarea>
                 </div>
 
                 {/* Submit Button */}
-                <motion.button
+                <button
                   type="submit"
                   disabled={isSubmitting}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full sm:w-auto px-10 py-5 bg-[#ed1b24] text-white font-bold text-lg rounded-xl hover:bg-white hover:text-[#ed1b24] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+                  className="w-full sm:w-auto px-10 py-5 bg-[#ed1b24] text-white font-bold text-lg rounded-xl lg:hover:bg-white lg:hover:text-[#ed1b24] transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
                 >
                   {isSubmitting ? (
                     <>
@@ -387,17 +351,14 @@ const ContactFormSection = () => {
                       </svg>
                     </>
                   )}
-                </motion.button>
+                </button>
               </form>
             )}
-          </motion.div>
+          </div>
 
           {/* Right - Additional Info */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-            className="flex flex-col justify-center"
+          <div
+            className={`flex flex-col justify-center transition-all duration-700 delay-100 ${isInView ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}
           >
             {/* Why Contact Us */}
             <div className="bg-gradient-to-br from-[#111] to-[#0a0a0a] p-8 lg:p-10 rounded-2xl border border-white/5 mb-8">
@@ -436,7 +397,7 @@ const ContactFormSection = () => {
                   <a
                     key={i}
                     href="#"
-                    className="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center text-gray-400 hover:bg-[#ed1b24] hover:text-white transition-all duration-300"
+                    className="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center text-gray-400 lg:hover:bg-[#ed1b24] lg:hover:text-white transition-colors duration-300"
                   >
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                       <path d={social.icon} />
@@ -445,7 +406,7 @@ const ContactFormSection = () => {
                 ))}
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
@@ -456,63 +417,46 @@ const ContactFormSection = () => {
 // MAP SECTION
 // ============================================
 const MapSection = () => {
-  const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
-
   return (
-    <section ref={sectionRef} className="relative py-20 bg-[#050505] overflow-hidden">
+    <section className="relative py-20 bg-[#050505] overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-16">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-12"
-        >
+        <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl font-light text-white">
             Find <span className="font-normal text-[#ed1b24]">Us</span>
           </h2>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="relative rounded-2xl overflow-hidden border border-white/10"
-        >
-          {/* Map Placeholder - Replace with actual map embed */}
-          <div className="relative aspect-[21/9] bg-[#111]">
+        <div className="relative rounded-2xl overflow-hidden border border-white/10">
+          {/* Map Container - Better mobile aspect ratio */}
+          <div className="relative aspect-[4/3] sm:aspect-[16/9] lg:aspect-[21/9] bg-[#111]">
             <img
               src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=2000&auto=format&fit=crop"
               alt="Map"
-              className="w-full h-full object-cover opacity-50"
+              className="w-full h-full object-cover opacity-60"
             />
 
-            {/* Location Pin */}
+            {/* Location Pin - Static on mobile */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-              <motion.div
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                className="relative"
-              >
-                <div className="w-16 h-16 bg-[#ed1b24] rounded-full flex items-center justify-center shadow-2xl shadow-[#ed1b24]/50">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="relative">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-[#ed1b24] rounded-full flex items-center justify-center shadow-2xl shadow-[#ed1b24]/50">
+                  <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
                 </div>
-                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-4 h-4 bg-[#ed1b24] rotate-45"></div>
-              </motion.div>
+                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-3 h-3 sm:w-4 sm:h-4 bg-[#ed1b24] rotate-45"></div>
+              </div>
             </div>
 
-            {/* Info Card */}
-            <div className="absolute bottom-6 left-6 bg-black/90 backdrop-blur-md p-6 rounded-xl border border-white/10 max-w-sm">
-              <h3 className="text-lg font-bold text-white mb-2">PDC Consult Headquarters</h3>
-              <p className="text-gray-400 text-sm">Business Bay, Dubai, United Arab Emirates</p>
+            {/* Info Card - Repositioned for mobile */}
+            <div className="absolute bottom-4 left-4 right-4 sm:right-auto sm:bottom-6 sm:left-6 bg-black/90 backdrop-blur-md p-4 sm:p-6 rounded-xl border border-white/10 sm:max-w-sm">
+              <h3 className="text-base sm:text-lg font-bold text-white mb-1 sm:mb-2">PDC Consult Headquarters</h3>
+              <p className="text-gray-400 text-xs sm:text-sm">Business Bay, Dubai, United Arab Emirates</p>
               <a
                 href="https://maps.google.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-4 inline-flex items-center gap-2 text-[#ed1b24] font-medium text-sm hover:gap-3 transition-all"
+                className="mt-3 sm:mt-4 inline-flex items-center gap-2 text-[#ed1b24] font-medium text-xs sm:text-sm"
               >
                 Open in Google Maps
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -521,7 +465,7 @@ const MapSection = () => {
               </a>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
@@ -561,57 +505,44 @@ const FAQSection = () => {
   return (
     <section ref={sectionRef} className="relative py-24 lg:py-32 bg-black overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-16">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+        <div
+          className={`text-center mb-16 transition-all duration-700 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
         >
           <span className="text-[#ed1b24] font-semibold uppercase tracking-[0.2em] text-sm">FAQ</span>
           <h2 className="text-4xl sm:text-5xl font-light text-white mt-4">
             Frequently Asked <span className="font-normal text-[#ed1b24]">Questions</span>
           </h2>
-        </motion.div>
+        </div>
 
         <div className="max-w-3xl mx-auto">
           {faqs.map((faq, index) => (
-            <motion.div
+            <div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="mb-4"
+              className={`mb-4 transition-all duration-500 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+              style={{ transitionDelay: `${index * 50}ms` }}
             >
               <button
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                className="w-full flex items-center justify-between p-6 bg-white/5 hover:bg-white/10 rounded-xl border border-white/5 transition-all duration-300 text-left"
+                className="w-full flex items-center justify-between p-5 sm:p-6 bg-white/5 lg:hover:bg-white/10 rounded-xl border border-white/5 transition-colors duration-300 text-left"
               >
-                <span className="text-lg font-medium text-white pr-8">{faq.question}</span>
-                <motion.div
-                  animate={{ rotate: openIndex === index ? 180 : 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="w-8 h-8 bg-[#ed1b24]/10 rounded-full flex items-center justify-center flex-shrink-0"
+                <span className="text-base sm:text-lg font-medium text-white pr-4 sm:pr-8">{faq.question}</span>
+                <div
+                  className={`w-8 h-8 bg-[#ed1b24]/10 rounded-full flex items-center justify-center flex-shrink-0 transition-transform duration-300 ${openIndex === index ? 'rotate-180' : ''}`}
                 >
                   <svg className="w-4 h-4 text-[#ed1b24]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
-                </motion.div>
+                </div>
               </button>
 
-              <motion.div
-                initial={false}
-                animate={{
-                  height: openIndex === index ? 'auto' : 0,
-                  opacity: openIndex === index ? 1 : 0
-                }}
-                transition={{ duration: 0.3 }}
-                className="overflow-hidden"
+              <div
+                className={`overflow-hidden transition-all duration-300 ${openIndex === index ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}
               >
-                <div className="p-6 text-gray-400 leading-relaxed">
+                <div className="p-5 sm:p-6 text-gray-400 leading-relaxed text-sm sm:text-base">
                   {faq.answer}
                 </div>
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
           ))}
         </div>
       </div>

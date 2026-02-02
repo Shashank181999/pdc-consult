@@ -7,11 +7,9 @@ import Link from 'next/link';
 
 export default function Services() {
   const [activeService, setActiveService] = useState(0);
-  const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
   const [isInView, setIsInView] = useState(false);
 
   const containerRef = useRef(null);
-  const animationRef = useRef(null);
 
   /* ================= INTERSECTION OBSERVER ================= */
   useEffect(() => {
@@ -29,34 +27,6 @@ export default function Services() {
     }
 
     return () => observer.disconnect();
-  }, []);
-
-  /* ================= MOUSE FOLLOW BACKGROUND ================= */
-  useEffect(() => {
-    let target = { x: 50, y: 50 };
-
-    const handleMouseMove = (e) => {
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      target.x = ((e.clientX - rect.left) / rect.width) * 100;
-      target.y = ((e.clientY - rect.top) / rect.height) * 100;
-    };
-
-    const animate = () => {
-      setMousePosition((prev) => ({
-        x: prev.x + (target.x - prev.x) * 0.08,
-        y: prev.y + (target.y - prev.y) * 0.08,
-      }));
-      animationRef.current = requestAnimationFrame(animate);
-    };
-
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    animate();
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      cancelAnimationFrame(animationRef.current);
-    };
   }, []);
 
   /* ================= DATA ================= */
@@ -120,20 +90,11 @@ export default function Services() {
       <style jsx>{`
         @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;800;900&display=swap');
 
-        .grain-overlay {
-          position: absolute;
-          inset: 0;
-          opacity: 0.04;
-          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='2.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-          pointer-events: none;
-          z-index: 1;
-        }
-
         .service-card {
           font-family: 'Archivo', sans-serif;
           position: relative;
           overflow: hidden;
-          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: all 0.3s ease;
         }
 
         .service-card::before {
@@ -145,23 +106,10 @@ export default function Services() {
           width: 3px;
           background: linear-gradient(180deg, transparent, #ed1b24, transparent);
           opacity: 0;
-          transition: opacity 0.4s ease;
+          transition: opacity 0.3s ease;
         }
 
         .service-card.active::before {
-          opacity: 1;
-        }
-
-        .service-card::after {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: radial-gradient(circle at 50% 50%, rgba(237, 27, 36, 0.1), transparent 70%);
-          opacity: 0;
-          transition: opacity 0.4s ease;
-        }
-
-        .service-card.active::after {
           opacity: 1;
         }
 
@@ -176,26 +124,22 @@ export default function Services() {
           background: #ed1b24;
           border-radius: 50%;
           margin-right: 12px;
-          box-shadow: 0 0 8px rgba(237, 27, 36, 0.6);
         }
 
         .stat-card {
           background: linear-gradient(135deg, rgba(20, 20, 20, 0.8) 0%, rgba(30, 30, 30, 0.8) 100%);
           border: 1px solid rgba(237, 27, 36, 0.2);
-          backdrop-filter: blur(10px);
           transition: all 0.3s ease;
         }
 
         .stat-card:hover {
           border-color: rgba(237, 27, 36, 0.5);
-          transform: translateY(-8px);
-          box-shadow: 0 20px 40px rgba(237, 27, 36, 0.2);
+          transform: translateY(-4px);
         }
 
         .slide-content {
           background: linear-gradient(135deg, rgba(15, 15, 15, 0.95) 0%, rgba(25, 25, 25, 0.95) 100%);
           border: 1px solid rgba(237, 27, 36, 0.2);
-          backdrop-filter: blur(20px);
         }
 
         .learn-more-btn {
@@ -205,55 +149,18 @@ export default function Services() {
           transition: all 0.3s ease;
         }
 
-        .learn-more-btn::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-          transition: left 0.5s ease;
-        }
-
-        .learn-more-btn:hover::before {
-          left: 100%;
-        }
-
         .learn-more-btn:hover {
           transform: translateX(4px);
-          box-shadow: 0 10px 30px rgba(237, 27, 36, 0.4);
-        }
-
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-10px); }
-        }
-
-        .floating {
-          animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes pulse-border {
-          0%, 100% { border-color: rgba(237, 27, 36, 0.2); }
-          50% { border-color: rgba(237, 27, 36, 0.6); }
-        }
-
-        .pulse-border {
-          animation: pulse-border 2s ease-in-out infinite;
         }
       `}</style>
 
-      {/* Animated Background */}
+      {/* Static Background Gradient */}
       <div
-        className="absolute inset-0 opacity-20 transition-all duration-300"
+        className="absolute inset-0 opacity-15"
         style={{
-          background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(237,27,36,0.25), transparent 60%)`,
+          background: `radial-gradient(circle at 30% 40%, rgba(237,27,36,0.2), transparent 50%)`,
         }}
       />
-
-      {/* Grain Overlay */}
-      <div className="grain-overlay" />
 
       {/* Grid Pattern */}
       <div 
@@ -266,20 +173,12 @@ export default function Services() {
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-16 relative z-10">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16 md:mb-24"
+        <div
+          className={`text-center mb-16 md:mb-24 transition-all duration-500 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
         >
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={isInView ? { scale: 1, opacity: 1 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="inline-block mb-4 px-4 py-2 rounded-full border border-[#ed1b24]/30 bg-[#ed1b24]/5"
-          >
+          <div className="inline-block mb-4 px-4 py-2 rounded-full border border-[#ed1b24]/30 bg-[#ed1b24]/5">
             <span className="text-[#ed1b24] text-sm font-semibold tracking-wider uppercase">Our Services</span>
-          </motion.div>
+          </div>
           
           <h2 className="heading-font text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light text-white mb-6 leading-tight">
             Services that{" "}
@@ -288,36 +187,24 @@ export default function Services() {
             </span>
           </h2>
           
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-gray-400 text-base sm:text-lg max-w-2xl mx-auto"
-          >
+          <p className="text-gray-400 text-base sm:text-lg max-w-2xl mx-auto">
             Delivering world-class solutions across project management, architecture, and consultancy
-          </motion.p>
-        </motion.div>
+          </p>
+        </div>
 
         {/* Services Grid */}
         <div className="grid lg:grid-cols-12 gap-6 lg:gap-10 max-w-7xl mx-auto mb-20 md:mb-32">
           {/* LEFT NAV - Service List */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="lg:col-span-5 space-y-3"
+          <div
+            className={`lg:col-span-5 space-y-3 transition-all duration-500 delay-100 ${isInView ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}
           >
             {services.map((service, index) => (
-              <motion.button
+              <button
                 key={index}
                 onClick={() => setActiveService(index)}
-                initial={{ opacity: 0, x: -30 }}
-                animate={isInView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
-                whileHover={{ x: 8 }}
                 className={`service-card ${
                   activeService === index ? 'active' : ''
-                } w-full text-left p-5 md:p-6 rounded-2xl transition-all duration-500 group`}
+                } w-full text-left p-5 md:p-6 rounded-2xl group hover:translate-x-2 transition-transform duration-300`}
                 style={{
                   background:
                     activeService === index
@@ -328,17 +215,14 @@ export default function Services() {
               >
                 <div className="flex items-center gap-4">
                   <div
-                    className="text-3xl md:text-4xl transition-transform duration-500 group-hover:scale-110"
-                    style={{
-                      filter: activeService === index ? 'drop-shadow(0 0 10px rgba(237, 27, 36, 0.5))' : 'none',
-                    }}
+                    className="text-3xl md:text-4xl transition-transform duration-300 group-hover:scale-110"
                   >
                     {service.icon}
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-1">
                       <span
-                        className="text-xs font-bold tracking-wider"
+                        className="text-xs font-bold tracking-wider transition-colors duration-300"
                         style={{
                           color: activeService === index ? '#ed1b24' : 'rgba(255, 255, 255, 0.3)',
                         }}
@@ -347,7 +231,7 @@ export default function Services() {
                       </span>
                     </div>
                     <span
-                      className="font-medium text-sm md:text-base block"
+                      className="font-medium text-sm md:text-base block transition-colors duration-300"
                       style={{
                         color: activeService === index ? '#ffffff' : 'rgba(255, 255, 255, 0.7)',
                       }}
@@ -355,9 +239,12 @@ export default function Services() {
                       {service.title}
                     </span>
                   </div>
-                  <motion.div
-                    animate={{ x: activeService === index ? 0 : -10, opacity: activeService === index ? 1 : 0 }}
-                    transition={{ duration: 0.3 }}
+                  <div
+                    className="transition-all duration-300"
+                    style={{
+                      transform: activeService === index ? 'translateX(0)' : 'translateX(-10px)',
+                      opacity: activeService === index ? 1 : 0
+                    }}
                   >
                     <svg
                       className="w-5 h-5"
@@ -368,26 +255,23 @@ export default function Services() {
                     >
                       <path d="M9 5l7 7-7 7" />
                     </svg>
-                  </motion.div>
+                  </div>
                 </div>
-              </motion.button>
+              </button>
             ))}
-          </motion.div>
+          </div>
 
           {/* RIGHT CONTENT - Service Details */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="lg:col-span-7 relative min-h-[400px] sm:min-h-[500px] lg:min-h-[600px]"
+          <div
+            className={`lg:col-span-7 relative min-h-[400px] sm:min-h-[500px] lg:min-h-[600px] transition-all duration-500 delay-200 ${isInView ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}
           >
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeService}
-                initial={{ opacity: 0, x: 100 }}
+                initial={{ opacity: 0, x: 30 }}
                 animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -100 }}
-                transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+                exit={{ opacity: 0, x: -30 }}
+                transition={{ duration: 0.3, ease: 'easeOut' }}
                 className="absolute inset-0"
               >
                 <div className="slide-content h-full p-6 sm:p-8 md:p-12 rounded-3xl relative overflow-hidden">
@@ -401,63 +285,38 @@ export default function Services() {
 
                   {/* Content */}
                   <div className="relative z-10">
-                    <motion.div
-                      initial={{ scale: 0.8, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ duration: 0.5, delay: 0.2 }}
-                      className="mb-6"
-                    >
-                      <div className="text-5xl sm:text-6xl md:text-7xl mb-4 floating">
+                    <div className="mb-6">
+                      <div className="text-5xl sm:text-6xl md:text-7xl mb-4">
                         {services[activeService].icon}
                       </div>
                       <h3 className="heading-font text-2xl sm:text-3xl md:text-4xl font-medium text-white mb-4">
                         {services[activeService].title}
                       </h3>
-                    </motion.div>
+                    </div>
 
-                    <motion.p
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 0.3 }}
-                      className="text-gray-400 mb-8 md:mb-10 text-base sm:text-lg leading-relaxed"
-                    >
+                    <p className="text-gray-400 mb-8 md:mb-10 text-base sm:text-lg leading-relaxed">
                       {services[activeService].description}
-                    </motion.p>
+                    </p>
 
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 0.4 }}
-                      className="space-y-4 mb-8 md:mb-10"
-                    >
+                    <div className="space-y-4 mb-8 md:mb-10">
                       <h4 className="text-white font-medium text-sm uppercase tracking-wider mb-4">
                         Key Features
                       </h4>
                       <div className="grid sm:grid-cols-2 gap-3">
                         {services[activeService].features.map((feature, i) => (
-                          <motion.div
+                          <div
                             key={i}
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.4, delay: 0.5 + i * 0.1 }}
                             className="flex items-center text-gray-300 text-sm md:text-base"
                           >
                             <span className="feature-dot"></span>
                             {feature}
-                          </motion.div>
+                          </div>
                         ))}
                       </div>
-                    </motion.div>
+                    </div>
 
                     <Link href={`/services/${services[activeService].id}`}>
-                      <motion.button
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.6 }}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="learn-more-btn px-6 sm:px-8 py-3 sm:py-4 rounded-full text-white font-semibold text-sm sm:text-base inline-flex items-center gap-2"
-                      >
+                      <button className="learn-more-btn px-6 sm:px-8 py-3 sm:py-4 rounded-full text-white font-semibold text-sm sm:text-base inline-flex items-center gap-2">
                         Learn More
                         <svg
                           className="w-4 h-4"
@@ -468,35 +327,25 @@ export default function Services() {
                         >
                           <path d="M5 12h14M12 5l7 7-7 7" />
                         </svg>
-                      </motion.button>
+                      </button>
                     </Link>
                   </div>
                 </div>
               </motion.div>
             </AnimatePresence>
-          </motion.div>
+          </div>
         </div>
 
         {/* STATS Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.7 }}
-          className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8"
+        <div
+          className={`grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8 transition-all duration-500 delay-300 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
         >
           {stats.map((stat, i) => (
-            <motion.div
+            <div
               key={i}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={isInView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.5, delay: 0.8 + i * 0.1 }}
-              whileHover={{ y: -8 }}
-              className="stat-card p-6 sm:p-8 rounded-2xl text-center group pulse-border"
+              className="stat-card p-6 sm:p-8 rounded-2xl text-center"
             >
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={isInView ? { scale: 1 } : {}}
-                transition={{ duration: 0.6, delay: 1 + i * 0.1, type: 'spring' }}
+              <div
                 className="text-3xl sm:text-4xl md:text-5xl font-light mb-2 heading-font"
                 style={{
                   background: 'linear-gradient(135deg, #ffffff 0%, #ed1b24 100%)',
@@ -505,15 +354,15 @@ export default function Services() {
                   backgroundClip: 'text',
                 }}
               >
-                {isInView && <CountUp end={stat.value} duration={2.5} />}
+                {isInView && <CountUp end={stat.value} duration={2} />}
                 {stat.suffix}
-              </motion.div>
+              </div>
               <p className="text-gray-400 text-xs sm:text-sm font-normal uppercase tracking-wider">
                 {stat.label}
               </p>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
