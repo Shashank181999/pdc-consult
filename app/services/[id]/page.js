@@ -8,7 +8,9 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { supabase } from '../../admin/supabase';
 
-// Smooth animation variants
+// ============================================
+// ANIMATION VARIANTS
+// ============================================
 const fadeInUp = {
   hidden: { opacity: 0, y: 60 },
   visible: (delay = 0) => ({
@@ -24,19 +26,6 @@ const fadeInUp = {
 
 const fadeInLeft = {
   hidden: { opacity: 0, x: -60 },
-  visible: (delay = 0) => ({
-    opacity: 1,
-    x: 0,
-    transition: {
-      duration: 0.8,
-      delay,
-      ease: [0.22, 1, 0.36, 1]
-    }
-  })
-};
-
-const fadeInRight = {
-  hidden: { opacity: 0, x: 60 },
   visible: (delay = 0) => ({
     opacity: 1,
     x: 0,
@@ -71,21 +60,8 @@ const staggerItem = {
   }
 };
 
-const scaleIn = {
-  hidden: { opacity: 0, scale: 0.8 },
-  visible: (delay = 0) => ({
-    opacity: 1,
-    scale: 1,
-    transition: {
-      duration: 0.6,
-      delay,
-      ease: [0.22, 1, 0.36, 1]
-    }
-  })
-};
-
 // ============================================
-// DEFAULT IMAGES FOR SERVICES
+// DEFAULT IMAGES & DATA
 // ============================================
 const defaultServiceImages = {
   'project-development': 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2000&auto=format&fit=crop',
@@ -96,9 +72,57 @@ const defaultServiceImages = {
   default: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2000&auto=format&fit=crop'
 };
 
-// ============================================
-// STATIC SERVICES DATA (FALLBACK)
-// ============================================
+const dummyProjects = [
+  {
+    id: '1',
+    title: 'The Royal Atlantis',
+    image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=800&auto=format&fit=crop',
+    value: '$1.4B',
+    location: 'Palm Jumeirah, Dubai',
+    category: 'Hospitality'
+  },
+  {
+    id: '2',
+    title: 'Marina Gate Towers',
+    image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=800&auto=format&fit=crop',
+    value: '$890M',
+    location: 'Dubai Marina',
+    category: 'Residential'
+  },
+  {
+    id: '3',
+    title: 'DIFC Innovation Hub',
+    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&auto=format&fit=crop',
+    value: '$620M',
+    location: 'DIFC, Dubai',
+    category: 'Commercial'
+  },
+  {
+    id: '4',
+    title: 'Emirates Hills Estate',
+    image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=800&auto=format&fit=crop',
+    value: '$45M',
+    location: 'Emirates Hills',
+    category: 'Residential'
+  },
+  {
+    id: '5',
+    title: 'Business Bay Complex',
+    image: 'https://images.unsplash.com/photo-1486718448742-163732cd1544?q=80&w=800&auto=format&fit=crop',
+    value: '$750M',
+    location: 'Business Bay',
+    category: 'Mixed-Use'
+  },
+  {
+    id: '6',
+    title: 'Palm Jumeirah Resort',
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=800&auto=format&fit=crop',
+    value: '$380M',
+    location: 'Palm Jumeirah',
+    category: 'Hospitality'
+  }
+];
+
 const staticServicesData = {
   'project-development': {
     id: 'project-development',
@@ -107,9 +131,7 @@ const staticServicesData = {
     subtitle: 'From Vision to Reality',
     heroImage: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2000&auto=format&fit=crop',
     description: 'Comprehensive project lifecycle management from conception to completion, ensuring timely delivery and optimal resource allocation across residential, commercial, and mixed-use developments.',
-    longDescription: `Our Project Development & Management service provides end-to-end oversight of complex construction and development projects. With over 15 years of experience in the UAE and MENA region, we bring unparalleled expertise to every phase of your project.
-
-From initial feasibility studies to final handover, our team ensures that every milestone is met with precision and excellence. We coordinate with architects, contractors, and stakeholders to deliver projects that exceed expectations while staying within budget and timeline.`,
+    longDescription: `Our Project Development & Management service provides end-to-end oversight of complex construction and development projects. With over 15 years of experience in the UAE and MENA region, we bring unparalleled expertise to every phase of your project.\n\nFrom initial feasibility studies to final handover, our team ensures that every milestone is met with precision and excellence. We coordinate with architects, contractors, and stakeholders to deliver projects that exceed expectations while staying within budget and timeline.`,
     features: [
       { title: 'End-to-End Oversight', desc: 'Complete project lifecycle management from concept to completion' },
       { title: 'Risk Mitigation', desc: 'Proactive identification and management of project risks' },
@@ -145,9 +167,7 @@ From initial feasibility studies to final handover, our team ensures that every 
     subtitle: 'Shaping Skylines',
     heroImage: 'https://images.unsplash.com/photo-1486718448742-163732cd1544?q=80&w=2000&auto=format&fit=crop',
     description: 'Official representatives of Carlos Ott in U.A.E., GCC & Middle East. World-class architectural excellence and innovative urban solutions that define skylines.',
-    longDescription: `As the official representatives of the legendary architect Carlos Ott in the UAE, GCC, and Middle East, we bring world-class architectural vision to every project. Our design philosophy combines aesthetic brilliance with functional excellence.
-
-Our team of architects and urban planners work collaboratively to create spaces that inspire, engage, and endure. From iconic towers to master-planned communities, we shape environments that enhance quality of life.`,
+    longDescription: `As the official representatives of the legendary architect Carlos Ott in the UAE, GCC, and Middle East, we bring world-class architectural vision to every project. Our design philosophy combines aesthetic brilliance with functional excellence.\n\nOur team of architects and urban planners work collaboratively to create spaces that inspire, engage, and endure. From iconic towers to master-planned communities, we shape environments that enhance quality of life.`,
     features: [
       { title: 'Carlos Ott Partnership', desc: 'Exclusive regional representation of world-renowned architect' },
       { title: 'Iconic Design', desc: 'Creating landmark buildings that define skylines' },
@@ -183,9 +203,7 @@ Our team of architects and urban planners work collaboratively to create spaces 
     subtitle: 'Luxury Redefined',
     heroImage: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2000&auto=format&fit=crop',
     description: 'Strategic advisory services for luxury hotels, resorts, and hospitality ventures in the MENA region, from concept to operational excellence.',
-    longDescription: `Our Hospitality Consultancy service brings together decades of experience in luxury hotel development and operations. We understand the unique demands of the hospitality industry and deliver solutions that create memorable guest experiences.
-
-From boutique hotels to large-scale resorts, we provide comprehensive guidance on brand positioning, operational setup, and revenue optimization strategies that ensure long-term success.`,
+    longDescription: `Our Hospitality Consultancy service brings together decades of experience in luxury hotel development and operations. We understand the unique demands of the hospitality industry and deliver solutions that create memorable guest experiences.\n\nFrom boutique hotels to large-scale resorts, we provide comprehensive guidance on brand positioning, operational setup, and revenue optimization strategies that ensure long-term success.`,
     features: [
       { title: 'Brand Positioning', desc: 'Strategic brand development and market positioning' },
       { title: 'Operational Excellence', desc: 'SOPs and service standards development' },
@@ -221,9 +239,7 @@ From boutique hotels to large-scale resorts, we provide comprehensive guidance o
     subtitle: 'Strategic Advisory',
     heroImage: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2000&auto=format&fit=crop',
     description: 'Optimize project costs while maximizing value through systematic analysis and innovative engineering solutions that deliver exceptional ROI.',
-    longDescription: `Our Cost Management & Value Engineering service ensures that every project delivers maximum value within budget constraints. We employ sophisticated cost modeling and analysis techniques to identify savings opportunities without compromising quality.
-
-Through value engineering, we optimize designs and specifications to achieve the best possible outcomes while maintaining or enhancing project functionality and aesthetics.`,
+    longDescription: `Our Cost Management & Value Engineering service ensures that every project delivers maximum value within budget constraints. We employ sophisticated cost modeling and analysis techniques to identify savings opportunities without compromising quality.\n\nThrough value engineering, we optimize designs and specifications to achieve the best possible outcomes while maintaining or enhancing project functionality and aesthetics.`,
     features: [
       { title: 'Budget Optimization', desc: 'Strategic cost planning and control' },
       { title: 'Value Analysis', desc: 'Function-cost optimization studies' },
@@ -259,9 +275,7 @@ Through value engineering, we optimize designs and specifications to achieve the
     subtitle: 'Facility Excellence',
     heroImage: 'https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2000&auto=format&fit=crop',
     description: 'Professional development programs designed to elevate project management capabilities across your organization with certified trainers.',
-    longDescription: `Our PM Training Services develop world-class project management capabilities within your organization. Led by certified professionals with extensive field experience, our programs combine theoretical knowledge with practical application.
-
-From PMP certification prep to customized corporate training, we equip teams with the skills needed to deliver successful projects consistently.`,
+    longDescription: `Our PM Training Services develop world-class project management capabilities within your organization. Led by certified professionals with extensive field experience, our programs combine theoretical knowledge with practical application.\n\nFrom PMP certification prep to customized corporate training, we equip teams with the skills needed to deliver successful projects consistently.`,
     features: [
       { title: 'Certification Programs', desc: 'PMP, PRINCE2, and Agile certifications' },
       { title: 'Custom Workshops', desc: 'Tailored training for your organization' },
@@ -297,9 +311,7 @@ From PMP certification prep to customized corporate training, we equip teams wit
     subtitle: 'Spaces that Inspire',
     heroImage: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2000&auto=format&fit=crop',
     description: 'Comprehensive interior design and furniture, fixtures & equipment services for luxury residential, commercial, and hospitality projects.',
-    longDescription: `Our Interior Design & FF&E service creates stunning interiors that reflect your vision and brand identity. From concept to installation, we manage every aspect of interior development with meticulous attention to detail.
-
-Our experienced designers work with the finest materials and craftsmen to deliver spaces that are both beautiful and functional, creating environments that inspire and delight.`,
+    longDescription: `Our Interior Design & FF&E service creates stunning interiors that reflect your vision and brand identity. From concept to installation, we manage every aspect of interior development with meticulous attention to detail.\n\nOur experienced designers work with the finest materials and craftsmen to deliver spaces that are both beautiful and functional, creating environments that inspire and delight.`,
     features: [
       { title: 'Space Planning', desc: 'Optimized layouts for functionality and flow' },
       { title: 'Material Selection', desc: 'Premium finishes and specifications' },
@@ -331,11 +343,13 @@ Our experienced designers work with the finest materials and craftsmen to delive
 };
 
 // ============================================
-// HERO SECTION
+// HERO SECTION - UPDATED FOR NO-BLINK RELOAD
 // ============================================
 const ServiceHero = ({ service }) => {
   const heroRef = useRef(null);
+  const imgRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [imgLoaded, setImgLoaded] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -344,59 +358,70 @@ const ServiceHero = ({ service }) => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  // Use Effect to check if image is already loaded (from cache)
+  useEffect(() => {
+    if (imgRef.current && imgRef.current.complete) {
+      setImgLoaded(true);
+    }
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"]
   });
 
-  // Disable parallax on mobile for smoother experience
   const y = useTransform(scrollYProgress, [0, 1], isMobile ? [0, 0] : [0, 150]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, isMobile ? 1 : 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.5], [1, isMobile ? 1 : 1.1]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1.1, 1.2]); 
 
   return (
     <section ref={heroRef} className="relative min-h-[100svh] flex flex-col justify-end md:justify-center bg-black overflow-hidden">
-      {/* Background - Fixed on mobile */}
-      <div className="absolute inset-0">
-        <motion.img
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          src={service.heroImage}
-          alt={service.title}
-          className="w-full h-full object-cover"
-          style={{ transform: isMobile ? 'none' : `scale(${scale})` }}
-        />
-        {/* Darker overlay on mobile for better text readability */}
-        <div className="absolute inset-0 bg-black/60 md:bg-black/50"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/30 md:via-black/40 md:to-transparent"></div>
+      
+      {/* Background Layer */}
+      <div className="absolute inset-0 z-0 bg-black">
+        <motion.div 
+            style={{ 
+                scale: isMobile ? 1 : scale,
+                y: isMobile ? 0 : y
+            }} 
+            className="absolute inset-0 w-full h-full"
+        >
+          {/* Main Image */}
+          <motion.img
+            ref={imgRef}
+            src={service.heroImage}
+            alt={service.title}
+            // If already loaded, opacity is 1 immediately.
+            // If not, it animates from 0 to 1.
+            initial={{ opacity: 0 }}
+            animate={{ opacity: imgLoaded ? 1 : 0 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+            onLoad={() => setImgLoaded(true)}
+            className="w-full h-full object-cover"
+          />
+        </motion.div>
+
+        {/* Overlays */}
+        <div className="absolute inset-0 bg-black/50" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
       </div>
 
       {/* Content */}
-      <motion.div
-        style={isMobile ? {} : { y, opacity }}
-        className="relative z-10 container mx-auto px-5 sm:px-6 lg:px-8 pt-24 pb-8 md:py-0"
-      >
-        <div className="max-w-4xl">
-          {/* Breadcrumb - Hidden on mobile */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="hidden md:flex items-center gap-2 text-sm text-gray-400 mb-8"
-          >
+      <div className="relative z-10 container mx-auto px-5 sm:px-6 lg:px-8 pt-24 pb-12 md:py-0">
+        <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="max-w-4xl"
+        >
+          {/* Breadcrumb */}
+          <div className="hidden md:flex items-center gap-2 text-sm text-gray-400 mb-8">
             <Link href="/services" className="hover:text-white transition-colors duration-300">Services</Link>
             <span>/</span>
             <span className="text-white line-clamp-1">{service.title}</span>
-          </motion.div>
+          </div>
 
-          {/* Number Badge - Simplified on mobile */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="flex items-center gap-3 md:gap-4 mb-4 md:mb-8"
-          >
+          {/* Number Badge */}
+          <div className="flex items-center gap-3 md:gap-4 mb-4 md:mb-8">
             <span className="text-4xl md:text-6xl lg:text-7xl font-bold text-[#ed1b24]">
               {service.number}
             </span>
@@ -404,34 +429,20 @@ const ServiceHero = ({ service }) => {
             <span className="text-white/70 uppercase tracking-widest text-xs md:text-sm">
               {service.subtitle}
             </span>
-          </motion.div>
+          </div>
 
           {/* Title */}
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light text-white leading-[1.15] mb-4 md:mb-6"
-          >
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light text-white leading-[1.15] mb-4 md:mb-6">
             {service.title}
-          </motion.h1>
+          </h1>
 
           {/* Description */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="text-gray-300 text-base md:text-lg lg:text-xl max-w-2xl leading-relaxed mb-6 md:mb-10"
-          >
+          <p className="text-gray-300 text-base md:text-lg lg:text-xl max-w-2xl leading-relaxed mb-6 md:mb-10">
             {service.description}
-          </motion.p>
+          </p>
 
           {/* CTA Button */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-          >
+          <div>
             <Link href="/contact">
               <button className="px-6 md:px-8 py-3 md:py-4 bg-[#ed1b24] text-white font-semibold rounded-full transition-all duration-300 flex items-center gap-2 md:gap-3 active:scale-95 hover:bg-[#c41119]">
                 <span className="text-sm md:text-base">Get Started</span>
@@ -440,15 +451,15 @@ const ServiceHero = ({ service }) => {
                 </svg>
               </button>
             </Link>
-          </motion.div>
-        </div>
-      </motion.div>
+          </div>
+        </motion.div>
+      </div>
 
-      {/* Scroll Indicator - Hidden on mobile */}
+      {/* Scroll Indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1, duration: 0.5 }}
+        transition={{ delay: 1, duration: 1 }}
         className="hidden md:flex absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex-col items-center gap-2"
       >
         <span className="text-white/40 text-xs uppercase tracking-[0.2em]">Scroll</span>
@@ -758,60 +769,6 @@ const ProcessSection = ({ service }) => {
     </section>
   );
 };
-
-// ============================================
-// DUMMY PROJECTS DATA
-// ============================================
-const dummyProjects = [
-  {
-    id: '1',
-    title: 'The Royal Atlantis',
-    image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=800&auto=format&fit=crop',
-    value: '$1.4B',
-    location: 'Palm Jumeirah, Dubai',
-    category: 'Hospitality'
-  },
-  {
-    id: '2',
-    title: 'Marina Gate Towers',
-    image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=800&auto=format&fit=crop',
-    value: '$890M',
-    location: 'Dubai Marina',
-    category: 'Residential'
-  },
-  {
-    id: '3',
-    title: 'DIFC Innovation Hub',
-    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&auto=format&fit=crop',
-    value: '$620M',
-    location: 'DIFC, Dubai',
-    category: 'Commercial'
-  },
-  {
-    id: '4',
-    title: 'Emirates Hills Estate',
-    image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=800&auto=format&fit=crop',
-    value: '$45M',
-    location: 'Emirates Hills',
-    category: 'Residential'
-  },
-  {
-    id: '5',
-    title: 'Business Bay Complex',
-    image: 'https://images.unsplash.com/photo-1486718448742-163732cd1544?q=80&w=800&auto=format&fit=crop',
-    value: '$750M',
-    location: 'Business Bay',
-    category: 'Mixed-Use'
-  },
-  {
-    id: '6',
-    title: 'Palm Jumeirah Resort',
-    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=800&auto=format&fit=crop',
-    value: '$380M',
-    location: 'Palm Jumeirah',
-    category: 'Hospitality'
-  }
-];
 
 // ============================================
 // ALL PROJECTS SECTION

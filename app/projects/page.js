@@ -223,6 +223,10 @@ const heroImages = {
   education: 'https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=2000&auto=format&fit=crop'
 };
 
+// Number of projects to show initially and per load
+const INITIAL_PROJECTS = 6;
+const PROJECTS_PER_LOAD = 6;
+
 // ============================================
 // PROJECTS HERO
 // ============================================
@@ -262,14 +266,10 @@ const ProjectsHero = ({ activeCategory, activeSector }) => {
   };
 
   return (
-    <section ref={heroRef} className="relative h-[70vh] min-h-[500px] flex items-center justify-center bg-black overflow-hidden">
+    <section ref={heroRef} className="relative h-[50vh] sm:h-[60vh] md:h-[70vh] min-h-[400px] sm:min-h-[500px] flex items-center justify-center bg-black overflow-hidden">
       {/* Parallax Background */}
       <motion.div style={{ scale }} className="absolute inset-0">
-        <motion.img
-          key={getHeroImage()}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
+        <img
           src={getHeroImage()}
           alt="Dubai Architecture"
           className="w-full h-full object-cover"
@@ -285,7 +285,7 @@ const ProjectsHero = ({ activeCategory, activeSector }) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="flex items-center justify-center gap-2 mb-6 text-sm"
+          className="flex items-center justify-center gap-2 mb-4 sm:mb-6 text-xs sm:text-sm"
         >
           <Link href="/" className="text-gray-400 hover:text-white transition-colors">Home</Link>
           <span className="text-gray-600">/</span>
@@ -303,10 +303,10 @@ const ProjectsHero = ({ activeCategory, activeSector }) => {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4 }}
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/5 backdrop-blur-md border border-white/10 rounded-full mb-8"
+          className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 bg-white/5 backdrop-blur-md border border-white/10 rounded-full mb-6 sm:mb-8"
         >
           <span className="w-2 h-2 bg-[#ed1b24] rounded-full animate-pulse"></span>
-          <span className="text-white/90 text-sm font-medium tracking-wide">Our Portfolio</span>
+          <span className="text-white/90 text-xs sm:text-sm font-medium tracking-wide">Our Portfolio</span>
         </motion.div>
 
         {/* Main Title */}
@@ -314,7 +314,7 @@ const ProjectsHero = ({ activeCategory, activeSector }) => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light text-white leading-[0.95] mb-6"
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light text-white leading-[0.95] mb-4 sm:mb-6 px-2"
         >
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ed1b24] to-[#ff6b6b]">{getTitle()}</span>
         </motion.h1>
@@ -324,7 +324,7 @@ const ProjectsHero = ({ activeCategory, activeSector }) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.2 }}
-          className="text-gray-300 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed"
+          className="text-gray-300 text-base sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed px-4"
         >
           Transforming visions into landmarks across the UAE and MENA region
         </motion.p>
@@ -336,8 +336,19 @@ const ProjectsHero = ({ activeCategory, activeSector }) => {
 // ============================================
 // FILTER SECTION
 // ============================================
-const FilterSection = ({ activeCategory, activeSector, onCategoryChange, onSectorChange }) => {
+const FilterSection = ({ activeCategory, activeSector, onCategoryChange, onSectorChange, onFilterChange }) => {
   const [showFilters, setShowFilters] = useState(false);
+
+  const handleCategoryChange = (catId) => {
+    onCategoryChange(catId);
+    if (onFilterChange) onFilterChange();
+  };
+
+  const handleSectorChange = (sectorId) => {
+    onSectorChange(sectorId);
+    setShowFilters(false);
+    if (onFilterChange) onFilterChange();
+  };
 
   return (
     <section className="sticky top-[72px] z-40 bg-black/95 backdrop-blur-lg border-b border-white/10 py-4">
@@ -348,7 +359,7 @@ const FilterSection = ({ activeCategory, activeSector, onCategoryChange, onSecto
             {categories.map((cat) => (
               <button
                 key={cat.id}
-                onClick={() => onCategoryChange(cat.id)}
+                onClick={() => handleCategoryChange(cat.id)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                   activeCategory === cat.id
                     ? 'bg-[#ed1b24] text-white'
@@ -380,10 +391,7 @@ const FilterSection = ({ activeCategory, activeSector, onCategoryChange, onSecto
                 {sectors.map((sector) => (
                   <button
                     key={sector.id}
-                    onClick={() => {
-                      onSectorChange(sector.id);
-                      setShowFilters(false);
-                    }}
+                    onClick={() => handleSectorChange(sector.id)}
                     className={`w-full text-left px-4 py-3 text-sm transition-colors ${
                       activeSector === sector.id
                         ? 'bg-[#ed1b24] text-white'
@@ -405,10 +413,14 @@ const FilterSection = ({ activeCategory, activeSector, onCategoryChange, onSecto
 // ============================================
 // PROJECTS GRID
 // ============================================
-const ProjectsGrid = ({ projects }) => {
+const ProjectsGrid = ({ projects, visibleCount, onLoadMore, isLoading }) => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-50px" });
   const [hoveredId, setHoveredId] = useState(null);
+
+  const visibleProjects = projects.slice(0, visibleCount);
+  const hasMore = visibleCount < projects.length;
+  const remainingCount = projects.length - visibleCount;
 
   if (projects.length === 0) {
     return (
@@ -442,13 +454,13 @@ const ProjectsGrid = ({ projects }) => {
           className="mb-8"
         >
           <p className="text-gray-400">
-            Showing <span className="text-white font-medium">{projects.length}</span> projects
+            Showing <span className="text-white font-medium">{visibleProjects.length}</span> of <span className="text-white font-medium">{projects.length}</span> projects
           </p>
         </motion.div>
 
         {/* Projects Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((project, index) => (
+          {visibleProjects.map((project, index) => (
             <motion.div
               key={project.id}
               initial={{ opacity: 0, y: 30 }}
@@ -516,6 +528,71 @@ const ProjectsGrid = ({ projects }) => {
             </motion.div>
           ))}
         </div>
+
+        {/* Load More Button */}
+        {hasMore && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="flex flex-col items-center mt-12"
+          >
+            <motion.button
+              onClick={onLoadMore}
+              disabled={isLoading}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="group relative px-10 py-4 bg-transparent border-2 border-[#ed1b24] text-white font-semibold text-lg rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-[#ed1b24]/20 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {/* Button Background Animation */}
+              <span className="absolute inset-0 bg-[#ed1b24] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+              
+              {/* Button Content */}
+              <span className="relative flex items-center gap-3">
+                {isLoading ? (
+                  <>
+                    <svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Loading...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Load More Projects</span>
+                    <span className="px-2 py-0.5 bg-white/10 group-hover:bg-white/20 rounded-full text-sm transition-colors">
+                      +{Math.min(PROJECTS_PER_LOAD, remainingCount)}
+                    </span>
+                    <svg className="w-5 h-5 transform group-hover:translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                    </svg>
+                  </>
+                )}
+              </span>
+            </motion.button>
+
+            {/* Remaining Count Text */}
+            <p className="mt-4 text-gray-500 text-sm">
+              {remainingCount} more project{remainingCount !== 1 ? 's' : ''} to explore
+            </p>
+          </motion.div>
+        )}
+
+        {/* All Projects Loaded Message */}
+        {!hasMore && projects.length > INITIAL_PROJECTS && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="flex flex-col items-center mt-12"
+          >
+            <div className="flex items-center gap-2 text-gray-400">
+              <svg className="w-5 h-5 text-[#ed1b24]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+              <span>All {projects.length} projects loaded</span>
+            </div>
+          </motion.div>
+        )}
       </div>
     </section>
   );
@@ -607,6 +684,8 @@ function ProjectsContent() {
   const [activeSector, setActiveSector] = useState('all');
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [visibleCount, setVisibleCount] = useState(INITIAL_PROJECTS);
+  const [loadingMore, setLoadingMore] = useState(false);
 
   // Fetch projects from Supabase
   useEffect(() => {
@@ -681,6 +760,21 @@ function ProjectsContent() {
     updateFilters(activeCategory, sector);
   };
 
+  // Reset visible count when filters change
+  const handleFilterChange = () => {
+    setVisibleCount(INITIAL_PROJECTS);
+  };
+
+  // Load more projects
+  const handleLoadMore = () => {
+    setLoadingMore(true);
+    // Simulate loading delay for better UX
+    setTimeout(() => {
+      setVisibleCount(prev => prev + PROJECTS_PER_LOAD);
+      setLoadingMore(false);
+    }, 500);
+  };
+
   // Filter projects
   const filteredProjects = projects.filter(project => {
     const matchCategory = activeCategory === 'all' || project.category === activeCategory;
@@ -702,6 +796,7 @@ function ProjectsContent() {
         activeSector={activeSector}
         onCategoryChange={handleCategoryChange}
         onSectorChange={handleSectorChange}
+        onFilterChange={handleFilterChange}
       />
       {loading ? (
         <section className="py-24 bg-black">
@@ -710,7 +805,12 @@ function ProjectsContent() {
           </div>
         </section>
       ) : (
-        <ProjectsGrid projects={filteredProjects} />
+        <ProjectsGrid 
+          projects={filteredProjects} 
+          visibleCount={visibleCount}
+          onLoadMore={handleLoadMore}
+          isLoading={loadingMore}
+        />
       )}
       <StatsSection />
       <CTASection />
