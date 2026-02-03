@@ -343,26 +343,17 @@ const staticServicesData = {
 };
 
 // ============================================
-// HERO SECTION - UPDATED FOR NO-BLINK RELOAD
+// HERO SECTION - FIXED (NO BLINK)
 // ============================================
 const ServiceHero = ({ service }) => {
   const heroRef = useRef(null);
-  const imgRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
-  const [imgLoaded, setImgLoaded] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  // Use Effect to check if image is already loaded (from cache)
-  useEffect(() => {
-    if (imgRef.current && imgRef.current.complete) {
-      setImgLoaded(true);
-    }
   }, []);
 
   const { scrollYProgress } = useScroll({
@@ -385,17 +376,10 @@ const ServiceHero = ({ service }) => {
             }} 
             className="absolute inset-0 w-full h-full"
         >
-          {/* Main Image */}
+          {/* Main Image - Removed opacity animations to stop the blink */}
           <motion.img
-            ref={imgRef}
             src={service.heroImage}
             alt={service.title}
-            // If already loaded, opacity is 1 immediately.
-            // If not, it animates from 0 to 1.
-            initial={{ opacity: 0 }}
-            animate={{ opacity: imgLoaded ? 1 : 0 }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
-            onLoad={() => setImgLoaded(true)}
             className="w-full h-full object-cover"
           />
         </motion.div>
