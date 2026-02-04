@@ -4,6 +4,7 @@ import React, { useRef, useEffect } from 'react';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { useTheme } from '../context/ThemeContext';
 
 // ============================================
 // ABOUT HERO
@@ -107,9 +108,12 @@ const AboutHero = () => {
 const OurStorySection = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const { theme } = useTheme();
 
   return (
-    <section ref={sectionRef} className="relative py-24 lg:py-32 bg-[#050505] overflow-hidden">
+    <section ref={sectionRef} className={`relative py-24 lg:py-32 overflow-hidden transition-colors duration-300 ${
+      theme === 'dark' ? 'bg-[#050505]' : 'bg-gray-50'
+    }`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-16 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Left - Image Collage */}
@@ -180,12 +184,16 @@ const OurStorySection = () => {
           >
             <span className="text-[#ed1b24] font-semibold uppercase tracking-[0.2em] text-sm">Our Story</span>
 
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-light text-white mt-4 mb-8 leading-[1.1]">
+            <h2 className={`text-4xl sm:text-5xl lg:text-6xl font-light mt-4 mb-8 leading-[1.1] ${
+              theme === 'dark' ? 'text-white' : 'text-gray-900'
+            }`}>
               A Legacy of
               <span className="font-normal text-transparent bg-clip-text bg-gradient-to-r from-[#ed1b24] to-[#ff6b6b]"> Excellence</span>
             </h2>
 
-            <div className="space-y-6 text-gray-400 text-lg leading-relaxed">
+            <div className={`space-y-6 text-lg leading-relaxed ${
+              theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+            }`}>
               <p>
                 Founded in 2009, PDC Consult has grown from a boutique consultancy to become one of the
                 most trusted names in project development across the UAE and MENA region.
@@ -197,7 +205,9 @@ const OurStorySection = () => {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-8 mt-12 pt-12 border-t border-white/10">
+            <div className={`grid grid-cols-3 gap-8 mt-12 pt-12 border-t ${
+              theme === 'dark' ? 'border-white/10' : 'border-gray-200'
+            }`}>
               {[
                 { value: '$5B+', label: 'Projects Value' },
                 { value: '200+', label: 'Projects' },
@@ -209,8 +219,8 @@ const OurStorySection = () => {
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
                 >
-                  <div className="text-3xl sm:text-4xl font-bold text-white">{stat.value}</div>
-                  <div className="text-gray-500 text-sm mt-1">{stat.label}</div>
+                  <div className={`text-3xl sm:text-4xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{stat.value}</div>
+                  <div className={`text-sm mt-1 ${theme === 'dark' ? 'text-gray-500' : 'text-gray-600'}`}>{stat.label}</div>
                 </motion.div>
               ))}
             </div>
@@ -227,6 +237,7 @@ const OurStorySection = () => {
 const WhatWeDoSection = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const { theme } = useTheme();
 
   const services = [
     {
@@ -247,7 +258,9 @@ const WhatWeDoSection = () => {
   ];
 
   return (
-    <section ref={sectionRef} className="relative py-24 lg:py-32 bg-black overflow-hidden">
+    <section ref={sectionRef} className={`relative py-24 lg:py-32 overflow-hidden transition-colors duration-300 ${
+      theme === 'dark' ? 'bg-black' : 'bg-white'
+    }`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-16 relative z-10">
         {/* Header */}
         <motion.div
@@ -257,7 +270,9 @@ const WhatWeDoSection = () => {
           className="text-center mb-16"
         >
           <span className="text-[#ed1b24] font-semibold uppercase tracking-[0.2em] text-sm">What We Do</span>
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-light text-white mt-4">
+          <h2 className={`text-4xl sm:text-5xl lg:text-6xl font-light mt-4 ${
+            theme === 'dark' ? 'text-white' : 'text-gray-900'
+          }`}>
             Our <span className="font-normal text-[#ed1b24]">Expertise</span>
           </h2>
         </motion.div>
@@ -320,6 +335,7 @@ const WhatWeDoSection = () => {
 const WhyChooseUsSection = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const { theme } = useTheme();
 
   const reasons = [
     { title: 'Regional Expertise', desc: 'Deep understanding of UAE & MENA markets' },
@@ -329,7 +345,9 @@ const WhyChooseUsSection = () => {
   ];
 
   return (
-    <section ref={sectionRef} className="relative py-24 lg:py-32 bg-[#050505] overflow-hidden">
+    <section ref={sectionRef} className={`relative py-24 lg:py-32 overflow-hidden transition-colors duration-300 ${
+      theme === 'dark' ? 'bg-[#050505]' : 'bg-gray-50'
+    }`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-16 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Left - Content */}
@@ -339,7 +357,9 @@ const WhyChooseUsSection = () => {
             transition={{ duration: 1 }}
           >
             <span className="text-[#ed1b24] font-semibold uppercase tracking-[0.2em] text-sm">Why PDC</span>
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-light text-white mt-4 mb-8 leading-[1.1]">
+            <h2 className={`text-4xl sm:text-5xl lg:text-6xl font-light mt-4 mb-8 leading-[1.1] ${
+              theme === 'dark' ? 'text-white' : 'text-gray-900'
+            }`}>
               Why Choose
               <span className="font-normal text-[#ed1b24]"> Us?</span>
             </h2>
@@ -359,8 +379,8 @@ const WhyChooseUsSection = () => {
                     </span>
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-white mb-1">{reason.title}</h3>
-                    <p className="text-gray-400">{reason.desc}</p>
+                    <h3 className={`text-xl font-bold mb-1 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{reason.title}</h3>
+                    <p className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}>{reason.desc}</p>
                   </div>
                 </motion.div>
               ))}
@@ -406,9 +426,12 @@ const WhyChooseUsSection = () => {
 const AchievementsSection = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const { theme } = useTheme();
 
   return (
-    <section ref={sectionRef} className="relative py-24 lg:py-32 bg-black overflow-hidden">
+    <section ref={sectionRef} className={`relative py-24 lg:py-32 overflow-hidden transition-colors duration-300 ${
+      theme === 'dark' ? 'bg-black' : 'bg-white'
+    }`}>
       {/* Background Image */}
       <div className="absolute inset-0">
         <img
@@ -431,7 +454,7 @@ const AchievementsSection = () => {
             <div className="text-8xl sm:text-9xl lg:text-[12rem] font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#ed1b24] to-[#ff6b6b] leading-none">
               $5B+
             </div>
-            <p className="text-gray-400 text-xl mt-4">In Projects Managed</p>
+            <p className={`text-xl mt-4 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>In Projects Managed</p>
           </motion.div>
 
           {/* Right - Achievement Cards */}
@@ -452,13 +475,17 @@ const AchievementsSection = () => {
                 animate={isInView ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
                 whileHover={{ x: 10 }}
-                className="bg-white/5 backdrop-blur-sm p-6 rounded-2xl border border-white/5 hover:border-[#ed1b24]/30 transition-all"
+                className={`backdrop-blur-sm p-6 rounded-2xl border hover:border-[#ed1b24]/30 transition-all ${
+                  theme === 'dark'
+                    ? 'bg-white/5 border-white/5'
+                    : 'bg-gray-50 border-gray-200'
+                }`}
               >
                 <div className="flex items-center gap-6">
                   <span className="text-4xl font-bold text-[#ed1b24]">{item.number}</span>
                   <div>
-                    <h3 className="text-lg font-bold text-white">{item.label}</h3>
-                    <p className="text-gray-400 text-sm">{item.desc}</p>
+                    <h3 className={`text-lg font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{item.label}</h3>
+                    <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>{item.desc}</p>
                   </div>
                 </div>
               </motion.div>
@@ -476,13 +503,16 @@ const AchievementsSection = () => {
 const FounderSection = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const { theme } = useTheme();
 
   return (
-    <section ref={sectionRef} className="relative py-24 lg:py-32 bg-[#050505] overflow-hidden">
+    <section ref={sectionRef} className={`relative py-24 lg:py-32 overflow-hidden transition-colors duration-300 ${
+      theme === 'dark' ? 'bg-[#050505]' : 'bg-gray-50'
+    }`}>
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
+          backgroundImage: `radial-gradient(circle at 1px 1px, ${theme === 'dark' ? 'white' : 'black'} 1px, transparent 0)`,
           backgroundSize: '40px 40px'
         }}></div>
       </div>
@@ -496,7 +526,9 @@ const FounderSection = () => {
           className="text-center mb-16"
         >
           <span className="text-[#ed1b24] font-semibold uppercase tracking-[0.2em] text-sm">Leadership</span>
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-light text-white mt-4">
+          <h2 className={`text-4xl sm:text-5xl lg:text-6xl font-light mt-4 ${
+            theme === 'dark' ? 'text-white' : 'text-gray-900'
+          }`}>
             Meet Our <span className="font-normal text-[#ed1b24]">Founder</span>
           </h2>
         </motion.div>
@@ -550,6 +582,7 @@ const FounderSection = () => {
 const TeamSection = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const { theme } = useTheme();
 
   // Leadership team
   const leadership = [
@@ -667,7 +700,9 @@ const TeamSection = () => {
   );
 
   return (
-    <section ref={sectionRef} className="relative py-24 lg:py-32 bg-black overflow-hidden">
+    <section ref={sectionRef} className={`relative py-24 lg:py-32 overflow-hidden transition-colors duration-300 ${
+      theme === 'dark' ? 'bg-black' : 'bg-white'
+    }`}>
       {/* Decorative elements */}
       <div className="absolute top-0 left-0 w-72 h-72 bg-[#ed1b24]/5 rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#ed1b24]/5 rounded-full blur-3xl"></div>
@@ -690,10 +725,14 @@ const TeamSection = () => {
             <span className="text-[#ed1b24] font-semibold uppercase tracking-[0.3em] text-xs">The People Behind PDC</span>
             <div className="h-[1px] w-12 bg-gradient-to-l from-transparent to-[#ed1b24]"></div>
           </motion.div>
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-light text-white">
+          <h2 className={`text-4xl sm:text-5xl lg:text-6xl font-light ${
+            theme === 'dark' ? 'text-white' : 'text-gray-900'
+          }`}>
             Meet Our <span className="font-normal text-transparent bg-clip-text bg-gradient-to-r from-[#ed1b24] to-[#ff6b6b]">Team</span>
           </h2>
-          <p className="text-gray-400 mt-6 max-w-2xl mx-auto text-lg">
+          <p className={`mt-6 max-w-2xl mx-auto text-lg ${
+            theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+          }`}>
             A diverse team of experts dedicated to delivering excellence in every project
           </p>
         </motion.div>
@@ -706,9 +745,15 @@ const TeamSection = () => {
             transition={{ duration: 0.6 }}
             className="flex items-center justify-center gap-4 mb-10"
           >
-            <div className="h-[1px] flex-1 max-w-[100px] bg-gradient-to-r from-transparent to-white/20"></div>
-            <h3 className="text-sm text-white/50 uppercase tracking-[0.3em] font-medium">Leadership Team</h3>
-            <div className="h-[1px] flex-1 max-w-[100px] bg-gradient-to-l from-transparent to-white/20"></div>
+            <div className={`h-[1px] flex-1 max-w-[100px] bg-gradient-to-r from-transparent ${
+              theme === 'dark' ? 'to-white/20' : 'to-gray-300'
+            }`}></div>
+            <h3 className={`text-sm uppercase tracking-[0.3em] font-medium ${
+              theme === 'dark' ? 'text-white/50' : 'text-gray-500'
+            }`}>Leadership Team</h3>
+            <div className={`h-[1px] flex-1 max-w-[100px] bg-gradient-to-l from-transparent ${
+              theme === 'dark' ? 'to-white/20' : 'to-gray-300'
+            }`}></div>
           </motion.div>
           <div className="grid sm:grid-cols-2 max-w-3xl mx-auto gap-8">
             {leadership.map((member, index) => (
@@ -725,9 +770,15 @@ const TeamSection = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="flex items-center justify-center gap-4 mb-10"
           >
-            <div className="h-[1px] flex-1 max-w-[100px] bg-gradient-to-r from-transparent to-white/20"></div>
-            <h3 className="text-sm text-white/50 uppercase tracking-[0.3em] font-medium">Our Experts</h3>
-            <div className="h-[1px] flex-1 max-w-[100px] bg-gradient-to-l from-transparent to-white/20"></div>
+            <div className={`h-[1px] flex-1 max-w-[100px] bg-gradient-to-r from-transparent ${
+              theme === 'dark' ? 'to-white/20' : 'to-gray-300'
+            }`}></div>
+            <h3 className={`text-sm uppercase tracking-[0.3em] font-medium ${
+              theme === 'dark' ? 'text-white/50' : 'text-gray-500'
+            }`}>Our Experts</h3>
+            <div className={`h-[1px] flex-1 max-w-[100px] bg-gradient-to-l from-transparent ${
+              theme === 'dark' ? 'to-white/20' : 'to-gray-300'
+            }`}></div>
           </motion.div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 lg:gap-5">
             {team.map((member, index) => (
@@ -746,6 +797,7 @@ const TeamSection = () => {
 const ClientsSection = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const { theme } = useTheme();
 
   // All client logos from public/logo folder
   const clientLogos = [
@@ -774,7 +826,9 @@ const ClientsSection = () => {
   const secondRow = clientLogos.slice(9);
 
   return (
-    <section ref={sectionRef} className="relative py-16 sm:py-20 lg:py-32 bg-black overflow-hidden">
+    <section ref={sectionRef} className={`relative py-16 sm:py-20 lg:py-32 overflow-hidden transition-colors duration-300 ${
+      theme === 'dark' ? 'bg-black' : 'bg-gray-50'
+    }`}>
       <div className="relative z-10">
         {/* Header */}
         <motion.div
@@ -784,18 +838,26 @@ const ClientsSection = () => {
           className="text-center mb-12 sm:mb-16 px-4"
         >
           <span className="text-[#ed1b24] font-semibold uppercase tracking-[0.2em] text-xs sm:text-sm">Trusted By</span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-white mt-3 sm:mt-4">
+          <h2 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light mt-3 sm:mt-4 ${
+            theme === 'dark' ? 'text-white' : 'text-gray-900'
+          }`}>
             Our <span className="font-normal text-[#ed1b24]">Partners</span>
           </h2>
-          <p className="text-gray-400 mt-4 max-w-2xl mx-auto text-sm sm:text-base">
+          <p className={`mt-4 max-w-2xl mx-auto text-sm sm:text-base ${
+            theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+          }`}>
             Trusted by leading organizations across the UAE and MENA region
           </p>
         </motion.div>
 
         {/* Infinite Marquee - First Row */}
         <div className="relative mb-4 sm:mb-6">
-          <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-r from-black to-transparent z-10"></div>
-          <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-l from-black to-transparent z-10"></div>
+          <div className={`absolute left-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-r to-transparent z-10 ${
+            theme === 'dark' ? 'from-black' : 'from-gray-50'
+          }`}></div>
+          <div className={`absolute right-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-l to-transparent z-10 ${
+            theme === 'dark' ? 'from-black' : 'from-gray-50'
+          }`}></div>
 
           <motion.div
             initial={{ opacity: 0 }}
@@ -826,8 +888,12 @@ const ClientsSection = () => {
 
         {/* Infinite Marquee - Second Row (Reverse Direction) */}
         <div className="relative">
-          <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-r from-black to-transparent z-10"></div>
-          <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-l from-black to-transparent z-10"></div>
+          <div className={`absolute left-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-r to-transparent z-10 ${
+            theme === 'dark' ? 'from-black' : 'from-gray-50'
+          }`}></div>
+          <div className={`absolute right-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-l to-transparent z-10 ${
+            theme === 'dark' ? 'from-black' : 'from-gray-50'
+          }`}></div>
 
           <motion.div
             initial={{ opacity: 0 }}
@@ -951,13 +1017,17 @@ const CTASection = () => {
 // MAIN PAGE
 // ============================================
 export default function AboutPage() {
+  const { theme } = useTheme();
+
   // Scroll to top on page load
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   return (
-    <main className="w-full bg-black selection:bg-[#ed1b24] selection:text-white" style={{ fontFamily: "'Archivo', sans-serif" }}>
+    <main className={`w-full selection:bg-[#ed1b24] selection:text-white transition-colors duration-300 ${
+      theme === 'dark' ? 'bg-black' : 'bg-white'
+    }`} style={{ fontFamily: "'Archivo', sans-serif" }}>
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;800;900&display=swap');
       `}</style>

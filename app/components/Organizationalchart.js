@@ -3,9 +3,10 @@
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 
-const OrganizationalChart = () => {
+const OrganizationalChart = ({ theme = 'dark' }) => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const isDark = theme === 'dark';
 
   const orgStructure = {
     managingDirector: {
@@ -93,15 +94,16 @@ const OrganizationalChart = () => {
   };
 
   return (
-    <section ref={sectionRef} className="relative w-full bg-black py-20 sm:py-24 md:py-32 lg:py-40 overflow-hidden">
+    <section 
+      ref={sectionRef} 
+      className={`relative w-full py-20 sm:py-24 md:py-32 lg:py-40 overflow-hidden transition-colors duration-500 ${
+        isDark ? 'bg-black' : 'bg-white'
+      }`}
+    >
       <style jsx>{`
         @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;800;900&display=swap');
 
-        .heading-font {
-          font-family: 'Archivo', sans-serif;
-        }
-
-        .body-font {
+        .heading-font, .body-font {
           font-family: 'Archivo', sans-serif;
         }
 
@@ -126,33 +128,29 @@ const OrganizationalChart = () => {
           left: 100%;
         }
 
+        /* Support Badge - Colors handled by Tailwind now */
         .support-badge {
-          background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
-          border: 1px solid rgba(255, 255, 255, 0.2);
           backdrop-filter: blur(10px);
+          transition: all 0.3s ease;
         }
 
+        /* Dept Head - Colors handled by Tailwind now */
         .department-head {
-          background: linear-gradient(135deg, rgba(237, 27, 36, 0.2) 0%, rgba(237, 27, 36, 0.05) 100%);
-          border: 2px solid rgba(237, 27, 36, 0.4);
           transition: all 0.3s ease;
         }
 
         .department-head:hover {
           border-color: #ed1b24;
-          background: linear-gradient(135deg, rgba(237, 27, 36, 0.3) 0%, rgba(237, 27, 36, 0.1) 100%);
           transform: translateY(-4px);
         }
 
+        /* Team Member - Colors handled by Tailwind now */
         .team-member {
-          background: rgba(15, 15, 15, 0.8);
-          border: 1px solid rgba(255, 255, 255, 0.08);
           transition: all 0.3s ease;
         }
 
         .team-member:hover {
           border-color: rgba(237, 27, 36, 0.5);
-          background: rgba(20, 20, 20, 0.9);
           transform: translateX(4px);
         }
 
@@ -177,9 +175,9 @@ const OrganizationalChart = () => {
       `}</style>
 
       {/* Background Elements */}
-      <div className="absolute inset-0 opacity-[0.02]">
+      <div className={`absolute inset-0 ${isDark ? 'opacity-[0.02]' : 'opacity-[0.05]'}`}>
         <div style={{
-          backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(237, 27, 36, 0.15) 1px, transparent 0)',
+          backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(237, 27, 36, 0.5) 1px, transparent 0)',
           backgroundSize: '50px 50px',
           height: '100%'
         }}></div>
@@ -200,14 +198,14 @@ const OrganizationalChart = () => {
             transition={{ duration: 0.6, type: "spring" }}
             className="inline-block mb-5"
           >
-            <div className="px-5 py-2.5 rounded-full border-2 border-[#ed1b24] bg-[#ed1b24]/5">
+            <div className={`px-5 py-2.5 rounded-full border-2 border-[#ed1b24] ${isDark ? 'bg-[#ed1b24]/5' : 'bg-red-50'}`}>
               <span className="text-[#ed1b24] text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase body-font">
                 Our Structure
               </span>
             </div>
           </motion.div>
 
-          <h2 className="heading-font text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light text-white mb-6">
+          <h2 className={`heading-font text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light mb-6 ${isDark ? 'text-white' : 'text-gray-900'}`}>
             Company{" "}
             <span className="text-[#ed1b24] font-normal">Organogram</span>
           </h2>
@@ -221,7 +219,7 @@ const OrganizationalChart = () => {
         >
           {/* Managing Director */}
           <motion.div variants={itemVariants} className="flex flex-col items-center mb-8 sm:mb-12">
-            <div className="director-card rounded-2xl px-8 sm:px-12 py-6 sm:py-8 text-center min-w-[280px] sm:min-w-[320px] cursor-pointer hover:scale-105 transition-transform duration-300">
+            <div className="director-card rounded-2xl px-8 sm:px-12 py-6 sm:py-8 text-center min-w-[280px] sm:min-w-[320px] cursor-pointer hover:scale-105 transition-transform duration-300 shadow-xl">
               <h3 className="heading-font text-xl sm:text-2xl font-bold text-white">
                 {orgStructure.managingDirector.title}
               </h3>
@@ -230,9 +228,13 @@ const OrganizationalChart = () => {
             {/* Support Badge */}
             <motion.div 
               variants={itemVariants}
-              className="support-badge rounded-xl px-6 py-3 mt-4 text-center"
+              className={`support-badge rounded-xl px-6 py-3 mt-4 text-center border ${
+                isDark 
+                  ? 'bg-white/10 border-white/20 text-white' 
+                  : 'bg-white border-gray-200 text-gray-700 shadow-sm'
+              }`}
             >
-              <p className="body-font text-white text-sm font-semibold">
+              <p className="body-font text-sm font-semibold">
                 {orgStructure.managingDirector.support}
               </p>
             </motion.div>
@@ -243,7 +245,7 @@ const OrganizationalChart = () => {
 
           {/* Technical Director */}
           <motion.div variants={itemVariants} className="flex flex-col items-center mb-8 sm:mb-12">
-            <div className="director-card rounded-2xl px-8 sm:px-12 py-6 sm:py-8 text-center min-w-[280px] sm:min-w-[320px] cursor-pointer hover:scale-105 transition-transform duration-300">
+            <div className="director-card rounded-2xl px-8 sm:px-12 py-6 sm:py-8 text-center min-w-[280px] sm:min-w-[320px] cursor-pointer hover:scale-105 transition-transform duration-300 shadow-xl">
               <h3 className="heading-font text-xl sm:text-2xl font-bold text-white">
                 {orgStructure.technicalDirector.title}
               </h3>
@@ -252,9 +254,13 @@ const OrganizationalChart = () => {
             {/* Support Badge */}
             <motion.div 
               variants={itemVariants}
-              className="support-badge rounded-xl px-6 py-3 mt-4 text-center"
+              className={`support-badge rounded-xl px-6 py-3 mt-4 text-center border ${
+                isDark 
+                  ? 'bg-white/10 border-white/20 text-white' 
+                  : 'bg-white border-gray-200 text-gray-700 shadow-sm'
+              }`}
             >
-              <p className="body-font text-white text-sm font-semibold">
+              <p className="body-font text-sm font-semibold">
                 {orgStructure.technicalDirector.support}
               </p>
             </motion.div>
@@ -283,8 +289,12 @@ const OrganizationalChart = () => {
                 className="flex flex-col"
               >
                 {/* Department Head */}
-                <div className="department-head rounded-xl px-5 py-6 text-center mb-6 cursor-pointer">
-                  <h4 className="heading-font text-base sm:text-lg font-bold text-white leading-tight">
+                <div className={`department-head rounded-xl px-5 py-6 text-center mb-6 cursor-pointer border-2 ${
+                  isDark 
+                    ? 'bg-gradient-to-br from-red-600/20 to-red-600/5 border-red-600/40' 
+                    : 'bg-white border-red-500/20 shadow-md'
+                }`}>
+                  <h4 className={`heading-font text-base sm:text-lg font-bold leading-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                     {dept.head}
                   </h4>
                 </div>
@@ -297,9 +307,13 @@ const OrganizationalChart = () => {
                       initial={{ opacity: 0, x: -20 }}
                       animate={isInView ? { opacity: 1, x: 0 } : {}}
                       transition={{ duration: 0.4, delay: 0.5 + index * 0.1 + memberIndex * 0.05 }}
-                      className="team-member rounded-lg px-4 py-3 cursor-pointer"
+                      className={`team-member rounded-lg px-4 py-3 cursor-pointer border ${
+                        isDark 
+                          ? 'bg-[#141414] border-white/10 text-gray-300' 
+                          : 'bg-white border-gray-200 text-gray-600 shadow-sm hover:text-[#ed1b24]'
+                      }`}
                     >
-                      <p className="body-font text-gray-300 text-sm font-medium text-center">
+                      <p className="body-font text-sm font-medium text-center">
                         {member}
                       </p>
                     </motion.div>

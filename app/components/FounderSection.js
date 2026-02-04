@@ -2,10 +2,12 @@
 
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
+import { useTheme } from '../context/ThemeContext';
 
 const FounderSection = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-150px" });
+  const { theme } = useTheme();
 
   const achievements = [
     {
@@ -54,7 +56,9 @@ const FounderSection = () => {
   ];
 
   return (
-    <section ref={sectionRef} className="relative w-full bg-black py-20 sm:py-24 md:py-32 lg:py-40 overflow-hidden">
+    <section ref={sectionRef} className={`relative w-full py-20 sm:py-24 md:py-32 lg:py-40 overflow-hidden transition-colors duration-300 ${
+      theme === 'dark' ? 'bg-black' : 'bg-gray-50'
+    }`}>
       <style jsx>{`
         @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;800;900&display=swap');
 
@@ -66,15 +70,30 @@ const FounderSection = () => {
           font-family: 'Archivo', sans-serif;
         }
 
-        .founder-card {
+        .founder-card-dark {
           background: linear-gradient(135deg, rgba(15, 15, 15, 0.98) 0%, rgba(25, 25, 25, 0.98) 100%);
           border: 1px solid rgba(255, 255, 255, 0.08);
           backdrop-filter: blur(20px);
         }
 
-        .stat-card {
+        .founder-card-light {
+          background: white;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card-dark {
           background: linear-gradient(135deg, rgba(237, 27, 36, 0.08) 0%, rgba(20, 20, 20, 0.95) 100%);
           border: 1px solid rgba(237, 27, 36, 0.2);
+        }
+
+        .stat-card-light {
+          background: white;
+          border: 1px solid rgba(237, 27, 36, 0.15);
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-card {
           transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
           position: relative;
           overflow: hidden;
@@ -101,10 +120,20 @@ const FounderSection = () => {
           border-color: rgba(237, 27, 36, 0.5);
         }
 
-        .credential-badge {
+        .credential-badge-dark {
           background: linear-gradient(135deg, rgba(20, 20, 20, 0.95) 0%, rgba(30, 30, 30, 0.95) 100%);
           border: 1px solid rgba(237, 27, 36, 0.3);
           border-left: 3px solid #ed1b24;
+        }
+
+        .credential-badge-light {
+          background: white;
+          border: 1px solid rgba(237, 27, 36, 0.2);
+          border-left: 3px solid #ed1b24;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .credential-badge {
           transition: all 0.3s ease;
         }
 
@@ -213,7 +242,9 @@ const FounderSection = () => {
             </div>
           </motion.div>
           
-          <h2 className="heading-font text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light text-white mb-4">
+          <h2 className={`heading-font text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light mb-4 ${
+            theme === 'dark' ? 'text-white' : 'text-gray-900'
+          }`}>
             Visionary{" "}
             <span className="text-[#ed1b24] font-normal">Leadership</span>
           </h2>
@@ -268,25 +299,33 @@ const FounderSection = () => {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="space-y-4"
             >
-              <h3 className="heading-font text-2xl font-medium text-white mb-6">
+              <h3 className={`heading-font text-2xl font-medium mb-6 ${
+                theme === 'dark' ? 'text-white' : 'text-gray-900'
+              }`}>
                 Credentials & Education
               </h3>
-              
+
               {credentials.map((cred, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, x: -30 }}
                   animate={isInView ? { opacity: 1, x: 0 } : {}}
                   transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
-                  className="credential-badge rounded-xl p-5"
+                  className={`credential-badge rounded-xl p-5 ${
+                    theme === 'dark' ? 'credential-badge-dark' : 'credential-badge-light'
+                  }`}
                 >
                   <div className="flex items-start gap-4">
                     <div className="w-2 h-2 rounded-full bg-[#ed1b24] flex-shrink-0 mt-3"></div>
                     <div className="flex-1">
-                      <h4 className="body-font font-bold text-white text-base sm:text-lg mb-1">
+                      <h4 className={`body-font font-bold text-base sm:text-lg mb-1 ${
+                        theme === 'dark' ? 'text-white' : 'text-gray-900'
+                      }`}>
                         {cred.title}
                       </h4>
-                      <p className="body-font text-gray-400 text-sm mb-1">
+                      <p className={`body-font text-sm mb-1 ${
+                        theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                      }`}>
                         {cred.institution}
                       </p>
                       <span className="body-font text-[#ed1b24] text-xs font-semibold uppercase tracking-wider">
@@ -304,7 +343,9 @@ const FounderSection = () => {
             initial={{ opacity: 0, x: 50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="founder-card rounded-3xl p-6 sm:p-8 md:p-10 lg:p-12 relative order-1 lg:order-2"
+            className={`rounded-3xl p-6 sm:p-8 md:p-10 lg:p-12 relative order-1 lg:order-2 ${
+              theme === 'dark' ? 'founder-card-dark' : 'founder-card-light'
+            }`}
           >
             {/* Quote Mark - Hidden on mobile */}
             <div className="quote-mark absolute -top-4 left-4 hidden md:block">"</div>
@@ -319,10 +360,14 @@ const FounderSection = () => {
                 <p className="body-font text-[#ed1b24] text-sm font-bold tracking-[0.2em] uppercase mb-3">
                   Founder & Managing Director
                 </p>
-                <h3 className="heading-font text-4xl sm:text-5xl md:text-6xl font-light text-white mb-2">
+                <h3 className={`heading-font text-4xl sm:text-5xl md:text-6xl font-light mb-2 ${
+                  theme === 'dark' ? 'text-white' : 'text-gray-900'
+                }`}>
                   Marwa Abd El Aziz
                 </h3>
-                <p className="body-font text-gray-400 text-base font-medium">
+                <p className={`body-font text-base font-medium ${
+                  theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                }`}>
                   MSc. Real Estate Development | B.Arch. | PMP®
                 </p>
               </motion.div>
@@ -335,15 +380,21 @@ const FounderSection = () => {
               transition={{ duration: 0.6, delay: 0.5 }}
               className="mb-8 space-y-4"
             >
-              <p className="body-font text-gray-300 text-base sm:text-lg leading-relaxed">
-                Marwa is a <span className="text-white font-semibold">pioneer and expert</span> in developing projects to build revenue, profits and corporate visibility with extensive experience in all facets of projects.
+              <p className={`body-font text-base sm:text-lg leading-relaxed ${
+                theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+              }`}>
+                Marwa is a <span className={`font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>pioneer and expert</span> in developing projects to build revenue, profits and corporate visibility with extensive experience in all facets of projects.
               </p>
-              
-              <p className="body-font text-gray-300 text-base sm:text-lg leading-relaxed">
+
+              <p className={`body-font text-base sm:text-lg leading-relaxed ${
+                theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+              }`}>
                 Starting with site identification, developing and overseeing the implementation of feasibility plans for projects, she actively participates in financial analysis, acquisition, master planning, design review and tendering.
               </p>
-              
-              <p className="body-font text-gray-300 text-base sm:text-lg leading-relaxed">
+
+              <p className={`body-font text-base sm:text-lg leading-relaxed ${
+                theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+              }`}>
                 Since <span className="text-[#ed1b24] font-bold">2001</span>, she has been a driving force in the UAE Property Development industry, coordinating administrative activities for construction projects with an overall budget exceeding <span className="text-[#ed1b24] font-bold">$5 billion</span>.
               </p>
             </motion.div>
@@ -354,7 +405,9 @@ const FounderSection = () => {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.6 }}
             >
-              <h4 className="body-font text-white font-medium text-lg mb-4">
+              <h4 className={`body-font font-medium text-lg mb-4 ${
+                theme === 'dark' ? 'text-white' : 'text-gray-900'
+              }`}>
                 Core Expertise
               </h4>
               <div className="flex flex-wrap gap-2">
@@ -378,7 +431,9 @@ const FounderSection = () => {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={isInView ? { opacity: 1, scale: 1 } : {}}
               transition={{ duration: 0.6, delay: 0.8 }}
-              className="mt-10 pt-8 border-t border-white/10"
+              className={`mt-10 pt-8 border-t ${
+                theme === 'dark' ? 'border-white/10' : 'border-gray-200'
+              }`}
             >
               <div className="signature">Marwa Abd El Aziz</div>
             </motion.div>
@@ -399,12 +454,18 @@ const FounderSection = () => {
               animate={isInView ? { opacity: 1, scale: 1 } : {}}
               transition={{ duration: 0.5, delay: 0.7 + index * 0.1, type: "spring" }}
               whileHover={{ y: -8 }}
-              className="stat-card rounded-2xl p-6 sm:p-8 md:p-10 text-center cursor-pointer"
+              className={`stat-card rounded-2xl p-6 sm:p-8 md:p-10 text-center cursor-pointer ${
+                theme === 'dark' ? 'stat-card-dark' : 'stat-card-light'
+              }`}
             >
-              <div className="heading-font text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light text-white mb-3 sm:mb-4">
+              <div className={`heading-font text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light mb-3 sm:mb-4 ${
+                theme === 'dark' ? 'text-white' : 'text-gray-900'
+              }`}>
                 {stat.number}
               </div>
-              <div className="body-font text-gray-400 text-xs sm:text-sm md:text-base font-normal uppercase tracking-wider leading-tight">
+              <div className={`body-font text-xs sm:text-sm md:text-base font-normal uppercase tracking-wider leading-tight ${
+                theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+              }`}>
                 {stat.label}
               </div>
             </motion.div>

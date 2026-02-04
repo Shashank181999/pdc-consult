@@ -7,6 +7,7 @@ import { useSearchParams } from 'next/navigation';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { supabase } from '../admin/supabase';
+import { useTheme } from '../context/ThemeContext';
 
 // ============================================
 // DEFAULT/FALLBACK IMAGES BY CATEGORY
@@ -336,7 +337,7 @@ const ProjectsHero = ({ activeCategory, activeSector }) => {
 // ============================================
 // FILTER SECTION
 // ============================================
-const FilterSection = ({ activeCategory, activeSector, onCategoryChange, onSectorChange, onFilterChange }) => {
+const FilterSection = ({ activeCategory, activeSector, onCategoryChange, onSectorChange, onFilterChange, theme }) => {
   const [showFilters, setShowFilters] = useState(false);
 
   const handleCategoryChange = (catId) => {
@@ -351,7 +352,11 @@ const FilterSection = ({ activeCategory, activeSector, onCategoryChange, onSecto
   };
 
   return (
-    <section className="sticky top-[72px] z-40 bg-black/95 backdrop-blur-lg border-b border-white/10 py-4">
+    <section className={`sticky top-[72px] z-40 backdrop-blur-lg border-b py-4 ${
+      theme === 'dark'
+        ? 'bg-black/95 border-white/10'
+        : 'bg-white/95 border-gray-200'
+    }`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-16">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           {/* Category Filters */}
@@ -363,7 +368,9 @@ const FilterSection = ({ activeCategory, activeSector, onCategoryChange, onSecto
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                   activeCategory === cat.id
                     ? 'bg-[#ed1b24] text-white'
-                    : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white border border-white/10'
+                    : theme === 'dark'
+                      ? 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white border border-white/10'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-900 border border-gray-200'
                 }`}
               >
                 {cat.name}
@@ -375,7 +382,11 @@ const FilterSection = ({ activeCategory, activeSector, onCategoryChange, onSecto
           <div className="relative">
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-gray-300 hover:bg-white/10 transition-all"
+              className={`flex items-center gap-2 px-4 py-2 border rounded-lg hover:opacity-80 transition-all ${
+                theme === 'dark'
+                  ? 'bg-white/5 border-white/10 text-gray-300'
+                  : 'bg-gray-50 border-gray-200 text-gray-600'
+              }`}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
@@ -387,7 +398,11 @@ const FilterSection = ({ activeCategory, activeSector, onCategoryChange, onSecto
             </button>
 
             {showFilters && (
-              <div className="absolute right-0 mt-2 w-64 bg-black/95 backdrop-blur-lg border border-white/10 rounded-xl shadow-2xl overflow-hidden z-50">
+              <div className={`absolute right-0 mt-2 w-64 backdrop-blur-lg border rounded-xl shadow-2xl overflow-hidden z-50 ${
+                theme === 'dark'
+                  ? 'bg-black/95 border-white/10'
+                  : 'bg-white border-gray-200'
+              }`}>
                 {sectors.map((sector) => (
                   <button
                     key={sector.id}
@@ -395,7 +410,9 @@ const FilterSection = ({ activeCategory, activeSector, onCategoryChange, onSecto
                     className={`w-full text-left px-4 py-3 text-sm transition-colors ${
                       activeSector === sector.id
                         ? 'bg-[#ed1b24] text-white'
-                        : 'text-gray-300 hover:bg-white/10'
+                        : theme === 'dark'
+                          ? 'text-gray-300 hover:bg-white/10'
+                          : 'text-gray-600 hover:bg-gray-100'
                     }`}
                   >
                     {sector.name}
@@ -413,7 +430,7 @@ const FilterSection = ({ activeCategory, activeSector, onCategoryChange, onSecto
 // ============================================
 // PROJECTS GRID
 // ============================================
-const ProjectsGrid = ({ projects, visibleCount, onLoadMore, isLoading }) => {
+const ProjectsGrid = ({ projects, visibleCount, onLoadMore, isLoading, theme }) => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-50px" });
   const [hoveredId, setHoveredId] = useState(null);
@@ -424,15 +441,17 @@ const ProjectsGrid = ({ projects, visibleCount, onLoadMore, isLoading }) => {
 
   if (projects.length === 0) {
     return (
-      <section className="py-24 bg-black">
+      <section className={`py-24 ${theme === 'dark' ? 'bg-black' : 'bg-gray-50'}`}>
         <div className="container mx-auto px-4 sm:px-6 lg:px-16 text-center">
-          <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6">
+          <div className={`w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 ${
+            theme === 'dark' ? 'bg-white/5' : 'bg-gray-200'
+          }`}>
             <svg className="w-10 h-10 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
             </svg>
           </div>
-          <h3 className="text-2xl font-bold text-white mb-4">No Projects Found</h3>
-          <p className="text-gray-400 mb-8">No projects match your current filter criteria.</p>
+          <h3 className={`text-2xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>No Projects Found</h3>
+          <p className={`mb-8 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>No projects match your current filter criteria.</p>
           <Link
             href="/projects"
             className="inline-flex items-center gap-2 px-6 py-3 bg-[#ed1b24] text-white font-medium rounded-lg hover:bg-white hover:text-[#ed1b24] transition-all"
@@ -445,7 +464,7 @@ const ProjectsGrid = ({ projects, visibleCount, onLoadMore, isLoading }) => {
   }
 
   return (
-    <section ref={sectionRef} className="relative py-16 lg:py-24 bg-black overflow-hidden">
+    <section ref={sectionRef} className={`relative py-16 lg:py-24 overflow-hidden ${theme === 'dark' ? 'bg-black' : 'bg-gray-50'}`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-16 relative z-10">
         {/* Results Count */}
         <motion.div
@@ -453,8 +472,8 @@ const ProjectsGrid = ({ projects, visibleCount, onLoadMore, isLoading }) => {
           animate={{ opacity: 1 }}
           className="mb-8"
         >
-          <p className="text-gray-400">
-            Showing <span className="text-white font-medium">{visibleProjects.length}</span> of <span className="text-white font-medium">{projects.length}</span> projects
+          <p className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}>
+            Showing <span className={`font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{visibleProjects.length}</span> of <span className={`font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{projects.length}</span> projects
           </p>
         </motion.div>
 
@@ -471,7 +490,11 @@ const ProjectsGrid = ({ projects, visibleCount, onLoadMore, isLoading }) => {
               className={`group ${project.featured ? 'sm:col-span-2 lg:col-span-1' : ''}`}
             >
               <Link href={`/projects/${project.id}`} className="block h-full">
-                <div className="relative overflow-hidden rounded-2xl h-[300px] sm:h-[350px] bg-[#111] border border-white/5 hover:border-[#ed1b24]/30 transition-all duration-500">
+                <div className={`relative overflow-hidden rounded-2xl h-[300px] sm:h-[350px] border hover:border-[#ed1b24]/30 transition-all duration-500 ${
+                  theme === 'dark'
+                    ? 'bg-[#111] border-white/5'
+                    : 'bg-white border-gray-200'
+                }`}>
                   {/* Image */}
                   <motion.img
                     animate={{ scale: hoveredId === project.id ? 1.1 : 1 }}
@@ -601,7 +624,7 @@ const ProjectsGrid = ({ projects, visibleCount, onLoadMore, isLoading }) => {
 // ============================================
 // STATS SECTION
 // ============================================
-const StatsSection = () => {
+const StatsSection = ({ theme }) => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
@@ -613,7 +636,7 @@ const StatsSection = () => {
   ];
 
   return (
-    <section ref={sectionRef} className="relative py-16 bg-[#0a0a0a] overflow-hidden">
+    <section ref={sectionRef} className={`relative py-16 overflow-hidden ${theme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'}`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-16 relative z-10">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {stats.map((stat, index) => (
@@ -622,11 +645,15 @@ const StatsSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="text-center p-6 sm:p-8 bg-black/50 rounded-2xl border border-white/5 hover:border-[#ed1b24]/30 transition-colors"
+              className={`text-center p-6 sm:p-8 rounded-2xl border hover:border-[#ed1b24]/30 transition-colors ${
+                theme === 'dark'
+                  ? 'bg-black/50 border-white/5'
+                  : 'bg-gray-50 border-gray-200'
+              }`}
             >
               <div className="text-3xl mb-3">{stat.icon}</div>
-              <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-1">{stat.value}</div>
-              <div className="text-gray-400 text-xs sm:text-sm uppercase tracking-wider">{stat.label}</div>
+              <div className={`text-2xl sm:text-3xl lg:text-4xl font-bold mb-1 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{stat.value}</div>
+              <div className={`text-xs sm:text-sm uppercase tracking-wider ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>{stat.label}</div>
             </motion.div>
           ))}
         </div>
@@ -678,7 +705,7 @@ const CTASection = () => {
 // ============================================
 // MAIN CONTENT COMPONENT (with useSearchParams)
 // ============================================
-function ProjectsContent() {
+function ProjectsContent({ theme }) {
   const searchParams = useSearchParams();
   const [activeCategory, setActiveCategory] = useState('all');
   const [activeSector, setActiveSector] = useState('all');
@@ -797,22 +824,24 @@ function ProjectsContent() {
         onCategoryChange={handleCategoryChange}
         onSectorChange={handleSectorChange}
         onFilterChange={handleFilterChange}
+        theme={theme}
       />
       {loading ? (
-        <section className="py-24 bg-black">
+        <section className={`py-24 ${theme === 'dark' ? 'bg-black' : 'bg-gray-50'}`}>
           <div className="container mx-auto px-4 flex items-center justify-center">
             <div className="w-12 h-12 border-4 border-[#ed1b24] border-t-transparent rounded-full animate-spin"></div>
           </div>
         </section>
       ) : (
-        <ProjectsGrid 
-          projects={filteredProjects} 
+        <ProjectsGrid
+          projects={filteredProjects}
           visibleCount={visibleCount}
           onLoadMore={handleLoadMore}
           isLoading={loadingMore}
+          theme={theme}
         />
       )}
-      <StatsSection />
+      <StatsSection theme={theme} />
       <CTASection />
       <Footer />
     </>
@@ -823,14 +852,18 @@ function ProjectsContent() {
 // MAIN PAGE WITH SUSPENSE
 // ============================================
 export default function ProjectsPage() {
+  const { theme } = useTheme();
+
   return (
-    <main className="w-full bg-black selection:bg-[#ed1b24] selection:text-white" style={{ fontFamily: "'Archivo', sans-serif" }}>
+    <main className={`w-full selection:bg-[#ed1b24] selection:text-white transition-colors duration-300 ${
+      theme === 'dark' ? 'bg-black' : 'bg-white'
+    }`} style={{ fontFamily: "'Archivo', sans-serif" }}>
       <Suspense fallback={
-        <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className={`min-h-screen flex items-center justify-center ${theme === 'dark' ? 'bg-black' : 'bg-white'}`}>
           <div className="w-12 h-12 border-4 border-[#ed1b24] border-t-transparent rounded-full animate-spin"></div>
         </div>
       }>
-        <ProjectsContent />
+        <ProjectsContent theme={theme} />
       </Suspense>
     </main>
   );

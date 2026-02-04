@@ -5,6 +5,7 @@ import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import Link from 'next/link';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { useTheme } from '../context/ThemeContext';
 
 // ============================================
 // STATIC SERVICES DATA (FALLBACK)
@@ -199,13 +200,13 @@ const ServicesHero = () => {
 // ============================================
 // SERVICES GRID - BENTO STYLE
 // ============================================
-const ServicesGrid = ({ services, loading }) => {
+const ServicesGrid = ({ services, loading, theme }) => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-50px" });
 
   if (loading) {
     return (
-      <section className="relative py-24 lg:py-32 bg-[#050505]">
+      <section className={`relative py-24 lg:py-32 ${theme === 'dark' ? 'bg-[#050505]' : 'bg-gray-50'}`}>
         <div className="container mx-auto px-4 flex items-center justify-center">
           <div className="w-12 h-12 border-4 border-[#ed1b24] border-t-transparent rounded-full animate-spin"></div>
         </div>
@@ -214,7 +215,7 @@ const ServicesGrid = ({ services, loading }) => {
   }
 
   return (
-    <section ref={sectionRef} className="relative py-24 lg:py-32 bg-[#050505] overflow-hidden">
+    <section ref={sectionRef} className={`relative py-24 lg:py-32 overflow-hidden ${theme === 'dark' ? 'bg-[#050505]' : 'bg-gray-50'}`}>
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(237,27,36,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(237,27,36,0.02)_1px,transparent_1px)] bg-[size:60px_60px]"></div>
 
@@ -227,7 +228,7 @@ const ServicesGrid = ({ services, loading }) => {
           className="text-center mb-16"
         >
           <span className="text-[#ed1b24] font-semibold uppercase tracking-[0.2em] text-sm">Expertise</span>
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-light text-white mt-4">
+          <h2 className={`text-4xl sm:text-5xl lg:text-6xl font-light mt-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
             What We <span className="font-normal text-[#ed1b24]">Do</span>
           </h2>
         </motion.div>
@@ -243,7 +244,9 @@ const ServicesGrid = ({ services, loading }) => {
               className={`group ${index === 0 ? 'lg:col-span-2 lg:row-span-2' : ''}`}
             >
               <Link href={`/services/${service.id}`}>
-                <div className={`relative overflow-hidden rounded-3xl bg-[#0a0a0a] border border-white/5 hover:border-[#ed1b24]/30 transition-all duration-300 h-full ${index === 0 ? 'min-h-[500px]' : 'min-h-[280px]'}`}>
+                <div className={`relative overflow-hidden rounded-3xl border hover:border-[#ed1b24]/30 transition-all duration-300 h-full ${index === 0 ? 'min-h-[500px]' : 'min-h-[280px]'} ${
+                  theme === 'dark' ? 'bg-[#0a0a0a] border-white/5' : 'bg-white border-gray-200'
+                }`}>
                   {/* Background Image */}
                   <div className="absolute inset-0">
                     <motion.img
@@ -251,16 +254,24 @@ const ServicesGrid = ({ services, loading }) => {
                       transition={{ duration: 0.4 }}
                       src={service.image}
                       alt={service.title}
-                      className="w-full h-full object-cover opacity-30 group-hover:opacity-40 transition-opacity duration-300"
+                      className={`w-full h-full object-cover transition-opacity duration-300 ${
+                        theme === 'dark' ? 'opacity-30 group-hover:opacity-40' : 'opacity-20 group-hover:opacity-30'
+                      }`}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent"></div>
+                    <div className={`absolute inset-0 ${
+                      theme === 'dark'
+                        ? 'bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent'
+                        : 'bg-gradient-to-t from-white via-white/90 to-transparent'
+                    }`}></div>
                   </div>
 
                   {/* Content */}
                   <div className="relative h-full p-6 lg:p-8 flex flex-col justify-end">
                     {/* Number */}
                     <div className="absolute top-6 right-6">
-                      <span className="text-6xl lg:text-7xl font-light text-white/5 group-hover:text-[#ed1b24]/10 transition-colors duration-300">
+                      <span className={`text-6xl lg:text-7xl font-light group-hover:text-[#ed1b24]/10 transition-colors duration-300 ${
+                        theme === 'dark' ? 'text-white/5' : 'text-gray-900/5'
+                      }`}>
                         {service.number}
                       </span>
                     </div>
@@ -274,10 +285,14 @@ const ServicesGrid = ({ services, loading }) => {
                     </motion.div>
 
                     {/* Title & Description */}
-                    <h3 className="text-xl lg:text-2xl font-bold text-white mb-2 group-hover:text-[#ed1b24] transition-colors duration-300">
+                    <h3 className={`text-xl lg:text-2xl font-bold mb-2 group-hover:text-[#ed1b24] transition-colors duration-300 ${
+                      theme === 'dark' ? 'text-white' : 'text-gray-900'
+                    }`}>
                       {service.title}
                     </h3>
-                    <p className="text-gray-400 text-sm lg:text-base mb-4 line-clamp-2">
+                    <p className={`text-sm lg:text-base mb-4 line-clamp-2 ${
+                      theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                    }`}>
                       {service.shortDesc}
                     </p>
 
@@ -285,7 +300,9 @@ const ServicesGrid = ({ services, loading }) => {
                     {index === 0 && (
                       <div className="hidden lg:flex flex-wrap gap-2 mb-4">
                         {service.features.map((feature, i) => (
-                          <span key={i} className="px-3 py-1 bg-white/5 rounded-full text-xs text-gray-400">
+                          <span key={i} className={`px-3 py-1 rounded-full text-xs ${
+                            theme === 'dark' ? 'bg-white/5 text-gray-400' : 'bg-gray-100 text-gray-600'
+                          }`}>
                             {feature}
                           </span>
                         ))}
@@ -313,7 +330,7 @@ const ServicesGrid = ({ services, loading }) => {
 // ============================================
 // PROCESS SECTION
 // ============================================
-const ProcessSection = () => {
+const ProcessSection = ({ theme }) => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
@@ -325,7 +342,7 @@ const ProcessSection = () => {
   ];
 
   return (
-    <section ref={sectionRef} className="relative py-24 lg:py-32 bg-black overflow-hidden">
+    <section ref={sectionRef} className={`relative py-24 lg:py-32 overflow-hidden ${theme === 'dark' ? 'bg-black' : 'bg-white'}`}>
       {/* Background */}
       <div className="absolute inset-0">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#ed1b24] rounded-full blur-[300px] opacity-[0.03]"></div>
@@ -340,7 +357,7 @@ const ProcessSection = () => {
           className="text-center mb-16"
         >
           <span className="text-[#ed1b24] font-semibold uppercase tracking-[0.2em] text-sm">Our Approach</span>
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-light text-white mt-4">
+          <h2 className={`text-4xl sm:text-5xl lg:text-6xl font-light mt-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
             How We <span className="font-normal text-[#ed1b24]">Work</span>
           </h2>
         </motion.div>
@@ -355,15 +372,19 @@ const ProcessSection = () => {
               transition={{ duration: 0.4, delay: index * 0.1 }}
               className="relative group"
             >
-              <div className="p-8 bg-white/[0.02] rounded-3xl border border-white/5 hover:border-[#ed1b24]/30 transition-all duration-300 h-full">
+              <div className={`p-8 rounded-3xl border hover:border-[#ed1b24]/30 transition-all duration-300 h-full ${
+                theme === 'dark'
+                  ? 'bg-white/[0.02] border-white/5'
+                  : 'bg-gray-50 border-gray-200'
+              }`}>
                 {/* Number */}
                 <div className="text-6xl font-light text-[#ed1b24]/20 group-hover:text-[#ed1b24]/40 transition-colors duration-300 mb-4">
                   {step.number}
                 </div>
 
                 {/* Content */}
-                <h3 className="text-2xl font-bold text-white mb-2">{step.title}</h3>
-                <p className="text-gray-400">{step.desc}</p>
+                <h3 className={`text-2xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{step.title}</h3>
+                <p className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}>{step.desc}</p>
 
                 {/* Connector Line */}
                 {index < steps.length - 1 && (
@@ -381,7 +402,7 @@ const ProcessSection = () => {
 // ============================================
 // WHY CHOOSE US
 // ============================================
-const WhyChooseUs = () => {
+const WhyChooseUs = ({ theme }) => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
@@ -393,7 +414,7 @@ const WhyChooseUs = () => {
   ];
 
   return (
-    <section ref={sectionRef} className="relative py-24 lg:py-32 bg-[#050505] overflow-hidden">
+    <section ref={sectionRef} className={`relative py-24 lg:py-32 overflow-hidden ${theme === 'dark' ? 'bg-[#050505]' : 'bg-gray-50'}`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-16 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Left Content */}
@@ -403,11 +424,11 @@ const WhyChooseUs = () => {
             transition={{ duration: 0.5 }}
           >
             <span className="text-[#ed1b24] font-semibold uppercase tracking-[0.2em] text-sm">Why PDC</span>
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-light text-white mt-4 mb-6 leading-tight">
+            <h2 className={`text-4xl sm:text-5xl lg:text-6xl font-light mt-4 mb-6 leading-tight ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
               Excellence in
               <span className="font-normal text-[#ed1b24]"> Every Detail</span>
             </h2>
-            <p className="text-gray-400 text-lg leading-relaxed mb-8">
+            <p className={`text-lg leading-relaxed mb-8 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
               We combine deep regional expertise with world-class standards to deliver
               exceptional results that exceed expectations and stand the test of time.
             </p>
@@ -423,8 +444,8 @@ const WhyChooseUs = () => {
                 >
                   <span className="text-3xl">{reason.icon}</span>
                   <div>
-                    <h4 className="text-white font-bold">{reason.title}</h4>
-                    <p className="text-gray-500 text-sm">{reason.desc}</p>
+                    <h4 className={`font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{reason.title}</h4>
+                    <p className={`text-sm ${theme === 'dark' ? 'text-gray-500' : 'text-gray-600'}`}>{reason.desc}</p>
                   </div>
                 </motion.div>
               ))}
@@ -526,6 +547,7 @@ const CTASection = () => {
 // MAIN PAGE
 // ============================================
 export default function ServicesPage() {
+  const { theme } = useTheme();
   // Always use static services for the main services page
   const services = staticServicesData;
   const loading = false;
@@ -536,16 +558,18 @@ export default function ServicesPage() {
   }, []);
 
   return (
-    <main className="w-full bg-black selection:bg-[#ed1b24] selection:text-white" style={{ fontFamily: "'Archivo', sans-serif" }}>
+    <main className={`w-full selection:bg-[#ed1b24] selection:text-white transition-colors duration-300 ${
+      theme === 'dark' ? 'bg-black' : 'bg-white'
+    }`} style={{ fontFamily: "'Archivo', sans-serif" }}>
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;800;900&display=swap');
       `}</style>
 
       <Header />
       <ServicesHero />
-      <ServicesGrid services={services} loading={loading} />
-      <ProcessSection />
-      <WhyChooseUs />
+      <ServicesGrid services={services} loading={loading} theme={theme} />
+      <ProcessSection theme={theme} />
+      <WhyChooseUs theme={theme} />
       <CTASection />
       <Footer />
     </main>

@@ -2,10 +2,12 @@
 
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
+import { useTheme } from '../context/ThemeContext';
 
 const VisionSection = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const { theme } = useTheme();
 
   const testimonial = {
     quote: "FROM BLUEPRINTS TO BUILDINGS, WE'RE MAKING DREAMS TANGIBLE.",
@@ -15,7 +17,9 @@ const VisionSection = () => {
   };
 
   return (
-    <section ref={sectionRef} className="relative w-full bg-black py-20 sm:py-24 md:py-32 overflow-hidden">
+    <section ref={sectionRef} className={`relative w-full py-20 sm:py-24 md:py-32 overflow-hidden transition-colors duration-300 ${
+      theme === 'dark' ? 'bg-black' : 'bg-white'
+    }`}>
       <style jsx>{`
         @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap');
 
@@ -27,10 +31,16 @@ const VisionSection = () => {
           font-family: 'Source Sans 3', sans-serif;
         }
 
-        .quote-card {
+        .quote-card-dark {
           background: linear-gradient(135deg, rgba(15, 15, 15, 0.95) 0%, rgba(25, 25, 25, 0.95) 100%);
           border: 1px solid rgba(255, 255, 255, 0.08);
           backdrop-filter: blur(20px);
+        }
+
+        .quote-card-light {
+          background: white;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
         }
 
         .image-container {
@@ -115,7 +125,9 @@ const VisionSection = () => {
             </div>
           </motion.div>
 
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light text-white mb-6 tracking-tight leading-tight" style={{ fontFamily: 'Archivo, sans-serif' }}>
+          <h2 className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light mb-6 tracking-tight leading-tight ${
+            theme === 'dark' ? 'text-white' : 'text-gray-900'
+          }`} style={{ fontFamily: 'Archivo, sans-serif' }}>
             Building{" "}
             <span className="text-[#ed1b24] font-normal">Excellence</span>
           </h2>
@@ -128,7 +140,9 @@ const VisionSection = () => {
           transition={{ duration: 0.8, delay: 0.2 }}
         >
           {/* Desktop Layout */}
-          <div className="hidden lg:grid lg:grid-cols-12 gap-8 xl:gap-12 items-center quote-card rounded-3xl p-8 xl:p-12 relative overflow-hidden">
+          <div className={`hidden lg:grid lg:grid-cols-12 gap-8 xl:gap-12 items-center rounded-3xl p-8 xl:p-12 relative overflow-hidden ${
+            theme === 'dark' ? 'quote-card-dark' : 'quote-card-light'
+          }`}>
             {/* Number Badge */}
        
 
@@ -162,7 +176,9 @@ const VisionSection = () => {
                 ></motion.div>
 
                 {/* Quote Text */}
-                <h3 className="heading-font text-3xl sm:text-4xl xl:text-5xl font-bold text-white mb-8 leading-tight relative z-10">
+                <h3 className={`heading-font text-3xl sm:text-4xl xl:text-5xl font-bold mb-8 leading-tight relative z-10 ${
+                  theme === 'dark' ? 'text-white' : 'text-gray-900'
+                }`}>
                   {testimonial.quote}
                 </h3>
 
@@ -171,7 +187,9 @@ const VisionSection = () => {
                   <p className="body-font text-xl sm:text-2xl font-bold text-[#ed1b24] mb-2">
                     {testimonial.author}
                   </p>
-                  <p className="body-font text-base sm:text-lg text-gray-400 font-medium">
+                  <p className={`body-font text-base sm:text-lg font-medium ${
+                    theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                  }`}>
                     {testimonial.role}
                   </p>
                 </div>
@@ -180,7 +198,9 @@ const VisionSection = () => {
           </div>
 
           {/* Mobile/Tablet Layout */}
-          <div className="lg:hidden quote-card rounded-3xl overflow-hidden relative">
+          <div className={`lg:hidden rounded-3xl overflow-hidden relative ${
+            theme === 'dark' ? 'quote-card-dark' : 'quote-card-light'
+          }`}>
             {/* Number Badge */}
       
 
@@ -207,7 +227,9 @@ const VisionSection = () => {
               ></motion.div>
 
               {/* Quote Text */}
-              <h3 className="heading-font text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-6 leading-tight relative z-10">
+              <h3 className={`heading-font text-2xl sm:text-3xl md:text-4xl font-bold mb-6 leading-tight relative z-10 ${
+                theme === 'dark' ? 'text-white' : 'text-gray-900'
+              }`}>
                 {testimonial.quote}
               </h3>
 
@@ -216,7 +238,9 @@ const VisionSection = () => {
                 <p className="body-font text-lg sm:text-xl font-bold text-[#ed1b24] mb-1">
                   {testimonial.author}
                 </p>
-                <p className="body-font text-sm sm:text-base text-gray-400 font-medium">
+                <p className={`body-font text-sm sm:text-base font-medium ${
+                  theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                }`}>
                   {testimonial.role}
                 </p>
               </div>

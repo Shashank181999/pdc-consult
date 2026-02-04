@@ -2,8 +2,10 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useTheme } from '../context/ThemeContext';
 
 const Footer = () => {
+  const { theme } = useTheme();
   const currentYear = new Date().getFullYear();
 
   const footerSections = [
@@ -84,7 +86,9 @@ const Footer = () => {
         @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;800;900&display=swap');
       `}</style>
 
-      <footer className="relative bg-black text-white overflow-hidden" style={{ fontFamily: "'Archivo', sans-serif" }}>
+      <footer className={`relative overflow-hidden transition-colors duration-300 ${
+        theme === 'dark' ? 'bg-black text-white' : 'bg-black text-white'
+      }`} style={{ fontFamily: "'Archivo', sans-serif" }}>
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-[0.02]">
           <div style={{

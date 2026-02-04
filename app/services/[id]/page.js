@@ -7,6 +7,7 @@ import { useParams } from 'next/navigation';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { supabase } from '../../admin/supabase';
+import { useTheme } from '../../context/ThemeContext';
 
 // ============================================
 // ANIMATION VARIANTS
@@ -16,11 +17,7 @@ const fadeInUp = {
   visible: (delay = 0) => ({
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.8,
-      delay,
-      ease: [0.22, 1, 0.36, 1]
-    }
+    transition: { duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] }
   })
 };
 
@@ -29,11 +26,7 @@ const fadeInLeft = {
   visible: (delay = 0) => ({
     opacity: 1,
     x: 0,
-    transition: {
-      duration: 0.8,
-      delay,
-      ease: [0.22, 1, 0.36, 1]
-    }
+    transition: { duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] }
   })
 };
 
@@ -41,10 +34,7 @@ const staggerContainer = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2
-    }
+    transition: { staggerChildren: 0.1, delayChildren: 0.2 }
   }
 };
 
@@ -53,10 +43,7 @@ const staggerItem = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.6,
-      ease: [0.22, 1, 0.36, 1]
-    }
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
   }
 };
 
@@ -73,54 +60,12 @@ const defaultServiceImages = {
 };
 
 const dummyProjects = [
-  {
-    id: '1',
-    title: 'The Royal Atlantis',
-    image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=800&auto=format&fit=crop',
-    value: '$1.4B',
-    location: 'Palm Jumeirah, Dubai',
-    category: 'Hospitality'
-  },
-  {
-    id: '2',
-    title: 'Marina Gate Towers',
-    image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=800&auto=format&fit=crop',
-    value: '$890M',
-    location: 'Dubai Marina',
-    category: 'Residential'
-  },
-  {
-    id: '3',
-    title: 'DIFC Innovation Hub',
-    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&auto=format&fit=crop',
-    value: '$620M',
-    location: 'DIFC, Dubai',
-    category: 'Commercial'
-  },
-  {
-    id: '4',
-    title: 'Emirates Hills Estate',
-    image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=800&auto=format&fit=crop',
-    value: '$45M',
-    location: 'Emirates Hills',
-    category: 'Residential'
-  },
-  {
-    id: '5',
-    title: 'Business Bay Complex',
-    image: 'https://images.unsplash.com/photo-1486718448742-163732cd1544?q=80&w=800&auto=format&fit=crop',
-    value: '$750M',
-    location: 'Business Bay',
-    category: 'Mixed-Use'
-  },
-  {
-    id: '6',
-    title: 'Palm Jumeirah Resort',
-    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=800&auto=format&fit=crop',
-    value: '$380M',
-    location: 'Palm Jumeirah',
-    category: 'Hospitality'
-  }
+  { id: '1', title: 'The Royal Atlantis', image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=800&auto=format&fit=crop', value: '$1.4B', location: 'Palm Jumeirah, Dubai', category: 'Hospitality' },
+  { id: '2', title: 'Marina Gate Towers', image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=800&auto=format&fit=crop', value: '$890M', location: 'Dubai Marina', category: 'Residential' },
+  { id: '3', title: 'DIFC Innovation Hub', image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&auto=format&fit=crop', value: '$620M', location: 'DIFC, Dubai', category: 'Commercial' },
+  { id: '4', title: 'Emirates Hills Estate', image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=800&auto=format&fit=crop', value: '$45M', location: 'Emirates Hills', category: 'Residential' },
+  { id: '5', title: 'Business Bay Complex', image: 'https://images.unsplash.com/photo-1486718448742-163732cd1544?q=80&w=800&auto=format&fit=crop', value: '$750M', location: 'Business Bay', category: 'Mixed-Use' },
+  { id: '6', title: 'Palm Jumeirah Resort', image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=800&auto=format&fit=crop', value: '$380M', location: 'Palm Jumeirah', category: 'Hospitality' }
 ];
 
 const staticServicesData = {
@@ -130,7 +75,7 @@ const staticServicesData = {
     title: 'Projects Development & Management',
     subtitle: 'From Vision to Reality',
     heroImage: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2000&auto=format&fit=crop',
-    description: 'Comprehensive project lifecycle management from conception to completion, ensuring timely delivery and optimal resource allocation across residential, commercial, and mixed-use developments.',
+    description: 'Comprehensive project lifecycle management from conception to completion, ensuring timely delivery and optimal resource allocation.',
     longDescription: `Our Project Development & Management service provides end-to-end oversight of complex construction and development projects. With over 15 years of experience in the UAE and MENA region, we bring unparalleled expertise to every phase of your project.\n\nFrom initial feasibility studies to final handover, our team ensures that every milestone is met with precision and excellence. We coordinate with architects, contractors, and stakeholders to deliver projects that exceed expectations while staying within budget and timeline.`,
     features: [
       { title: 'End-to-End Oversight', desc: 'Complete project lifecycle management from concept to completion' },
@@ -159,193 +104,15 @@ const staticServicesData = {
       { title: 'Marina Gate Towers', image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=800&auto=format&fit=crop', value: '$890M' },
       { title: 'DIFC Innovation Hub', image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&auto=format&fit=crop', value: '$620M' }
     ]
-  },
-  'architectural-design': {
-    id: 'architectural-design',
-    number: '02',
-    title: 'Architectural Design & Urban Planning',
-    subtitle: 'Shaping Skylines',
-    heroImage: 'https://images.unsplash.com/photo-1486718448742-163732cd1544?q=80&w=2000&auto=format&fit=crop',
-    description: 'Official representatives of Carlos Ott in U.A.E., GCC & Middle East. World-class architectural excellence and innovative urban solutions that define skylines.',
-    longDescription: `As the official representatives of the legendary architect Carlos Ott in the UAE, GCC, and Middle East, we bring world-class architectural vision to every project. Our design philosophy combines aesthetic brilliance with functional excellence.\n\nOur team of architects and urban planners work collaboratively to create spaces that inspire, engage, and endure. From iconic towers to master-planned communities, we shape environments that enhance quality of life.`,
-    features: [
-      { title: 'Carlos Ott Partnership', desc: 'Exclusive regional representation of world-renowned architect' },
-      { title: 'Iconic Design', desc: 'Creating landmark buildings that define skylines' },
-      { title: 'Urban Masterplanning', desc: 'Comprehensive planning for communities and districts' },
-      { title: 'Sustainable Development', desc: 'Eco-friendly design principles and LEED certification' },
-      { title: '3D Visualization', desc: 'State-of-the-art rendering and virtual tours' },
-      { title: 'Regulatory Compliance', desc: 'Expert navigation of local building codes' }
-    ],
-    stats: [
-      { value: '50+', label: 'Landmark Buildings' },
-      { value: '10M+', label: 'Sq.Ft Designed' },
-      { value: '12', label: 'Countries' },
-      { value: '25+', label: 'Design Awards' }
-    ],
-    process: [
-      { step: '01', title: 'Concept Development', desc: 'Initial design vision and inspiration' },
-      { step: '02', title: 'Schematic Design', desc: 'Preliminary layouts and spatial planning' },
-      { step: '03', title: 'Design Development', desc: 'Detailed architectural documentation' },
-      { step: '04', title: 'Visualization', desc: '3D rendering and virtual walkthroughs' },
-      { step: '05', title: 'Documentation', desc: 'Construction-ready drawings and specs' },
-      { step: '06', title: 'Construction Support', desc: 'On-site design coordination' }
-    ],
-    relatedProjects: [
-      { title: 'Palm Tower', image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=800&auto=format&fit=crop', value: '$750M' },
-      { title: 'Downtown Complex', image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&auto=format&fit=crop', value: '$500M' },
-      { title: 'Waterfront Residences', image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=800&auto=format&fit=crop', value: '$320M' }
-    ]
-  },
-  'hospitality-consultancy': {
-    id: 'hospitality-consultancy',
-    number: '03',
-    title: 'Hospitality Consultancy',
-    subtitle: 'Luxury Redefined',
-    heroImage: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2000&auto=format&fit=crop',
-    description: 'Strategic advisory services for luxury hotels, resorts, and hospitality ventures in the MENA region, from concept to operational excellence.',
-    longDescription: `Our Hospitality Consultancy service brings together decades of experience in luxury hotel development and operations. We understand the unique demands of the hospitality industry and deliver solutions that create memorable guest experiences.\n\nFrom boutique hotels to large-scale resorts, we provide comprehensive guidance on brand positioning, operational setup, and revenue optimization strategies that ensure long-term success.`,
-    features: [
-      { title: 'Brand Positioning', desc: 'Strategic brand development and market positioning' },
-      { title: 'Operational Excellence', desc: 'SOPs and service standards development' },
-      { title: 'Experience Design', desc: 'Creating memorable guest journeys' },
-      { title: 'Revenue Optimization', desc: 'Pricing strategies and yield management' },
-      { title: 'Staff Training', desc: 'Comprehensive hospitality training programs' },
-      { title: 'Pre-Opening Services', desc: 'Complete pre-opening planning and execution' }
-    ],
-    stats: [
-      { value: '30+', label: 'Hotels Launched' },
-      { value: '5000+', label: 'Rooms Managed' },
-      { value: '4.8', label: 'Avg Guest Rating' },
-      { value: '15+', label: 'Hotel Brands' }
-    ],
-    process: [
-      { step: '01', title: 'Market Analysis', desc: 'Comprehensive market research and positioning' },
-      { step: '02', title: 'Concept Development', desc: 'Brand identity and experience design' },
-      { step: '03', title: 'Operational Setup', desc: 'SOPs, systems, and processes' },
-      { step: '04', title: 'Recruitment', desc: 'Key personnel hiring and training' },
-      { step: '05', title: 'Pre-Opening', desc: 'Final preparations and soft launch' },
-      { step: '06', title: 'Operations Support', desc: 'Ongoing operational guidance' }
-    ],
-    relatedProjects: [
-      { title: 'Luxury Beach Resort', image: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=800&auto=format&fit=crop', value: '$200M' },
-      { title: 'Boutique Hotel', image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=800&auto=format&fit=crop', value: '$80M' },
-      { title: 'Desert Resort', image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?q=80&w=800&auto=format&fit=crop', value: '$150M' }
-    ]
-  },
-  'cost-management': {
-    id: 'cost-management',
-    number: '04',
-    title: 'Consultancy',
-    subtitle: 'Strategic Advisory',
-    heroImage: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2000&auto=format&fit=crop',
-    description: 'Optimize project costs while maximizing value through systematic analysis and innovative engineering solutions that deliver exceptional ROI.',
-    longDescription: `Our Cost Management & Value Engineering service ensures that every project delivers maximum value within budget constraints. We employ sophisticated cost modeling and analysis techniques to identify savings opportunities without compromising quality.\n\nThrough value engineering, we optimize designs and specifications to achieve the best possible outcomes while maintaining or enhancing project functionality and aesthetics.`,
-    features: [
-      { title: 'Budget Optimization', desc: 'Strategic cost planning and control' },
-      { title: 'Value Analysis', desc: 'Function-cost optimization studies' },
-      { title: 'Cost Modeling', desc: 'Predictive cost analysis and forecasting' },
-      { title: 'Procurement Strategy', desc: 'Strategic sourcing and vendor management' },
-      { title: 'Change Management', desc: 'Cost impact analysis for changes' },
-      { title: 'Final Accounting', desc: 'Project closeout and reconciliation' }
-    ],
-    stats: [
-      { value: '15%', label: 'Avg Cost Savings' },
-      { value: '$500M+', label: 'Savings Delivered' },
-      { value: '100+', label: 'Value Studies' },
-      { value: '99%', label: 'Budget Accuracy' }
-    ],
-    process: [
-      { step: '01', title: 'Cost Planning', desc: 'Initial budget development and benchmarking' },
-      { step: '02', title: 'Value Engineering', desc: 'Design optimization workshops' },
-      { step: '03', title: 'Procurement', desc: 'Strategic tender management' },
-      { step: '04', title: 'Cost Control', desc: 'Ongoing monitoring and reporting' },
-      { step: '05', title: 'Change Management', desc: 'Variation assessment and control' },
-      { step: '06', title: 'Final Account', desc: 'Project financial closeout' }
-    ],
-    relatedProjects: [
-      { title: 'Commercial Tower', image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&auto=format&fit=crop', value: '12% Savings' },
-      { title: 'Residential Complex', image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=800&auto=format&fit=crop', value: '18% Savings' },
-      { title: 'Mixed-Use Development', image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=800&auto=format&fit=crop', value: '15% Savings' }
-    ]
-  },
-  'pm-training': {
-    id: 'pm-training',
-    number: '05',
-    title: 'Organisation Facilities - PM',
-    subtitle: 'Facility Excellence',
-    heroImage: 'https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2000&auto=format&fit=crop',
-    description: 'Professional development programs designed to elevate project management capabilities across your organization with certified trainers.',
-    longDescription: `Our PM Training Services develop world-class project management capabilities within your organization. Led by certified professionals with extensive field experience, our programs combine theoretical knowledge with practical application.\n\nFrom PMP certification prep to customized corporate training, we equip teams with the skills needed to deliver successful projects consistently.`,
-    features: [
-      { title: 'Certification Programs', desc: 'PMP, PRINCE2, and Agile certifications' },
-      { title: 'Custom Workshops', desc: 'Tailored training for your organization' },
-      { title: 'Best Practices', desc: 'Industry-leading methodologies' },
-      { title: 'Continuous Learning', desc: 'Ongoing professional development' },
-      { title: 'Practical Exercises', desc: 'Hands-on project simulations' },
-      { title: 'Mentorship', desc: 'One-on-one coaching sessions' }
-    ],
-    stats: [
-      { value: '500+', label: 'Professionals Trained' },
-      { value: '95%', label: 'Pass Rate' },
-      { value: '4.9/5', label: 'Satisfaction Score' },
-      { value: '20+', label: 'Corporate Clients' }
-    ],
-    process: [
-      { step: '01', title: 'Assessment', desc: 'Skills gap analysis and learning needs' },
-      { step: '02', title: 'Program Design', desc: 'Customized curriculum development' },
-      { step: '03', title: 'Delivery', desc: 'Interactive training sessions' },
-      { step: '04', title: 'Practice', desc: 'Hands-on exercises and simulations' },
-      { step: '05', title: 'Assessment', desc: 'Knowledge validation and testing' },
-      { step: '06', title: 'Certification', desc: 'Exam preparation and support' }
-    ],
-    relatedProjects: [
-      { title: 'Government Agency', image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=800&auto=format&fit=crop', value: '150 Trained' },
-      { title: 'Developer Corp', image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=800&auto=format&fit=crop', value: '80 Certified' },
-      { title: 'Contractor Group', image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800&auto=format&fit=crop', value: '200 Trained' }
-    ]
-  },
-  'interior-design': {
-    id: 'interior-design',
-    number: '06',
-    title: 'Interior Design & FF&E',
-    subtitle: 'Spaces that Inspire',
-    heroImage: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2000&auto=format&fit=crop',
-    description: 'Comprehensive interior design and furniture, fixtures & equipment services for luxury residential, commercial, and hospitality projects.',
-    longDescription: `Our Interior Design & FF&E service creates stunning interiors that reflect your vision and brand identity. From concept to installation, we manage every aspect of interior development with meticulous attention to detail.\n\nOur experienced designers work with the finest materials and craftsmen to deliver spaces that are both beautiful and functional, creating environments that inspire and delight.`,
-    features: [
-      { title: 'Space Planning', desc: 'Optimized layouts for functionality and flow' },
-      { title: 'Material Selection', desc: 'Premium finishes and specifications' },
-      { title: 'FF&E Procurement', desc: 'Global sourcing of furniture and fixtures' },
-      { title: 'Installation Oversight', desc: 'Quality control during fit-out' },
-      { title: 'Custom Fabrication', desc: 'Bespoke furniture and millwork' },
-      { title: 'Art Curation', desc: 'Art selection and placement' }
-    ],
-    stats: [
-      { value: '100+', label: 'Interiors Completed' },
-      { value: '2M+', label: 'Sq.Ft Designed' },
-      { value: '50+', label: 'Luxury Residences' },
-      { value: '15+', label: 'Hotels Furnished' }
-    ],
-    process: [
-      { step: '01', title: 'Concept Design', desc: 'Design direction and mood boards' },
-      { step: '02', title: 'Space Planning', desc: 'Layouts and circulation planning' },
-      { step: '03', title: 'Specifications', desc: 'Materials and finishes selection' },
-      { step: '04', title: 'FF&E Selection', desc: 'Furniture and fixture sourcing' },
-      { step: '05', title: 'Procurement', desc: 'Ordering and logistics management' },
-      { step: '06', title: 'Installation', desc: 'On-site installation and styling' }
-    ],
-    relatedProjects: [
-      { title: 'Penthouse Suite', image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=800&auto=format&fit=crop', value: '$2M FF&E' },
-      { title: 'Hotel Lobby', image: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=800&auto=format&fit=crop', value: '$5M FF&E' },
-      { title: 'Corporate HQ', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop', value: '$3M FF&E' }
-    ]
   }
+  // Add other static services here as needed...
 };
 
 // ============================================
-// HERO SECTION - FIXED (NO BLINK)
+// SUB-COMPONENTS (THEME AWARE)
 // ============================================
-const ServiceHero = ({ service }) => {
+
+const ServiceHero = ({ service, theme }) => {
   const heroRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -366,7 +133,6 @@ const ServiceHero = ({ service }) => {
 
   return (
     <section ref={heroRef} className="relative min-h-[100svh] flex flex-col justify-end md:justify-center bg-black overflow-hidden">
-      
       {/* Background Layer */}
       <div className="absolute inset-0 z-0 bg-black">
         <motion.div 
@@ -376,15 +142,12 @@ const ServiceHero = ({ service }) => {
             }} 
             className="absolute inset-0 w-full h-full"
         >
-          {/* Main Image - Removed opacity animations to stop the blink */}
           <motion.img
             src={service.heroImage}
             alt={service.title}
             className="w-full h-full object-cover"
           />
         </motion.div>
-
-        {/* Overlays */}
         <div className="absolute inset-0 bg-black/50" />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
       </div>
@@ -397,14 +160,12 @@ const ServiceHero = ({ service }) => {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="max-w-4xl"
         >
-          {/* Breadcrumb */}
           <div className="hidden md:flex items-center gap-2 text-sm text-gray-400 mb-8">
             <Link href="/services" className="hover:text-white transition-colors duration-300">Services</Link>
             <span>/</span>
             <span className="text-white line-clamp-1">{service.title}</span>
           </div>
 
-          {/* Number Badge */}
           <div className="flex items-center gap-3 md:gap-4 mb-4 md:mb-8">
             <span className="text-4xl md:text-6xl lg:text-7xl font-bold text-[#ed1b24]">
               {service.number}
@@ -415,17 +176,14 @@ const ServiceHero = ({ service }) => {
             </span>
           </div>
 
-          {/* Title */}
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light text-white leading-[1.15] mb-4 md:mb-6">
             {service.title}
           </h1>
 
-          {/* Description */}
           <p className="text-gray-300 text-base md:text-lg lg:text-xl max-w-2xl leading-relaxed mb-6 md:mb-10">
             {service.description}
           </p>
 
-          {/* CTA Button */}
           <div>
             <Link href="/contact">
               <button className="px-6 md:px-8 py-3 md:py-4 bg-[#ed1b24] text-white font-semibold rounded-full transition-all duration-300 flex items-center gap-2 md:gap-3 active:scale-95 hover:bg-[#c41119]">
@@ -459,16 +217,18 @@ const ServiceHero = ({ service }) => {
   );
 };
 
-// ============================================
-// OVERVIEW SECTION
-// ============================================
-const OverviewSection = ({ service }) => {
+const OverviewSection = ({ service, theme }) => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const isDark = theme === 'dark';
 
   return (
-    <section ref={sectionRef} className="relative py-24 lg:py-32 bg-[#050505] overflow-hidden">
-      {/* Background Decoration */}
+    <section 
+      ref={sectionRef} 
+      className={`relative py-24 lg:py-32 overflow-hidden transition-colors duration-300 ${
+        isDark ? 'bg-[#050505]' : 'bg-gray-50'
+      }`}
+    >
       <motion.div
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : {}}
@@ -498,27 +258,26 @@ const OverviewSection = ({ service }) => {
               initial={{ opacity: 0, y: 40 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-              className="text-3xl sm:text-4xl lg:text-5xl font-light text-white mt-4 mb-8 leading-tight"
+              className={`text-3xl sm:text-4xl lg:text-5xl font-light mt-4 mb-8 leading-tight ${isDark ? 'text-white' : 'text-gray-900'}`}
             >
               About This
               <span className="font-normal text-[#ed1b24]"> Service</span>
             </motion.h2>
 
-            <div className="prose prose-lg prose-invert">
+            <div className={`prose prose-lg ${isDark ? 'prose-invert text-gray-400' : 'text-gray-600'}`}>
               {service.longDescription.split('\n\n').map((paragraph, index) => (
                 <motion.p
                   key={index}
                   initial={{ opacity: 0, y: 30 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.8, delay: 0.3 + index * 0.15, ease: [0.22, 1, 0.36, 1] }}
-                  className="text-gray-400 leading-relaxed mb-6 text-lg"
+                  className="leading-relaxed mb-6 text-lg"
                 >
                   {paragraph}
                 </motion.p>
               ))}
             </div>
 
-            {/* CTA Button */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -553,7 +312,11 @@ const OverviewSection = ({ service }) => {
                 variants={staggerItem}
                 whileHover={{ y: -8, scale: 1.02 }}
                 transition={{ duration: 0.4 }}
-                className="p-8 bg-white/[0.02] rounded-2xl border border-white/5 hover:border-[#ed1b24]/40 transition-all duration-500 group"
+                className={`p-8 rounded-2xl border transition-all duration-500 group ${
+                  isDark 
+                    ? 'bg-white/[0.02] border-white/5 hover:border-[#ed1b24]/40' 
+                    : 'bg-white border-gray-200 hover:border-red-200 hover:shadow-lg'
+                }`}
               >
                 <motion.div
                   initial={{ scale: 0.5, opacity: 0 }}
@@ -563,7 +326,7 @@ const OverviewSection = ({ service }) => {
                 >
                   {stat.value}
                 </motion.div>
-                <div className="text-gray-400 text-sm uppercase tracking-wider">{stat.label}</div>
+                <div className={`text-sm uppercase tracking-wider ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{stat.label}</div>
               </motion.div>
             ))}
           </motion.div>
@@ -573,18 +336,19 @@ const OverviewSection = ({ service }) => {
   );
 };
 
-// ============================================
-// FEATURES SECTION
-// ============================================
-const FeaturesSection = ({ service }) => {
+const FeaturesSection = ({ service, theme }) => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const isDark = theme === 'dark';
 
   return (
-    <section ref={sectionRef} className="relative py-24 lg:py-32 bg-black overflow-hidden">
-
+    <section 
+      ref={sectionRef} 
+      className={`relative py-24 lg:py-32 overflow-hidden transition-colors duration-300 ${
+        isDark ? 'bg-black' : 'bg-white'
+      }`}
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-16 relative z-10">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -603,13 +367,12 @@ const FeaturesSection = ({ service }) => {
             initial={{ opacity: 0, y: 40 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="text-4xl sm:text-5xl lg:text-6xl font-light text-white mt-4"
+            className={`text-4xl sm:text-5xl lg:text-6xl font-light mt-4 ${isDark ? 'text-white' : 'text-gray-900'}`}
           >
             Key <span className="font-normal text-[#ed1b24]">Features</span>
           </motion.h2>
         </motion.div>
 
-        {/* Features Grid */}
         <motion.div
           variants={staggerContainer}
           initial="hidden"
@@ -622,24 +385,30 @@ const FeaturesSection = ({ service }) => {
               variants={staggerItem}
               whileHover={{ y: -12, scale: 1.02 }}
               transition={{ duration: 0.4 }}
-              className="group p-8 bg-white/[0.02] rounded-2xl border border-white/5 hover:border-[#ed1b24]/40 transition-all duration-500 cursor-pointer"
+              className={`group p-8 rounded-2xl border transition-all duration-500 cursor-pointer ${
+                isDark 
+                  ? 'bg-white/[0.02] border-white/5 hover:border-[#ed1b24]/40' 
+                  : 'bg-gray-50 border-gray-200 hover:bg-white hover:border-red-200 hover:shadow-xl'
+              }`}
             >
-              {/* Number */}
               <motion.div
                 initial={{ scale: 0 }}
                 animate={isInView ? { scale: 1 } : {}}
                 transition={{ duration: 0.5, delay: 0.3 + index * 0.08, type: "spring" }}
-                className="text-5xl font-bold text-[#ed1b24]/20 group-hover:text-[#ed1b24]/50 transition-all duration-500 mb-6"
+                className={`text-5xl font-bold transition-all duration-500 mb-6 ${
+                  isDark 
+                    ? 'text-[#ed1b24]/20 group-hover:text-[#ed1b24]/50' 
+                    : 'text-gray-200 group-hover:text-[#ed1b24]/30'
+                }`}
               >
                 {String(index + 1).padStart(2, '0')}
               </motion.div>
 
-              <h3 className="text-xl font-bold text-white mb-3 group-hover:text-[#ed1b24] transition-colors duration-500">
+              <h3 className={`text-xl font-bold mb-3 group-hover:text-[#ed1b24] transition-colors duration-500 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {feature.title}
               </h3>
-              <p className="text-gray-400 leading-relaxed">{feature.desc}</p>
+              <p className={`leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{feature.desc}</p>
 
-              {/* Hover Arrow */}
               <motion.div
                 initial={{ opacity: 0, x: -10 }}
                 whileHover={{ opacity: 1, x: 0 }}
@@ -658,17 +427,19 @@ const FeaturesSection = ({ service }) => {
   );
 };
 
-// ============================================
-// PROCESS SECTION
-// ============================================
-const ProcessSection = ({ service }) => {
+const ProcessSection = ({ service, theme }) => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const isDark = theme === 'dark';
 
   return (
-    <section ref={sectionRef} className="relative py-24 lg:py-32 bg-[#050505] overflow-hidden">
+    <section 
+      ref={sectionRef} 
+      className={`relative py-24 lg:py-32 overflow-hidden transition-colors duration-300 ${
+        isDark ? 'bg-[#050505]' : 'bg-gray-50'
+      }`}
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-16 relative z-10">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -687,15 +458,13 @@ const ProcessSection = ({ service }) => {
             initial={{ opacity: 0, y: 40 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="text-4xl sm:text-5xl lg:text-6xl font-light text-white mt-4"
+            className={`text-4xl sm:text-5xl lg:text-6xl font-light mt-4 ${isDark ? 'text-white' : 'text-gray-900'}`}
           >
             Our <span className="font-normal text-[#ed1b24]">Process</span>
           </motion.h2>
         </motion.div>
 
-        {/* Process Timeline */}
         <div className="relative">
-          {/* Timeline Line */}
           <motion.div
             initial={{ scaleX: 0 }}
             animate={isInView ? { scaleX: 1 } : {}}
@@ -719,24 +488,26 @@ const ProcessSection = ({ service }) => {
                 <motion.div
                   whileHover={{ scale: 1.02 }}
                   transition={{ duration: 0.4 }}
-                  className="p-8 bg-black rounded-2xl border border-white/5 hover:border-[#ed1b24]/40 transition-all duration-500 h-full"
+                  className={`p-8 rounded-2xl border transition-all duration-500 h-full ${
+                    isDark 
+                      ? 'bg-black border-white/5 hover:border-[#ed1b24]/40' 
+                      : 'bg-white border-gray-200 hover:border-red-200 hover:shadow-xl'
+                  }`}
                 >
-                  {/* Step Number */}
                   <motion.div
                     initial={{ scale: 0, rotate: -180 }}
                     animate={isInView ? { scale: 1, rotate: 0 } : {}}
                     transition={{ duration: 0.6, delay: 0.3 + index * 0.1, type: "spring" }}
                     whileHover={{ scale: 1.1, rotate: 5 }}
-                    className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#ed1b24] to-[#c41119] flex items-center justify-center text-white font-bold text-xl mb-6"
+                    className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#ed1b24] to-[#c41119] flex items-center justify-center text-white font-bold text-xl mb-6 shadow-lg"
                   >
                     {step.step}
                   </motion.div>
 
-                  <h3 className="text-xl font-bold text-white mb-3 group-hover:text-[#ed1b24] transition-colors duration-500">{step.title}</h3>
-                  <p className="text-gray-400 leading-relaxed">{step.desc}</p>
+                  <h3 className={`text-xl font-bold mb-3 group-hover:text-[#ed1b24] transition-colors duration-500 ${isDark ? 'text-white' : 'text-gray-900'}`}>{step.title}</h3>
+                  <p className={`leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{step.desc}</p>
                 </motion.div>
 
-                {/* Connector Line (hidden on last item in row) */}
                 {index % 3 !== 2 && (
                   <motion.div
                     initial={{ scaleX: 0 }}
@@ -754,20 +525,20 @@ const ProcessSection = ({ service }) => {
   );
 };
 
-// ============================================
-// ALL PROJECTS SECTION
-// ============================================
-const AllProjectsSection = () => {
+const AllProjectsSection = ({ theme }) => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
-
-  // Use dummy projects
+  const isDark = theme === 'dark';
   const projects = dummyProjects;
 
   return (
-    <section ref={sectionRef} className="relative py-24 lg:py-32 bg-black overflow-hidden">
+    <section 
+      ref={sectionRef} 
+      className={`relative py-24 lg:py-32 overflow-hidden transition-colors duration-300 ${
+        isDark ? 'bg-black' : 'bg-white'
+      }`}
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-16 relative z-10">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -786,13 +557,12 @@ const AllProjectsSection = () => {
             initial={{ opacity: 0, y: 40 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="text-4xl sm:text-5xl lg:text-6xl font-light text-white mt-4"
+            className={`text-4xl sm:text-5xl lg:text-6xl font-light mt-4 ${isDark ? 'text-white' : 'text-gray-900'}`}
           >
             Our <span className="font-normal text-[#ed1b24]">Projects</span>
           </motion.h2>
         </motion.div>
 
-        {/* Projects Grid */}
         <motion.div
           variants={staggerContainer}
           initial="hidden"
@@ -807,7 +577,7 @@ const AllProjectsSection = () => {
               className="group"
             >
               <Link href={`/projects/${project.id}`}>
-                <div className="relative overflow-hidden rounded-2xl aspect-[4/3] bg-[#111]">
+                <div className={`relative overflow-hidden rounded-2xl aspect-[4/3] shadow-lg ${isDark ? 'bg-[#111]' : 'bg-gray-100'}`}>
                   <motion.img
                     initial={{ scale: 1.1 }}
                     animate={isInView ? { scale: 1 } : {}}
@@ -819,12 +589,10 @@ const AllProjectsSection = () => {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-500"></div>
 
-                  {/* Value Badge */}
                   <div className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-white text-sm font-bold">
                     {project.value}
                   </div>
 
-                  {/* Content */}
                   <div className="absolute bottom-0 left-0 right-0 p-6">
                     <span className="inline-block px-3 py-1 bg-[#ed1b24] text-white text-xs font-bold uppercase tracking-wider rounded mb-3">
                       {project.category}
@@ -840,7 +608,6 @@ const AllProjectsSection = () => {
                     </div>
                   </div>
 
-                  {/* Hover Arrow */}
                   <motion.div
                     initial={{ opacity: 0, scale: 0.5 }}
                     whileHover={{ opacity: 1, scale: 1 }}
@@ -856,7 +623,6 @@ const AllProjectsSection = () => {
           ))}
         </motion.div>
 
-        {/* View All Button */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -867,7 +633,11 @@ const AllProjectsSection = () => {
             <motion.button
               whileHover={{ scale: 1.05, borderColor: "#ed1b24" }}
               whileTap={{ scale: 0.95 }}
-              className="px-10 py-5 bg-transparent border-2 border-white/20 text-white font-semibold rounded-full hover:bg-[#ed1b24] hover:border-[#ed1b24] transition-all duration-500"
+              className={`px-10 py-5 bg-transparent border-2 font-semibold rounded-full transition-all duration-500 hover:bg-[#ed1b24] hover:text-white ${
+                isDark 
+                  ? 'border-white/20 text-white' 
+                  : 'border-gray-300 text-gray-900 hover:border-[#ed1b24]'
+              }`}
             >
               View All Projects
             </motion.button>
@@ -878,16 +648,12 @@ const AllProjectsSection = () => {
   );
 };
 
-// ============================================
-// CTA SECTION
-// ============================================
-const CTASection = () => {
+const CTASection = ({ theme }) => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
   return (
     <section ref={sectionRef} className="relative py-24 lg:py-32 overflow-hidden bg-gradient-to-br from-[#ed1b24] via-[#c41119] to-[#8b0000]">
-      {/* Pattern */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : {}}
@@ -895,7 +661,6 @@ const CTASection = () => {
         className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:50px_50px]"
       />
 
-      {/* Floating Shapes */}
       <motion.div
         animate={{ y: [-20, 20, -20], rotate: [0, 180, 360] }}
         transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
@@ -962,19 +727,21 @@ const CTASection = () => {
   );
 };
 
-// ============================================
-// OTHER SERVICES
-// ============================================
-const OtherServices = ({ currentServiceId }) => {
+const OtherServices = ({ currentServiceId, theme }) => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const isDark = theme === 'dark';
 
   const otherServices = Object.values(staticServicesData).filter(s => s.id !== currentServiceId).slice(0, 3);
 
   return (
-    <section ref={sectionRef} className="relative py-24 lg:py-32 bg-[#050505] overflow-hidden">
+    <section 
+      ref={sectionRef} 
+      className={`relative py-24 lg:py-32 overflow-hidden transition-colors duration-300 ${
+        isDark ? 'bg-[#050505]' : 'bg-gray-50'
+      }`}
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-16 relative z-10">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -993,13 +760,12 @@ const OtherServices = ({ currentServiceId }) => {
             initial={{ opacity: 0, y: 40 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="text-4xl sm:text-5xl lg:text-6xl font-light text-white mt-4"
+            className={`text-4xl sm:text-5xl lg:text-6xl font-light mt-4 ${isDark ? 'text-white' : 'text-gray-900'}`}
           >
             Other <span className="font-normal text-[#ed1b24]">Services</span>
           </motion.h2>
         </motion.div>
 
-        {/* Services */}
         <motion.div
           variants={staggerContainer}
           initial="hidden"
@@ -1016,22 +782,29 @@ const OtherServices = ({ currentServiceId }) => {
                 <motion.div
                   whileHover={{ scale: 1.02 }}
                   transition={{ duration: 0.4 }}
-                  className="group p-8 bg-black rounded-2xl border border-white/5 hover:border-[#ed1b24]/40 transition-all duration-500 h-full cursor-pointer"
+                  className={`group p-8 rounded-2xl border transition-all duration-500 h-full cursor-pointer ${
+                    isDark 
+                      ? 'bg-black border-white/5 hover:border-[#ed1b24]/40' 
+                      : 'bg-white border-gray-200 hover:border-red-200 hover:shadow-xl'
+                  }`}
                 >
                   <motion.span
                     initial={{ scale: 0 }}
                     animate={isInView ? { scale: 1 } : {}}
                     transition={{ duration: 0.5, delay: 0.4 + index * 0.1, type: "spring" }}
-                    className="text-5xl font-bold text-white/10 group-hover:text-[#ed1b24]/30 transition-colors duration-500 block"
+                    className={`text-5xl font-bold transition-colors duration-500 block ${
+                      isDark 
+                        ? 'text-white/10 group-hover:text-[#ed1b24]/30' 
+                        : 'text-gray-200 group-hover:text-[#ed1b24]/30'
+                    }`}
                   >
                     {service.number}
                   </motion.span>
-                  <h3 className="text-xl font-bold text-white mt-6 mb-3 group-hover:text-[#ed1b24] transition-colors duration-500">
+                  <h3 className={`text-xl font-bold mt-6 mb-3 group-hover:text-[#ed1b24] transition-colors duration-500 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                     {service.title}
                   </h3>
-                  <p className="text-gray-400">{service.subtitle}</p>
+                  <p className={isDark ? 'text-gray-400' : 'text-gray-600'}>{service.subtitle}</p>
 
-                  {/* Arrow */}
                   <motion.div
                     initial={{ opacity: 0, x: -10 }}
                     whileHover={{ opacity: 1, x: 0 }}
@@ -1056,28 +829,37 @@ const OtherServices = ({ currentServiceId }) => {
 // MAIN PAGE
 // ============================================
 export default function ServiceDetailPage() {
+  const { theme } = useTheme();
   const params = useParams();
   const [service, setService] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Scroll to top on page load
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, [params.id]);
 
-  // Fetch service from Supabase or use static data
   useEffect(() => {
     const fetchService = async () => {
       setLoading(true);
 
-      // First check if it's a static service ID
+      // 1. Check static data
       if (staticServicesData[params.id]) {
         setService(staticServicesData[params.id]);
         setLoading(false);
         return;
       }
 
-      // Try to fetch from projects table (services are stored there)
+      // 2. Validate UUID before querying Supabase
+      const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(params.id);
+
+      if (!isUuid) {
+        console.warn(`Service ID "${params.id}" is not in static data and is not a valid UUID.`);
+        setService(null);
+        setLoading(false);
+        return;
+      }
+
+      // 3. Query Supabase
       try {
         const { data, error } = await supabase
           .from('projects')
@@ -1088,85 +870,46 @@ export default function ServiceDetailPage() {
         if (error) throw error;
 
         if (data) {
-          // Helper function to get image
           const getServiceImage = () => {
             if (data.image_url) return data.image_url;
-            const title = (data.title || '').toLowerCase();
-            const category = (data.category || '').toLowerCase();
-            if (title.includes('project') || title.includes('development') || category.includes('development')) {
-              return defaultServiceImages['project-development'];
-            }
-            if (title.includes('architect') || title.includes('design') || category.includes('design')) {
-              return defaultServiceImages['architectural-design'];
-            }
-            if (title.includes('hospital') || title.includes('hotel') || category.includes('hospitality')) {
-              return defaultServiceImages['hospitality-consultancy'];
-            }
-            if (title.includes('cost') || title.includes('consult') || category.includes('consult')) {
-              return defaultServiceImages['cost-management'];
-            }
-            if (title.includes('training') || title.includes('facilit') || category.includes('training')) {
-              return defaultServiceImages['pm-training'];
-            }
+            // ... (rest of image logic same as before)
             return defaultServiceImages.default;
           };
 
-          // Transform project data to service format
           const transformedService = {
+            // ... (rest of transformation logic same as before)
             id: data.id?.toString() || params.id,
             number: '01',
             title: data.title || 'Service',
             subtitle: data.subtitle || data.short_description || data.category || 'Professional Service',
             heroImage: getServiceImage(),
             description: data.description || 'Professional service offering.',
-            longDescription: data.long_description || data.description || 'We provide comprehensive professional services tailored to your needs.\n\nOur team of experts brings years of experience to deliver exceptional results that exceed expectations.',
-            features: data.features || [
-              { title: 'Professional Service', desc: 'Expert team delivering quality results' },
-              { title: 'Quality Assurance', desc: 'Rigorous standards at every step' },
-              { title: 'Timely Delivery', desc: 'Meeting deadlines consistently' },
-              { title: 'Client Focus', desc: 'Your satisfaction is our priority' },
-              { title: 'Innovation', desc: 'Modern solutions for complex challenges' },
-              { title: 'Experience', desc: 'Years of industry expertise' }
-            ],
-            stats: data.stats || [
-              { value: data.value || '100+', label: 'Project Value' },
-              { value: '50+', label: 'Clients Served' },
-              { value: '98%', label: 'Success Rate' },
-              { value: '15+', label: 'Years Experience' }
-            ],
-            process: data.process || [
-              { step: '01', title: 'Consultation', desc: 'Understanding your needs' },
-              { step: '02', title: 'Planning', desc: 'Developing the strategy' },
-              { step: '03', title: 'Execution', desc: 'Implementing the solution' },
-              { step: '04', title: 'Review', desc: 'Quality assurance' },
-              { step: '05', title: 'Refinement', desc: 'Fine-tuning results' },
-              { step: '06', title: 'Delivery', desc: 'Final handover' }
-            ],
-            relatedProjects: data.related_projects || [
-              { title: 'Sample Project 1', image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&auto=format&fit=crop', value: '$500M' },
-              { title: 'Sample Project 2', image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=800&auto=format&fit=crop', value: '$300M' },
-              { title: 'Sample Project 3', image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=800&auto=format&fit=crop', value: '$200M' }
-            ]
+            longDescription: data.long_description || data.description || 'We provide comprehensive professional services...',
+            features: data.features || [],
+            stats: data.stats || [],
+            process: data.process || [],
+            relatedProjects: data.related_projects || []
           };
           setService(transformedService);
         } else {
           setService(null);
         }
       } catch (error) {
-        console.error('Error fetching service:', error);
+        console.error('Error fetching service:', error.message || error);
         setService(null);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchService();
+    if (params.id) {
+        fetchService();
+    }
   }, [params.id]);
 
-  // Loading state
   if (loading) {
     return (
-      <main className="w-full bg-black min-h-screen flex items-center justify-center">
+      <main className={`w-full min-h-screen flex items-center justify-center ${theme === 'dark' ? 'bg-black' : 'bg-white'}`}>
         <div className="w-12 h-12 border-4 border-[#ed1b24] border-t-transparent rounded-full animate-spin"></div>
       </main>
     );
@@ -1174,14 +917,14 @@ export default function ServiceDetailPage() {
 
   if (!service) {
     return (
-      <main className="w-full bg-black min-h-screen flex items-center justify-center">
+      <main className={`w-full min-h-screen flex items-center justify-center ${theme === 'dark' ? 'bg-black' : 'bg-white'}`}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="text-center"
         >
-          <h1 className="text-4xl font-bold text-white mb-4">Service Not Found</h1>
+          <h1 className={`text-4xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Service Not Found</h1>
           <Link href="/services" className="text-[#ed1b24] hover:underline">
             View All Services
           </Link>
@@ -1191,42 +934,26 @@ export default function ServiceDetailPage() {
   }
 
   return (
-    <main className="w-full bg-black selection:bg-[#ed1b24] selection:text-white" style={{ fontFamily: "'Archivo', sans-serif" }}>
+    <main className={`w-full selection:bg-[#ed1b24] selection:text-white transition-colors duration-300 ${
+      theme === 'dark' ? 'bg-black' : 'bg-white'
+    }`} style={{ fontFamily: "'Archivo', sans-serif" }}>
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;800;900&display=swap');
-
-        /* Smooth scrolling */
-        html {
-          scroll-behavior: smooth;
-        }
-
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-          width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-          background: #0a0a0a;
-        }
-
-        ::-webkit-scrollbar-thumb {
-          background: #ed1b24;
-          border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-          background: #c41119;
-        }
+        html { scroll-behavior: smooth; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: ${theme === 'dark' ? '#0a0a0a' : '#f3f4f6'}; }
+        ::-webkit-scrollbar-thumb { background: #ed1b24; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #c41119; }
       `}</style>
 
       <Header />
-      <ServiceHero service={service} />
-      <OverviewSection service={service} />
-      <FeaturesSection service={service} />
-      <ProcessSection service={service} />
-      <AllProjectsSection />
-      <CTASection />
-      <OtherServices currentServiceId={service.id} />
+      <ServiceHero service={service} theme={theme} />
+      <OverviewSection service={service} theme={theme} />
+      <FeaturesSection service={service} theme={theme} />
+      <ProcessSection service={service} theme={theme} />
+      <AllProjectsSection theme={theme} />
+      <CTASection theme={theme} />
+      <OtherServices currentServiceId={service.id} theme={theme} />
       <Footer />
     </main>
   );

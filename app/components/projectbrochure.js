@@ -3,7 +3,7 @@
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 
-const ProjectBrochure = () => {
+const ProjectBrochure = ({ theme = 'dark' }) => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
@@ -12,7 +12,7 @@ const ProjectBrochure = () => {
       number: "01",
       title: "Project Development Consultancy",
       subtitle: "PDC Consult Services",
-      description: "End-to-end project development solutions from feasibility studies to final delivery. We provide strategic guidance, risk assessment, and comprehensive planning to ensure your project's success from conception through completion with optimal resource allocation.",
+      description: "End-to-end project development solutions from feasibility studies to final delivery. We provide strategic guidance, risk assessment, and comprehensive planning to ensure your project's success from conception through completion.",
       image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1200&auto=format&fit=crop",
       tags: ["Feasibility Studies", "Master Planning", "Risk Assessment"]
     },
@@ -20,7 +20,7 @@ const ProjectBrochure = () => {
       number: "02",
       title: "Architectural Design and Urban Planning",
       subtitle: "PDC Consult Services",
-      description: "Official representatives of Carlos Ott in UAE, GCC & Middle East. World-class architectural excellence combined with innovative urban planning solutions that create sustainable, iconic developments that define skylines and transform communities.",
+      description: "Official representatives of Carlos Ott in UAE, GCC & Middle East. World-class architectural excellence combined with innovative urban planning solutions that create sustainable, iconic developments.",
       image: "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?q=80&w=1200&auto=format&fit=crop",
       tags: ["Carlos Ott Partnership", "Urban Masterplanning", "Iconic Design"]
     },
@@ -28,7 +28,7 @@ const ProjectBrochure = () => {
       number: "03",
       title: "Hospitality Projects",
       subtitle: "PDC Consult Services",
-      description: "Specialized consultancy for luxury hotels, resorts, and hospitality ventures in the MENA region. From concept development to operational readiness, we deliver comprehensive solutions that enhance guest experiences and maximize investment returns.",
+      description: "Specialized consultancy for luxury hotels, resorts, and hospitality ventures in the MENA region. From concept development to operational readiness, we deliver comprehensive solutions.",
       image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1200&auto=format&fit=crop",
       tags: ["Hotel Development", "Resort Planning", "Brand Positioning"]
     },
@@ -36,7 +36,7 @@ const ProjectBrochure = () => {
       number: "04",
       title: "Cost Management & Value Engineering",
       subtitle: "PDC Consult Services",
-      description: "Strategic cost optimization and value engineering services that maximize project value while maintaining quality standards. Our expert analysis identifies cost-saving opportunities without compromising on design intent or functionality.",
+      description: "Strategic cost optimization and value engineering services that maximize project value while maintaining quality standards. Our expert analysis identifies cost-saving opportunities.",
       image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1200&auto=format&fit=crop",
       tags: ["Budget Optimization", "Value Analysis", "Cost Modeling"]
     },
@@ -44,7 +44,7 @@ const ProjectBrochure = () => {
       number: "05",
       title: "PM Corporate Training",
       subtitle: "PDC Consult Services",
-      description: "Comprehensive project management training programs designed to elevate capabilities across your organization. Industry-certified courses, customized workshops, and hands-on training that build expertise and drive project excellence.",
+      description: "Comprehensive project management training programs designed to elevate capabilities across your organization. Industry-certified courses and customized workshops.",
       image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1200&auto=format&fit=crop",
       tags: ["PMP Certification", "Corporate Workshops", "Primavera Training"]
     }
@@ -54,10 +54,7 @@ const ProjectBrochure = () => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.1
-      }
+      transition: { staggerChildren: 0.2, delayChildren: 0.1 }
     }
   };
 
@@ -66,34 +63,32 @@ const ProjectBrochure = () => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: 0.6,
-        ease: [0.22, 1, 0.36, 1]
-      }
+      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
     }
   };
 
+  // Define colors based on theme
+  const isDark = theme === 'dark';
+
   return (
-    <section ref={sectionRef} className="relative w-full bg-black py-20 sm:py-24 md:py-32 lg:py-40 overflow-hidden">
+    <section 
+      ref={sectionRef} 
+      className={`relative w-full py-20 sm:py-24 md:py-32 lg:py-40 overflow-hidden transition-colors duration-500 ${
+        isDark ? 'bg-black' : 'bg-white'
+      }`}
+    >
       <style jsx>{`
         @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;800;900&display=swap');
 
-        .heading-font {
+        .heading-font, .body-font {
           font-family: 'Archivo', sans-serif;
         }
 
-        .body-font {
-          font-family: 'Archivo', sans-serif;
-        }
-
+        /* Project Card Base Styles - Colors handled by Tailwind classes below */
         .project-card {
-          background: linear-gradient(135deg, rgba(20, 20, 20, 0.9) 0%, rgba(10, 10, 10, 0.9) 100%);
-          border: 1px solid rgba(255, 255, 255, 0.08);
           transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
           position: relative;
         }
-
-  
 
         .project-card:hover {
           border-color: rgba(237, 27, 36, 0.4);
@@ -143,21 +138,6 @@ const ProjectBrochure = () => {
           width: 120px;
         }
 
-        .tag-badge {
-          background: rgba(237, 27, 36, 0.1);
-          border: 1px solid rgba(237, 27, 36, 0.3);
-          color: #ffffff;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          backdrop-filter: blur(10px);
-        }
-
-        .tag-badge:hover {
-          background: #ed1b24;
-          border-color: #ed1b24;
-          color: white;
-          transform: translateY(-3px) scale(1.05);
-        }
-
         .large-number {
           font-family: 'Archivo', sans-serif;
           transition: all 0.4s ease;
@@ -166,21 +146,6 @@ const ProjectBrochure = () => {
         .project-card:hover .large-number {
           transform: scale(1.1);
           opacity: 0.3 !important;
-        }
-
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .animate-on-scroll {
-          animation: fadeInUp 0.8s ease-out forwards;
         }
 
         .grid-pattern {
@@ -192,11 +157,11 @@ const ProjectBrochure = () => {
       `}</style>
 
       {/* Background Pattern */}
-      <div className="absolute inset-0 grid-pattern opacity-50"></div>
+      <div className="absolute inset-0 grid-pattern opacity-50 pointer-events-none"></div>
 
       {/* Gradient Overlays */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-[#ed1b24] rounded-full blur-[150px] opacity-[0.08]"></div>
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#ed1b24] rounded-full blur-[150px] opacity-[0.08]"></div>
+      <div className={`absolute top-0 left-0 w-96 h-96 bg-[#ed1b24] rounded-full blur-[150px] pointer-events-none ${isDark ? 'opacity-[0.08]' : 'opacity-[0.05]'}`}></div>
+      <div className={`absolute bottom-0 right-0 w-96 h-96 bg-[#ed1b24] rounded-full blur-[150px] pointer-events-none ${isDark ? 'opacity-[0.08]' : 'opacity-[0.05]'}`}></div>
 
       <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
         
@@ -207,31 +172,36 @@ const ProjectBrochure = () => {
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
           className="text-center mb-16 sm:mb-20 md:mb-24"
         >
-          {/* Logo - No animation */}
+          {/* Logo */}
           <div className="mb-8">
             <div className="inline-flex items-center gap-3 mb-3">
               <div className="w-1.5 h-10 bg-[#ed1b24]"></div>
-              <h3 className="heading-font text-3xl sm:text-4xl text-white tracking-tight">
+              {/* FIXED: Dynamic Text Color */}
+              <h3 className={`heading-font text-3xl sm:text-4xl tracking-tight ${isDark ? 'text-white' : 'text-black'}`}>
                 <span className="text-[#ed1b24]">PDC</span> CONSULT
               </h3>
             </div>
           </div>
 
+          {/* Main Title */}
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="heading-font text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light text-white mb-6 leading-[1.1]"
+            /* FIXED: Dynamic Text Color */
+            className={`heading-font text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light mb-6 leading-[1.1] ${isDark ? 'text-white' : 'text-black'}`}
           >
             Our Portfolio of{" "}
             <span className="font-semibold text-[#ed1b24]">Excellence</span>
           </motion.h2>
           
+          {/* Subtitle Paragraph */}
           <motion.p 
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="body-font text-gray-400 text-base sm:text-lg md:text-xl max-w-3xl mx-auto leading-relaxed"
+            /* FIXED: Dynamic Text Color */
+            className={`body-font text-base sm:text-lg md:text-xl max-w-3xl mx-auto leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
           >
             Delivering exceptional project development and construction management services across the UAE and MENA region
           </motion.p>
@@ -261,7 +231,14 @@ const ProjectBrochure = () => {
             >
               {/* Image Column */}
               <div className={`${index % 2 === 1 ? 'lg:order-2' : 'lg:order-1'}`}>
-                <div className="project-card rounded-2xl p-6 sm:p-8 md:p-10">
+                <div 
+                  /* FIXED: Card Background logic based on theme */
+                  className={`project-card rounded-2xl p-6 sm:p-8 md:p-10 ${
+                    isDark 
+                      ? 'bg-[#111] border border-white/10' 
+                      : 'bg-white border border-gray-200 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]'
+                  }`}
+                >
                   <div className="number-label mb-4">{project.number}.</div>
                   <div className="image-frame rounded-xl aspect-[3/4] relative">
                     <img 
@@ -283,9 +260,10 @@ const ProjectBrochure = () => {
                     </span>
                   </div>
 
-                  {/* Title */}
+                  {/* Title & Subtitle */}
                   <div>
-                    <h3 className="heading-font text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-white mb-3 leading-tight">
+                    {/* FIXED: Title Color */}
+                    <h3 className={`heading-font text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-3 leading-tight ${isDark ? 'text-white' : 'text-black'}`}>
                       {project.title}
                     </h3>
                     <p className="body-font text-[#ed1b24] text-sm sm:text-base font-bold uppercase tracking-widest">
@@ -295,7 +273,8 @@ const ProjectBrochure = () => {
                   </div>
 
                   {/* Description */}
-                  <p className="body-font text-gray-300 text-base sm:text-lg md:text-xl leading-relaxed">
+                  {/* FIXED: Description Color */}
+                  <p className={`body-font text-base sm:text-lg md:text-xl leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                     {project.description}
                   </p>
 
@@ -304,18 +283,28 @@ const ProjectBrochure = () => {
                     {project.tags.map((tag, tagIndex) => (
                       <span
                         key={tagIndex}
-                        className="tag-badge px-4 py-2 rounded-full text-xs sm:text-sm font-semibold body-font cursor-pointer"
+                        /* FIXED: Tag Colors */
+                        className={`px-4 py-2 rounded-full text-xs sm:text-sm font-semibold body-font cursor-pointer border transition-all duration-300 ${
+                          isDark 
+                            ? 'bg-red-500/10 border-red-500/30 text-white hover:bg-[#ed1b24]' 
+                            : 'bg-red-50 border-red-100 text-[#ed1b24] hover:bg-[#ed1b24] hover:text-white'
+                        }`}
                       >
                         {tag}
                       </span>
                     ))}
                   </div>
 
-                  {/* CTA */}
+                  {/* CTA Link */}
                   <motion.button
                     whileHover={{ x: 8, scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="inline-flex items-center gap-3 text-[#ed1b24] font-bold text-base sm:text-lg body-font mt-4 transition-colors hover:text-white"
+                    /* FIXED: Button Colors */
+                    className={`inline-flex items-center gap-3 font-bold text-base sm:text-lg body-font mt-4 transition-colors ${
+                      isDark 
+                        ? 'text-[#ed1b24] hover:text-white' 
+                        : 'text-[#ed1b24] hover:text-black'
+                    }`}
                   >
                     <span>Learn More</span>
                     <motion.svg 
@@ -345,7 +334,7 @@ const ProjectBrochure = () => {
           <motion.button
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.98 }}
-            className="inline-flex items-center gap-4 px-12 py-6 bg-gradient-to-r from-[#ed1b24] to-[#c41119] text-white font-semibold text-base sm:text-lg rounded-xl transition-all body-font relative overflow-hidden group"
+            className="inline-flex items-center gap-4 px-12 py-6 bg-gradient-to-r from-[#ed1b24] to-[#c41119] text-white font-semibold text-base sm:text-lg rounded-xl transition-all body-font relative overflow-hidden group shadow-lg"
           >
             <motion.span
               className="absolute inset-0 bg-white"
@@ -371,7 +360,8 @@ const ProjectBrochure = () => {
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
             transition={{ duration: 0.8, delay: 0.8 }}
-            className="body-font text-gray-500 text-sm sm:text-base mt-6"
+            /* FIXED: Footer Text Color */
+            className={`body-font text-sm sm:text-base mt-6 ${isDark ? 'text-gray-500' : 'text-gray-500'}`}
           >
             Complete portfolio of our project development consultancy services
           </motion.p>

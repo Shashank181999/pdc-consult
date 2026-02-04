@@ -4,11 +4,12 @@ import { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { useTheme } from '../context/ThemeContext';
 
 // ============================================
 // CONTACT HERO
 // ============================================
-const ContactHero = () => {
+const ContactHero = ({ theme }) => {
   return (
     <section className="relative min-h-[60vh] flex items-center justify-center bg-black overflow-hidden pt-24">
       {/* Background Pattern */}
@@ -46,7 +47,7 @@ const ContactHero = () => {
 // ============================================
 // CONTACT INFO CARDS
 // ============================================
-const ContactInfoSection = () => {
+const ContactInfoSection = ({ theme }) => {
   const contactInfo = [
     {
       icon: (
@@ -96,13 +97,17 @@ const ContactInfoSection = () => {
   ];
 
   return (
-    <section className="relative py-20 bg-[#050505] overflow-hidden">
+    <section className={`relative py-20 overflow-hidden ${theme === 'dark' ? 'bg-[#050505]' : 'bg-gray-50'}`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-16">
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {contactInfo.map((info, index) => (
             <div
               key={index}
-              className="group relative p-8 bg-black rounded-2xl border border-white/5 lg:hover:border-[#ed1b24]/30 transition-colors duration-300"
+              className={`group relative p-8 rounded-2xl border lg:hover:border-[#ed1b24]/30 transition-colors duration-300 ${
+                theme === 'dark'
+                  ? 'bg-black border-white/5'
+                  : 'bg-white border-gray-200'
+              }`}
             >
               {/* Icon */}
               <div className="w-14 h-14 bg-[#ed1b24]/10 rounded-xl flex items-center justify-center text-[#ed1b24] mb-6 lg:group-hover:bg-[#ed1b24] lg:group-hover:text-white transition-colors duration-300">
@@ -110,10 +115,10 @@ const ContactInfoSection = () => {
               </div>
 
               {/* Content */}
-              <h3 className="text-xl font-bold text-white mb-4">{info.title}</h3>
+              <h3 className={`text-xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{info.title}</h3>
               <div className="space-y-1 mb-6">
                 {info.details.map((detail, i) => (
-                  <p key={i} className="text-gray-400 text-sm">{detail}</p>
+                  <p key={i} className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>{detail}</p>
                 ))}
               </div>
 
@@ -138,7 +143,7 @@ const ContactInfoSection = () => {
 // ============================================
 // CONTACT FORM SECTION
 // ============================================
-const ContactFormSection = () => {
+const ContactFormSection = ({ theme }) => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
   const [formData, setFormData] = useState({
@@ -185,7 +190,7 @@ const ContactFormSection = () => {
   ];
 
   return (
-    <section ref={sectionRef} className="relative py-24 lg:py-32 bg-black overflow-hidden">
+    <section ref={sectionRef} className={`relative py-24 lg:py-32 overflow-hidden ${theme === 'dark' ? 'bg-black' : 'bg-white'}`}>
       {/* Background */}
       <div className="absolute right-0 top-0 w-1/2 h-full hidden lg:block">
         <img
@@ -207,11 +212,11 @@ const ContactFormSection = () => {
               <span className="text-[#ed1b24] font-semibold uppercase tracking-[0.2em] text-xs">Send a Message</span>
             </div>
 
-            <h2 className="text-4xl sm:text-5xl font-light text-white mb-4 leading-[1.1]">
+            <h2 className={`text-4xl sm:text-5xl font-light mb-4 leading-[1.1] ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
               Let's Start a <span className="font-normal text-[#ed1b24]">Conversation</span>
             </h2>
 
-            <p className="text-gray-400 text-lg mb-10">
+            <p className={`text-lg mb-10 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
               Fill out the form below and our team will get back to you within 24 hours.
             </p>
 
@@ -230,26 +235,34 @@ const ContactFormSection = () => {
                 {/* Name & Email Row */}
                 <div className="grid sm:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-gray-400 text-sm font-medium mb-2">Full Name *</label>
+                    <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Full Name *</label>
                     <input
                       type="text"
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-[#ed1b24] focus:outline-none transition-colors"
+                      className={`w-full px-5 py-4 rounded-xl focus:border-[#ed1b24] focus:outline-none transition-colors ${
+                        theme === 'dark'
+                          ? 'bg-white/5 border border-white/10 text-white placeholder-gray-500'
+                          : 'bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400'
+                      }`}
                       placeholder="John Smith"
                     />
                   </div>
                   <div>
-                    <label className="block text-gray-400 text-sm font-medium mb-2">Email Address *</label>
+                    <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Email Address *</label>
                     <input
                       type="email"
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
                       required
-                      className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-[#ed1b24] focus:outline-none transition-colors"
+                      className={`w-full px-5 py-4 rounded-xl focus:border-[#ed1b24] focus:outline-none transition-colors ${
+                        theme === 'dark'
+                          ? 'bg-white/5 border border-white/10 text-white placeholder-gray-500'
+                          : 'bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400'
+                      }`}
                       placeholder="john@company.com"
                     />
                   </div>
@@ -258,24 +271,32 @@ const ContactFormSection = () => {
                 {/* Phone & Company Row */}
                 <div className="grid sm:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-gray-400 text-sm font-medium mb-2">Phone Number</label>
+                    <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Phone Number</label>
                     <input
                       type="tel"
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-[#ed1b24] focus:outline-none transition-colors"
+                      className={`w-full px-5 py-4 rounded-xl focus:border-[#ed1b24] focus:outline-none transition-colors ${
+                        theme === 'dark'
+                          ? 'bg-white/5 border border-white/10 text-white placeholder-gray-500'
+                          : 'bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400'
+                      }`}
                       placeholder="+971 50 123 4567"
                     />
                   </div>
                   <div>
-                    <label className="block text-gray-400 text-sm font-medium mb-2">Company Name</label>
+                    <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Company Name</label>
                     <input
                       type="text"
                       name="company"
                       value={formData.company}
                       onChange={handleChange}
-                      className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-[#ed1b24] focus:outline-none transition-colors"
+                      className={`w-full px-5 py-4 rounded-xl focus:border-[#ed1b24] focus:outline-none transition-colors ${
+                        theme === 'dark'
+                          ? 'bg-white/5 border border-white/10 text-white placeholder-gray-500'
+                          : 'bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400'
+                      }`}
                       placeholder="Your Company"
                     />
                   </div>
@@ -284,32 +305,40 @@ const ContactFormSection = () => {
                 {/* Project Type & Budget Row */}
                 <div className="grid sm:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-gray-400 text-sm font-medium mb-2">Project Type</label>
+                    <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Project Type</label>
                     <select
                       name="projectType"
                       value={formData.projectType}
                       onChange={handleChange}
-                      className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl text-white focus:border-[#ed1b24] focus:outline-none transition-colors appearance-none cursor-pointer"
+                      className={`w-full px-5 py-4 rounded-xl focus:border-[#ed1b24] focus:outline-none transition-colors appearance-none cursor-pointer ${
+                        theme === 'dark'
+                          ? 'bg-white/5 border border-white/10 text-white'
+                          : 'bg-gray-50 border border-gray-200 text-gray-900'
+                      }`}
                       style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', backgroundSize: '1.5rem' }}
                     >
-                      <option value="" className="bg-black">Select Project Type</option>
+                      <option value="" className={theme === 'dark' ? 'bg-black' : 'bg-white'}>Select Project Type</option>
                       {projectTypes.map((type, i) => (
-                        <option key={i} value={type} className="bg-black">{type}</option>
+                        <option key={i} value={type} className={theme === 'dark' ? 'bg-black' : 'bg-white'}>{type}</option>
                       ))}
                     </select>
                   </div>
                   <div>
-                    <label className="block text-gray-400 text-sm font-medium mb-2">Budget Range</label>
+                    <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Budget Range</label>
                     <select
                       name="budget"
                       value={formData.budget}
                       onChange={handleChange}
-                      className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl text-white focus:border-[#ed1b24] focus:outline-none transition-colors appearance-none cursor-pointer"
+                      className={`w-full px-5 py-4 rounded-xl focus:border-[#ed1b24] focus:outline-none transition-colors appearance-none cursor-pointer ${
+                        theme === 'dark'
+                          ? 'bg-white/5 border border-white/10 text-white'
+                          : 'bg-gray-50 border border-gray-200 text-gray-900'
+                      }`}
                       style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', backgroundSize: '1.5rem' }}
                     >
-                      <option value="" className="bg-black">Select Budget Range</option>
+                      <option value="" className={theme === 'dark' ? 'bg-black' : 'bg-white'}>Select Budget Range</option>
                       {budgetRanges.map((range, i) => (
-                        <option key={i} value={range} className="bg-black">{range}</option>
+                        <option key={i} value={range} className={theme === 'dark' ? 'bg-black' : 'bg-white'}>{range}</option>
                       ))}
                     </select>
                   </div>
@@ -317,14 +346,18 @@ const ContactFormSection = () => {
 
                 {/* Message */}
                 <div>
-                  <label className="block text-gray-400 text-sm font-medium mb-2">Project Details *</label>
+                  <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Project Details *</label>
                   <textarea
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
                     required
                     rows={5}
-                    className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-[#ed1b24] focus:outline-none transition-colors resize-none"
+                    className={`w-full px-5 py-4 rounded-xl focus:border-[#ed1b24] focus:outline-none transition-colors resize-none ${
+                      theme === 'dark'
+                        ? 'bg-white/5 border border-white/10 text-white placeholder-gray-500'
+                        : 'bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400'
+                    }`}
                     placeholder="Tell us about your project, goals, and timeline..."
                   ></textarea>
                 </div>
@@ -361,8 +394,12 @@ const ContactFormSection = () => {
             className={`flex flex-col justify-center transition-all duration-700 delay-100 ${isInView ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}
           >
             {/* Why Contact Us */}
-            <div className="bg-gradient-to-br from-[#111] to-[#0a0a0a] p-8 lg:p-10 rounded-2xl border border-white/5 mb-8">
-              <h3 className="text-2xl font-bold text-white mb-6">Why Work With Us?</h3>
+            <div className={`p-8 lg:p-10 rounded-2xl border mb-8 ${
+              theme === 'dark'
+                ? 'bg-gradient-to-br from-[#111] to-[#0a0a0a] border-white/5'
+                : 'bg-gray-50 border-gray-200'
+            }`}>
+              <h3 className={`text-2xl font-bold mb-6 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Why Work With Us?</h3>
               <div className="space-y-5">
                 {[
                   { title: '15+ Years Experience', desc: 'Proven track record in major developments' },
@@ -377,8 +414,8 @@ const ContactFormSection = () => {
                       </svg>
                     </div>
                     <div>
-                      <h4 className="text-white font-semibold">{item.title}</h4>
-                      <p className="text-gray-400 text-sm">{item.desc}</p>
+                      <h4 className={`font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{item.title}</h4>
+                      <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>{item.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -386,8 +423,12 @@ const ContactFormSection = () => {
             </div>
 
             {/* Social Links */}
-            <div className="bg-white/5 p-8 rounded-2xl border border-white/5">
-              <h3 className="text-lg font-bold text-white mb-4">Follow Us</h3>
+            <div className={`p-8 rounded-2xl border ${
+              theme === 'dark'
+                ? 'bg-white/5 border-white/5'
+                : 'bg-gray-50 border-gray-200'
+            }`}>
+              <h3 className={`text-lg font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Follow Us</h3>
               <div className="flex gap-4">
                 {[
                   { name: 'LinkedIn', icon: 'M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z' },
@@ -397,7 +438,11 @@ const ContactFormSection = () => {
                   <a
                     key={i}
                     href="#"
-                    className="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center text-gray-400 lg:hover:bg-[#ed1b24] lg:hover:text-white transition-colors duration-300"
+                    className={`w-12 h-12 rounded-xl flex items-center justify-center lg:hover:bg-[#ed1b24] lg:hover:text-white transition-colors duration-300 ${
+                      theme === 'dark'
+                        ? 'bg-white/5 text-gray-400'
+                        : 'bg-gray-100 text-gray-600'
+                    }`}
                   >
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                       <path d={social.icon} />
@@ -416,12 +461,12 @@ const ContactFormSection = () => {
 // ============================================
 // MAP SECTION
 // ============================================
-const MapSection = () => {
+const MapSection = ({ theme }) => {
   return (
-    <section className="relative py-20 bg-[#050505] overflow-hidden">
+    <section className={`relative py-20 overflow-hidden ${theme === 'dark' ? 'bg-[#050505]' : 'bg-gray-50'}`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-16">
         <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-light text-white">
+          <h2 className={`text-3xl sm:text-4xl font-light ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
             Find <span className="font-normal text-[#ed1b24]">Us</span>
           </h2>
         </div>
@@ -474,7 +519,7 @@ const MapSection = () => {
 // ============================================
 // FAQ SECTION
 // ============================================
-const FAQSection = () => {
+const FAQSection = ({ theme }) => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
   const [openIndex, setOpenIndex] = useState(null);
@@ -503,13 +548,13 @@ const FAQSection = () => {
   ];
 
   return (
-    <section ref={sectionRef} className="relative py-24 lg:py-32 bg-black overflow-hidden">
+    <section ref={sectionRef} className={`relative py-24 lg:py-32 overflow-hidden ${theme === 'dark' ? 'bg-black' : 'bg-white'}`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-16">
         <div
           className={`text-center mb-16 transition-all duration-700 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
         >
           <span className="text-[#ed1b24] font-semibold uppercase tracking-[0.2em] text-sm">FAQ</span>
-          <h2 className="text-4xl sm:text-5xl font-light text-white mt-4">
+          <h2 className={`text-4xl sm:text-5xl font-light mt-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
             Frequently Asked <span className="font-normal text-[#ed1b24]">Questions</span>
           </h2>
         </div>
@@ -523,9 +568,13 @@ const FAQSection = () => {
             >
               <button
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                className="w-full flex items-center justify-between p-5 sm:p-6 bg-white/5 lg:hover:bg-white/10 rounded-xl border border-white/5 transition-colors duration-300 text-left"
+                className={`w-full flex items-center justify-between p-5 sm:p-6 rounded-xl border transition-colors duration-300 text-left ${
+                  theme === 'dark'
+                    ? 'bg-white/5 lg:hover:bg-white/10 border-white/5'
+                    : 'bg-gray-50 lg:hover:bg-gray-100 border-gray-200'
+                }`}
               >
-                <span className="text-base sm:text-lg font-medium text-white pr-4 sm:pr-8">{faq.question}</span>
+                <span className={`text-base sm:text-lg font-medium pr-4 sm:pr-8 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{faq.question}</span>
                 <div
                   className={`w-8 h-8 bg-[#ed1b24]/10 rounded-full flex items-center justify-center flex-shrink-0 transition-transform duration-300 ${openIndex === index ? 'rotate-180' : ''}`}
                 >
@@ -538,7 +587,7 @@ const FAQSection = () => {
               <div
                 className={`overflow-hidden transition-all duration-300 ${openIndex === index ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}
               >
-                <div className="p-5 sm:p-6 text-gray-400 leading-relaxed text-sm sm:text-base">
+                <div className={`p-5 sm:p-6 leading-relaxed text-sm sm:text-base ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
                   {faq.answer}
                 </div>
               </div>
@@ -554,19 +603,23 @@ const FAQSection = () => {
 // MAIN PAGE
 // ============================================
 export default function ContactPage() {
+  const { theme } = useTheme();
+
   return (
-    <main className="w-full bg-black selection:bg-[#ed1b24] selection:text-white" style={{ fontFamily: "'Archivo', sans-serif" }}>
+    <main className={`w-full selection:bg-[#ed1b24] selection:text-white transition-colors duration-300 ${
+      theme === 'dark' ? 'bg-black' : 'bg-white'
+    }`} style={{ fontFamily: "'Archivo', sans-serif" }}>
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;800;900&display=swap');
         html { scroll-behavior: smooth; }
       `}</style>
 
       <Header />
-      <ContactHero />
-      <ContactInfoSection />
-      <ContactFormSection />
-      <MapSection />
-      <FAQSection />
+      <ContactHero theme={theme} />
+      <ContactInfoSection theme={theme} />
+      <ContactFormSection theme={theme} />
+      <MapSection theme={theme} />
+      <FAQSection theme={theme} />
       <Footer />
     </main>
   );

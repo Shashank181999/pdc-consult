@@ -4,10 +4,12 @@ import React, { useState, useRef, useEffect } from 'react';
 import CountUp from 'react-countup';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import { useTheme } from '../context/ThemeContext';
 
 export default function Services() {
   const [activeService, setActiveService] = useState(0);
   const [isInView, setIsInView] = useState(false);
+  const { theme } = useTheme();
 
   const containerRef = useRef(null);
 
@@ -86,7 +88,9 @@ export default function Services() {
   ];
 
   return (
-    <section ref={containerRef} className="relative py-20 md:py-32 bg-black overflow-hidden">
+    <section ref={containerRef} className={`relative py-20 md:py-32 overflow-hidden transition-colors duration-300 ${
+      theme === 'dark' ? 'bg-black' : 'bg-gray-50'
+    }`}>
       <style jsx>{`
         @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;800;900&display=swap');
 
@@ -127,8 +131,6 @@ export default function Services() {
         }
 
         .stat-card {
-          background: linear-gradient(135deg, rgba(20, 20, 20, 0.8) 0%, rgba(30, 30, 30, 0.8) 100%);
-          border: 1px solid rgba(237, 27, 36, 0.2);
           transition: all 0.3s ease;
         }
 
@@ -138,8 +140,27 @@ export default function Services() {
         }
 
         .slide-content {
-          background: linear-gradient(135deg, rgba(15, 15, 15, 0.95) 0%, rgba(25, 25, 25, 0.95) 100%);
           border: 1px solid rgba(237, 27, 36, 0.2);
+        }
+
+        .stat-card-dark {
+          background: linear-gradient(135deg, rgba(20, 20, 20, 0.8) 0%, rgba(30, 30, 30, 0.8) 100%);
+          border: 1px solid rgba(237, 27, 36, 0.2);
+        }
+
+        .stat-card-light {
+          background: white;
+          border: 1px solid rgba(237, 27, 36, 0.15);
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .slide-content-dark {
+          background: linear-gradient(135deg, rgba(15, 15, 15, 0.95) 0%, rgba(25, 25, 25, 0.95) 100%);
+        }
+
+        .slide-content-light {
+          background: white;
+          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
         }
 
         .learn-more-btn {
@@ -180,14 +201,18 @@ export default function Services() {
             <span className="text-[#ed1b24] text-sm font-semibold tracking-wider uppercase">Our Services</span>
           </div>
           
-          <h2 className="heading-font text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light text-white mb-6 leading-tight">
+          <h2 className={`heading-font text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light mb-6 leading-tight ${
+            theme === 'dark' ? 'text-white' : 'text-gray-900'
+          }`}>
             Services that{" "}
             <span className="block mt-2 bg-gradient-to-r from-[#ed1b24] via-[#ff4444] to-[#ed1b24] bg-clip-text text-transparent font-normal">
               Define Excellence
             </span>
           </h2>
-          
-          <p className="text-gray-400 text-base sm:text-lg max-w-2xl mx-auto">
+
+          <p className={`text-base sm:text-lg max-w-2xl mx-auto ${
+            theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+          }`}>
             Delivering world-class solutions across project management, architecture, and consultancy
           </p>
         </div>
@@ -209,8 +234,10 @@ export default function Services() {
                   background:
                     activeService === index
                       ? 'linear-gradient(135deg, rgba(237, 27, 36, 0.15) 0%, rgba(237, 27, 36, 0.05) 100%)'
-                      : 'rgba(255, 255, 255, 0.02)',
-                  border: activeService === index ? '1px solid rgba(237, 27, 36, 0.3)' : '1px solid rgba(255, 255, 255, 0.05)',
+                      : theme === 'dark' ? 'rgba(255, 255, 255, 0.02)' : 'rgba(0, 0, 0, 0.02)',
+                  border: activeService === index
+                    ? '1px solid rgba(237, 27, 36, 0.3)'
+                    : theme === 'dark' ? '1px solid rgba(255, 255, 255, 0.05)' : '1px solid rgba(0, 0, 0, 0.08)',
                 }}
               >
                 <div className="flex items-center gap-4">
@@ -233,7 +260,9 @@ export default function Services() {
                     <span
                       className="font-medium text-sm md:text-base block transition-colors duration-300"
                       style={{
-                        color: activeService === index ? '#ffffff' : 'rgba(255, 255, 255, 0.7)',
+                        color: activeService === index
+                          ? (theme === 'dark' ? '#ffffff' : '#1a1a1a')
+                          : (theme === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)'),
                       }}
                     >
                       {service.title}
@@ -274,7 +303,9 @@ export default function Services() {
                 transition={{ duration: 0.3, ease: 'easeOut' }}
                 className="absolute inset-0"
               >
-                <div className="slide-content h-full p-6 sm:p-8 md:p-12 rounded-3xl relative overflow-hidden">
+                <div className={`slide-content h-full p-6 sm:p-8 md:p-12 rounded-3xl relative overflow-hidden ${
+                  theme === 'dark' ? 'slide-content-dark' : 'slide-content-light'
+                }`}>
                   {/* Large Number Background */}
                   <div
                     className="absolute -top-4 -right-4 text-[180px] sm:text-[220px] md:text-[280px] font-light opacity-[0.03] select-none pointer-events-none heading-font"
@@ -289,24 +320,32 @@ export default function Services() {
                       <div className="text-5xl sm:text-6xl md:text-7xl mb-4">
                         {services[activeService].icon}
                       </div>
-                      <h3 className="heading-font text-2xl sm:text-3xl md:text-4xl font-medium text-white mb-4">
+                      <h3 className={`heading-font text-2xl sm:text-3xl md:text-4xl font-medium mb-4 ${
+                        theme === 'dark' ? 'text-white' : 'text-gray-900'
+                      }`}>
                         {services[activeService].title}
                       </h3>
                     </div>
 
-                    <p className="text-gray-400 mb-8 md:mb-10 text-base sm:text-lg leading-relaxed">
+                    <p className={`mb-8 md:mb-10 text-base sm:text-lg leading-relaxed ${
+                      theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                    }`}>
                       {services[activeService].description}
                     </p>
 
                     <div className="space-y-4 mb-8 md:mb-10">
-                      <h4 className="text-white font-medium text-sm uppercase tracking-wider mb-4">
+                      <h4 className={`font-medium text-sm uppercase tracking-wider mb-4 ${
+                        theme === 'dark' ? 'text-white' : 'text-gray-900'
+                      }`}>
                         Key Features
                       </h4>
                       <div className="grid sm:grid-cols-2 gap-3">
                         {services[activeService].features.map((feature, i) => (
                           <div
                             key={i}
-                            className="flex items-center text-gray-300 text-sm md:text-base"
+                            className={`flex items-center text-sm md:text-base ${
+                              theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                            }`}
                           >
                             <span className="feature-dot"></span>
                             {feature}
@@ -343,21 +382,23 @@ export default function Services() {
           {stats.map((stat, i) => (
             <div
               key={i}
-              className="stat-card p-6 sm:p-8 rounded-2xl text-center"
+              className={`stat-card p-6 sm:p-8 rounded-2xl text-center ${
+                theme === 'dark' ? 'stat-card-dark' : 'stat-card-light'
+              }`}
             >
               <div
-                className="text-3xl sm:text-4xl md:text-5xl font-light mb-2 heading-font"
-                style={{
-                  background: 'linear-gradient(135deg, #ffffff 0%, #ed1b24 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                }}
+                className={`text-3xl sm:text-4xl md:text-5xl font-light mb-2 heading-font bg-clip-text text-transparent ${
+                  theme === 'dark'
+                    ? 'bg-gradient-to-br from-white to-[#ed1b24]'
+                    : 'bg-gradient-to-br from-gray-900 to-[#ed1b24]'
+                }`}
               >
                 {isInView && <CountUp end={stat.value} duration={2} />}
                 {stat.suffix}
               </div>
-              <p className="text-gray-400 text-xs sm:text-sm font-normal uppercase tracking-wider">
+              <p className={`text-xs sm:text-sm font-normal uppercase tracking-wider ${
+                theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+              }`}>
                 {stat.label}
               </p>
             </div>

@@ -3,10 +3,11 @@
 import React, { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 
-const ProjectShowcase = () => {
+const ProjectShowcase = ({ theme = 'dark' }) => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
   const [hoveredCard, setHoveredCard] = useState(null);
+  const isDark = theme === 'dark';
 
   const services = [
     {
@@ -56,7 +57,12 @@ const ProjectShowcase = () => {
   };
 
   return (
-    <section ref={sectionRef} className="relative w-full bg-black py-20 sm:py-24 md:py-32 lg:py-40 overflow-hidden">
+    <section 
+      ref={sectionRef} 
+      className={`relative w-full py-20 sm:py-24 md:py-32 lg:py-40 overflow-hidden transition-colors duration-500 ${
+        isDark ? 'bg-black' : 'bg-white'
+      }`}
+    >
       <style jsx>{`
         @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -68,15 +74,15 @@ const ProjectShowcase = () => {
           font-family: 'Inter', sans-serif;
         }
 
+        /* Base Card Logic */
         .project-card {
-          background: linear-gradient(135deg, rgba(15, 15, 15, 0.95) 0%, rgba(25, 25, 25, 0.95) 100%);
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          backdrop-filter: blur(10px);
+          /* Colors handled by Tailwind */
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
           position: relative;
           overflow: hidden;
         }
 
+        /* Red Top Bar Animation */
         .project-card::before {
           content: '';
           position: absolute;
@@ -88,6 +94,7 @@ const ProjectShowcase = () => {
           transform: scaleX(0);
           transform-origin: left;
           transition: transform 0.5s ease;
+          z-index: 20;
         }
 
         .project-card:hover::before {
@@ -121,16 +128,12 @@ const ProjectShowcase = () => {
           transform: scale(1.08);
         }
 
+        /* Tag Hover Effects only - base colors in Tailwind */
         .feature-tag {
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid rgba(237, 27, 36, 0.3);
-          backdrop-filter: blur(5px);
           transition: all 0.3s ease;
         }
-
+        
         .feature-tag:hover {
-          background: rgba(237, 27, 36, 0.1);
-          border-color: rgba(237, 27, 36, 0.5);
           transform: translateY(-2px);
         }
 
@@ -142,9 +145,9 @@ const ProjectShowcase = () => {
       `}</style>
 
       {/* Background Elements */}
-      <div className="absolute inset-0 opacity-[0.01]">
+      <div className={`absolute inset-0 ${isDark ? 'opacity-[0.01]' : 'opacity-[0.03]'}`}>
         <div style={{
-          backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px)',
+          backgroundImage: `linear-gradient(${isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'} 1px, transparent 1px), linear-gradient(90deg, ${isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'} 1px, transparent 1px)`,
           backgroundSize: '80px 80px',
           height: '100%'
         }}></div>
@@ -165,7 +168,7 @@ const ProjectShowcase = () => {
             transition={{ duration: 0.6, type: "spring" }}
             className="inline-block mb-6"
           >
-            <div className="px-5 py-2.5 rounded-full border-2 border-[#ed1b24] bg-[#ed1b24]/5">
+            <div className={`px-5 py-2.5 rounded-full border-2 border-[#ed1b24] ${isDark ? 'bg-[#ed1b24]/5' : 'bg-red-50'}`}>
               <span className="text-[#ed1b24] text-xs sm:text-sm font-bold tracking-[0.25em] uppercase body-font">
                 PDC Consult Services
               </span>
@@ -174,7 +177,7 @@ const ProjectShowcase = () => {
 
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-end">
             <div>
-              <h2 className="heading-font text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light text-white mb-6 leading-[1.1] tracking-tight">
+              <h2 className={`heading-font text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light mb-6 leading-[1.1] tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 Project Development{" "}
                 <span className="text-[#ed1b24] font-normal">Consultancy</span>
               </h2>
@@ -182,7 +185,7 @@ const ProjectShowcase = () => {
             </div>
             
             <div>
-              <p className="body-font text-gray-400 text-base sm:text-lg md:text-xl leading-relaxed">
+              <p className={`body-font text-base sm:text-lg md:text-xl leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
                 Delivering comprehensive project development solutions across the UAE and MENA region with unmatched expertise and precision.
               </p>
             </div>
@@ -202,7 +205,11 @@ const ProjectShowcase = () => {
               variants={cardVariants}
               onHoverStart={() => setHoveredCard(index)}
               onHoverEnd={() => setHoveredCard(null)}
-              className="project-card rounded-2xl overflow-hidden cursor-pointer group"
+              className={`project-card rounded-2xl overflow-hidden cursor-pointer group border ${
+                isDark 
+                  ? 'bg-gradient-to-br from-[#0f0f0f] to-[#191919] border-white/10' 
+                  : 'bg-white border-gray-200 shadow-lg'
+              }`}
             >
               {/* Image */}
               <div className="image-container aspect-[16/10] relative">
@@ -224,7 +231,7 @@ const ProjectShowcase = () => {
 
               {/* Content */}
               <div className="p-6 sm:p-8 relative z-10">
-                <p className="body-font text-gray-400 text-sm sm:text-base leading-relaxed mb-6">
+                <p className={`body-font text-sm sm:text-base leading-relaxed mb-6 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
                   {service.description}
                 </p>
 
@@ -233,7 +240,11 @@ const ProjectShowcase = () => {
                   {service.features.map((feature, idx) => (
                     <span 
                       key={idx}
-                      className="feature-tag px-3 py-1.5 rounded-lg text-[#ed1b24] text-xs font-semibold body-font cursor-pointer"
+                      className={`feature-tag px-3 py-1.5 rounded-lg text-xs font-semibold body-font cursor-pointer border ${
+                        isDark 
+                          ? 'bg-white/5 border-red-500/30 text-red-500 hover:bg-red-500/10' 
+                          : 'bg-red-50 border-red-200 text-red-600 hover:bg-red-100 hover:border-red-300'
+                      }`}
                     >
                       {feature}
                     </span>
@@ -242,11 +253,11 @@ const ProjectShowcase = () => {
 
                 {/* CTA */}
                 <motion.div 
-                  className="flex items-center gap-2 text-white font-bold text-sm body-font group-hover:gap-3 transition-all"
+                  className={`flex items-center gap-2 font-bold text-sm body-font group-hover:gap-3 transition-all ${isDark ? 'text-white' : 'text-gray-900'}`}
                   animate={{ x: hoveredCard === index ? 5 : 0 }}
                 >
                   <span>Learn More</span>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 text-[#ed1b24]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
                   </svg>
                 </motion.div>
@@ -260,7 +271,7 @@ const ProjectShowcase = () => {
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 border-t border-white/10 pt-12 sm:pt-16"
+          className={`grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 border-t pt-12 sm:pt-16 ${isDark ? 'border-white/10' : 'border-gray-200'}`}
         >
           {[
             { value: "250+", label: "Projects Delivered" },
@@ -275,10 +286,10 @@ const ProjectShowcase = () => {
               transition={{ duration: 0.5, delay: 0.7 + index * 0.1, type: "spring" }}
               className="text-center"
             >
-              <div className="heading-font text-4xl sm:text-5xl md:text-6xl font-light text-white mb-2">
+              <div className={`heading-font text-4xl sm:text-5xl md:text-6xl font-light mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {stat.value}
               </div>
-              <div className="body-font text-gray-400 text-xs sm:text-sm font-normal uppercase tracking-wider">
+              <div className={`body-font text-xs sm:text-sm font-normal uppercase tracking-wider ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
                 {stat.label}
               </div>
             </motion.div>
@@ -295,7 +306,7 @@ const ProjectShowcase = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center gap-3 px-10 py-5 bg-[#ed1b24] text-white font-semibold text-base sm:text-lg rounded-xl transition-all body-font"
+            className="inline-flex items-center gap-3 px-10 py-5 bg-[#ed1b24] text-white font-semibold text-base sm:text-lg rounded-xl transition-all body-font shadow-lg hover:shadow-xl hover:bg-red-700"
           >
             <span>View All Services</span>
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
