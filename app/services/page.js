@@ -244,24 +244,35 @@ const ServicesGrid = ({ services, loading, theme }) => {
               className={`group ${index === 0 ? 'lg:col-span-2 lg:row-span-2' : ''}`}
             >
               <Link href={`/services/${service.id}`}>
-                <div className={`relative overflow-hidden rounded-3xl border hover:border-[#ed1b24]/30 transition-all duration-300 h-full ${index === 0 ? 'min-h-[500px]' : 'min-h-[280px]'} ${
-                  theme === 'dark' ? 'bg-[#0a0a0a] border-white/5' : 'bg-white border-gray-200'
+                {/* 
+                  Card Container 
+                  Changes: Added duration-500 and ease-out for smooth color transition.
+                */}
+                <div className={`relative overflow-hidden rounded-3xl border transition-all duration-500 ease-out h-full ${index === 0 ? 'min-h-[500px]' : 'min-h-[280px]'} ${
+                  theme === 'dark' 
+                    ? 'bg-[#0a0a0a] border-white/5 hover:border-[#ed1b24]/40' 
+                    : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-xl'
                 }`}>
                   {/* Background Image */}
                   <div className="absolute inset-0">
                     <motion.img
                       whileHover={{ scale: 1.05 }}
-                      transition={{ duration: 0.4 }}
+                      transition={{ duration: 0.6, ease: "easeOut" }} // Smooth image scale
                       src={service.image}
                       alt={service.title}
-                      className={`w-full h-full object-cover transition-opacity duration-300 ${
-                        theme === 'dark' ? 'opacity-30 group-hover:opacity-40' : 'opacity-20 group-hover:opacity-30'
+                      // Increased opacity in light mode to avoid the "grey box" look
+                      className={`w-full h-full object-cover transition-opacity duration-500 ease-out ${
+                        theme === 'dark' ? 'opacity-30 group-hover:opacity-40' : 'opacity-100'
                       }`}
                     />
-                    <div className={`absolute inset-0 ${
+                    {/* 
+                      Gradient Overlay 
+                      Fixed: Used black gradient in white theme to remove white shadow haze.
+                    */}
+                    <div className={`absolute inset-0 transition-opacity duration-500 ease-out ${
                       theme === 'dark'
                         ? 'bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent'
-                        : 'bg-gradient-to-t from-white via-white/90 to-transparent'
+                        : 'bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-90'
                     }`}></div>
                   </div>
 
@@ -269,30 +280,30 @@ const ServicesGrid = ({ services, loading, theme }) => {
                   <div className="relative h-full p-6 lg:p-8 flex flex-col justify-end">
                     {/* Number */}
                     <div className="absolute top-6 right-6">
-                      <span className={`text-6xl lg:text-7xl font-light group-hover:text-[#ed1b24]/10 transition-colors duration-300 ${
-                        theme === 'dark' ? 'text-white/5' : 'text-gray-900/5'
+                      <span className={`text-6xl lg:text-7xl font-light transition-colors duration-500 ease-out group-hover:text-[#ed1b24]/20 ${
+                        theme === 'dark' ? 'text-white/5' : 'text-white/10'
                       }`}>
                         {service.number}
                       </span>
                     </div>
 
                     {/* Icon */}
-                    <motion.div
-                      whileHover={{ scale: 1.1, rotate: 5 }}
-                      className="w-14 h-14 rounded-2xl bg-[#ed1b24]/10 border border-[#ed1b24]/20 flex items-center justify-center text-[#ed1b24] mb-4 group-hover:bg-[#ed1b24] group-hover:text-white transition-all duration-300"
+                    <div
+                      className={`w-14 h-14 rounded-2xl border flex items-center justify-center mb-4 transition-all duration-500 ease-out group-hover:bg-[#ed1b24] group-hover:border-[#ed1b24] group-hover:text-white ${
+                        theme === 'dark'
+                          ? 'bg-[#ed1b24]/10 border-[#ed1b24]/20 text-[#ed1b24]'
+                          : 'bg-white/10 border-white/20 text-white backdrop-blur-sm'
+                      }`}
                     >
                       {service.icon}
-                    </motion.div>
+                    </div>
 
                     {/* Title & Description */}
-                    <h3 className={`text-xl lg:text-2xl font-bold mb-2 group-hover:text-[#ed1b24] transition-colors duration-300 ${
-                      theme === 'dark' ? 'text-white' : 'text-gray-900'
-                    }`}>
+                    {/* Force text white in both themes because of the dark overlay fix */}
+                    <h3 className="text-xl lg:text-2xl font-bold mb-2 text-white group-hover:text-[#ed1b24] transition-colors duration-500 ease-out">
                       {service.title}
                     </h3>
-                    <p className={`text-sm lg:text-base mb-4 line-clamp-2 ${
-                      theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-                    }`}>
+                    <p className="text-sm lg:text-base mb-4 line-clamp-2 text-gray-300 group-hover:text-white transition-colors duration-500 ease-out">
                       {service.shortDesc}
                     </p>
 
@@ -300,9 +311,7 @@ const ServicesGrid = ({ services, loading, theme }) => {
                     {index === 0 && (
                       <div className="hidden lg:flex flex-wrap gap-2 mb-4">
                         {service.features.map((feature, i) => (
-                          <span key={i} className={`px-3 py-1 rounded-full text-xs ${
-                            theme === 'dark' ? 'bg-white/5 text-gray-400' : 'bg-gray-100 text-gray-600'
-                          }`}>
+                          <span key={i} className="px-3 py-1 rounded-full text-xs bg-white/10 text-gray-200 backdrop-blur-sm border border-white/10">
                             {feature}
                           </span>
                         ))}
@@ -310,7 +319,7 @@ const ServicesGrid = ({ services, loading, theme }) => {
                     )}
 
                     {/* Arrow */}
-                    <div className="flex items-center gap-2 text-[#ed1b24] text-sm font-medium opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-0 group-hover:translate-x-2">
+                    <div className="flex items-center gap-2 text-[#ed1b24] text-sm font-medium opacity-0 group-hover:opacity-100 transition-all duration-500 ease-out transform translate-x-0 group-hover:translate-x-2">
                       <span>Explore Service</span>
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -372,13 +381,13 @@ const ProcessSection = ({ theme }) => {
               transition={{ duration: 0.4, delay: index * 0.1 }}
               className="relative group"
             >
-              <div className={`p-8 rounded-3xl border hover:border-[#ed1b24]/30 transition-all duration-300 h-full ${
+              <div className={`p-8 rounded-3xl border hover:border-[#ed1b24]/30 transition-all duration-500 ease-out h-full ${
                 theme === 'dark'
                   ? 'bg-white/[0.02] border-white/5'
-                  : 'bg-gray-50 border-gray-200'
+                  : 'bg-gray-50 border-gray-200 hover:shadow-lg'
               }`}>
                 {/* Number */}
-                <div className="text-6xl font-light text-[#ed1b24]/20 group-hover:text-[#ed1b24]/40 transition-colors duration-300 mb-4">
+                <div className="text-6xl font-light text-[#ed1b24]/20 group-hover:text-[#ed1b24]/40 transition-colors duration-500 ease-out mb-4">
                   {step.number}
                 </div>
 
