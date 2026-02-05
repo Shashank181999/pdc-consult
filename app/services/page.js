@@ -248,9 +248,9 @@ const ServicesGrid = ({ services, loading, theme }) => {
                   Card Container 
                   Changes: Added duration-500 and ease-out for smooth color transition.
                 */}
-                <div className={`relative overflow-hidden rounded-3xl border transition-all duration-500 ease-out h-full ${index === 0 ? 'min-h-[500px]' : 'min-h-[280px]'} ${
-                  theme === 'dark' 
-                    ? 'bg-[#0a0a0a] border-white/5 hover:border-[#ed1b24]/40' 
+                <div className={`relative overflow-hidden rounded-3xl border transition-all duration-300 ease-out h-full hover:scale-[1.02] ${index === 0 ? 'min-h-[500px]' : 'min-h-[280px]'} ${
+                  theme === 'dark'
+                    ? 'bg-[#0a0a0a] border-white/5 hover:border-[#ed1b24]/40'
                     : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-xl'
                 }`}>
                   {/* Background Image */}
@@ -300,10 +300,10 @@ const ServicesGrid = ({ services, loading, theme }) => {
 
                     {/* Title & Description */}
                     {/* Force text white in both themes because of the dark overlay fix */}
-                    <h3 className="text-xl lg:text-2xl font-bold mb-2 text-white group-hover:text-[#ed1b24] transition-colors duration-500 ease-out">
+                    <h3 className="text-xl lg:text-2xl font-bold mb-2 text-white">
                       {service.title}
                     </h3>
-                    <p className="text-sm lg:text-base mb-4 line-clamp-2 text-gray-300 group-hover:text-white transition-colors duration-500 ease-out">
+                    <p className="text-sm lg:text-base mb-4 line-clamp-2 text-gray-300">
                       {service.shortDesc}
                     </p>
 
