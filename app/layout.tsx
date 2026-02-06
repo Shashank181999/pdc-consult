@@ -34,9 +34,15 @@ export default function RootLayout({
             __html: `
               (function() {
                 try {
-                  var theme = localStorage.getItem('theme') || 'light';
+                  var theme = localStorage.getItem('theme');
+                  if (!theme) {
+                    theme = 'light';
+                    localStorage.setItem('theme', 'light');
+                  }
                   document.documentElement.setAttribute('data-theme', theme);
-                } catch (e) {}
+                } catch (e) {
+                  document.documentElement.setAttribute('data-theme', 'light');
+                }
               })();
             `,
           }}
