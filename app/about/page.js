@@ -667,7 +667,7 @@ const TeamSection = () => {
     { name: 'Architect', role: 'Architect', image: '/team/Architect.jpg.jpeg', department: 'Design' },
     { name: 'Accountant', role: 'Accountant', image: '/team/Accountant.jpg.jpeg', department: 'Finance' },
     { name: 'Full-Stack Developer', role: 'Developer', image: '/team/Full-Stack Developer.jpg', department: 'Technology' },
-    { name: 'Graphic Designer', role: 'Designer', image: '/team/Graphic Designer.png', department: 'Creative' },
+    { name: 'Graphic Designer', role: 'Designer', image: '/team/Graphic designer.png', department: 'Creative' },
     { name: 'IT Support', role: 'IT Engineer', image: '/team/IT Support Engineer.jpg.jpeg', department: 'Technology' },
     { name: 'Sales Executive', role: 'Sales Executive', image: '/team/Sales Executive.jpeg', department: 'Sales' },
   ];
