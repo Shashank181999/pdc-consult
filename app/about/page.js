@@ -729,50 +729,47 @@ const TeamSection = () => {
     </motion.div>
   );
 
-  // Team Card Component - Clean Design
+  // Team Card Component - Premium Design
   const TeamCard = ({ member, index }) => (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay: 0.2 + index * 0.05 }}
+      transition={{ duration: 0.5, delay: 0.15 + index * 0.06 }}
       className="group"
     >
       <motion.div
-        whileHover={{ y: -6 }}
+        whileHover={{ y: -5 }}
         transition={{ duration: 0.3 }}
         className={`relative overflow-hidden rounded-xl ${
-          theme === 'dark' ? 'bg-[#111]' : 'bg-white border border-gray-100'
+          theme === 'dark' ? 'bg-[#111]' : 'bg-white'
         }`}
       >
         {/* Image */}
         <div className="relative aspect-square overflow-hidden">
           <motion.img
-            whileHover={{ scale: 1.1 }}
+            whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.5 }}
             src={member.image}
             alt={member.role}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
 
-          {/* Hover Overlay */}
-          <div className="absolute inset-0 bg-[#ed1b24]/0 group-hover:bg-[#ed1b24]/10 transition-colors duration-300"></div>
+          {/* Department Badge */}
+          <div className="absolute top-2.5 left-2.5">
+            <span className="px-2 py-1 bg-[#ed1b24] text-white text-[9px] sm:text-[10px] font-bold uppercase tracking-wider rounded-full">
+              {member.department}
+            </span>
+          </div>
+
+          {/* Content at Bottom */}
+          <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
+            <h3 className="text-sm sm:text-base font-bold text-white group-hover:text-[#ed1b24] transition-colors duration-300">
+              {member.name}
+            </h3>
+            <p className="text-gray-300 text-[11px] sm:text-xs mt-0.5">{member.role}</p>
+          </div>
         </div>
-
-        {/* Content */}
-        <div className={`p-3 sm:p-4 ${theme === 'dark' ? 'bg-[#111]' : 'bg-white'}`}>
-          <h3 className={`text-sm sm:text-base font-semibold group-hover:text-[#ed1b24] transition-colors duration-300 truncate ${
-            theme === 'dark' ? 'text-white' : 'text-gray-900'
-          }`}>
-            {member.name}
-          </h3>
-          <p className={`text-xs mt-1 ${theme === 'dark' ? 'text-gray-500' : 'text-gray-500'}`}>
-            {member.role}
-          </p>
-        </div>
-
-        {/* Bottom Accent Line */}
-        <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#ed1b24] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
       </motion.div>
     </motion.div>
   );
@@ -844,7 +841,7 @@ const TeamSection = () => {
             }`}>Our Specialists</h3>
             <div className={`h-px w-8 sm:w-12 ${theme === 'dark' ? 'bg-white/20' : 'bg-gray-300'}`}></div>
           </motion.div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3 sm:gap-4 max-w-6xl mx-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 max-w-3xl mx-auto">
             {team.map((member, index) => (
               <TeamCard key={index} member={member} index={index} />
             ))}
