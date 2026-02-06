@@ -185,7 +185,7 @@ const HomeBanner = () => {
               <div className="flex flex-col gap-3 md:gap-4 relative z-10">
                 {content?.services && content.services.slice(0, 4).map((service, i) => (
                   <div key={i} className="group relative cursor-pointer">
-                    <div className="p-4 md:p-5 lg:p-6 bg-white/5 backdrop-blur-md border border-white/10 rounded-lg hover:border-[#ed1b24] transition-all duration-300 hover:-translate-x-2 shadow-2xl">
+                    <div className="p-4 md:p-5 lg:p-6 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl hover:border-[#ed1b24] hover:bg-white/15 transition-all duration-300 hover:-translate-x-2">
                       <div className="absolute left-0 top-0 bottom-0 w-[2px] md:w-[3px] bg-[#ed1b24] opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-l-lg"></div>
 
                       <div className="flex justify-between items-start">
