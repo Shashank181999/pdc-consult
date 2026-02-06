@@ -140,7 +140,7 @@ const HomeBanner = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 lg:gap-16 items-center">
           
           {/* --- LEFT SIDE: TYPOGRAPHY --- */}
-          <div className="lg:col-span-7 flex flex-col justify-center space-y-4 sm:space-y-6 md:space-y-8">
+          <div className="lg:col-span-8 flex flex-col justify-center space-y-4 sm:space-y-6 md:space-y-8">
             
             {/* Top Label */}
             <div className={`flex items-center gap-2 md:gap-3 transition-all duration-1000 ${loaded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'}`}>
@@ -179,29 +179,6 @@ const HomeBanner = () => {
             </div>
           </div>
 
-          {/* --- RIGHT SIDE: FEATURE LIST --- */}
-          <div className={`hidden md:flex lg:col-span-5 flex-col justify-center pt-8 lg:pt-0 transition-all duration-1000 delay-500 ${loaded ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'}`}>
-            <div className="relative">
-              <div className="flex flex-col gap-3 md:gap-4 relative z-10">
-                {content?.services && content.services.slice(0, 4).map((service, i) => (
-                  <div key={i} className="group relative cursor-pointer">
-                    <div className="p-4 md:p-5 lg:p-6 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl hover:border-[#ed1b24] hover:bg-white/15 transition-all duration-300 hover:-translate-x-2">
-                      <div className="absolute left-0 top-0 bottom-0 w-[2px] md:w-[3px] bg-[#ed1b24] opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-l-lg"></div>
-
-                      <div className="flex justify-between items-start">
-                        <h3 className="text-sm sm:text-base md:text-lg font-medium text-white mb-1 md:mb-2 group-hover:text-[#ed1b24] transition-colors line-clamp-1">
-                          {service.title}
-                        </h3>
-                      </div>
-                      <p className="text-xs md:text-sm text-gray-400 font-light leading-relaxed group-hover:text-gray-300 transition-colors line-clamp-2">
-                        {service.description}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
