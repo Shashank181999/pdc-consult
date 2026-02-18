@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
-import { supabase } from '../../admin/supabase';
+// Static data only - no external database
 import { useTheme } from '../../context/ThemeContext';
 
 // ============================================
@@ -72,7 +72,117 @@ const staticProjectsData = {
     services: ['Project Development', 'Construction Management', 'Quality Assurance', 'Cost Control'],
     tags: ['Hospitality', 'Ultra-Luxury', 'Mixed-Use', 'Waterfront']
   },
-  // ... (Other static projects omitted for brevity, but structure is identical)
+  '2': {
+    id: '2',
+    title: 'Marina Heights',
+    subtitle: 'Modern Urban Living',
+    category: 'Residential Tower',
+    location: 'Dubai Marina, Dubai',
+    client: 'Emaar Properties',
+    year: '2022',
+    duration: '36 Months',
+    value: '$890 Million',
+    area: '280,000 sqm',
+    status: 'Completed',
+    heroImage: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=2000&auto=format&fit=crop',
+    description: 'Marina Heights is a premier residential tower offering breathtaking views of Dubai Marina and the Arabian Gulf. The development features 450 luxury apartments with world-class amenities and direct marina access.',
+    challenge: 'Building a distinctive residential tower in the competitive Dubai Marina market while ensuring premium quality and timely delivery.',
+    solution: 'We implemented advanced project management techniques and coordinated with top-tier contractors to deliver a landmark residential development that exceeds market expectations.',
+    features: [
+      'Panoramic marina views',
+      'Private marina berths',
+      'Infinity pool',
+      'Smart home technology',
+      'Premium finishes',
+      'Concierge services',
+      '24/7 security',
+      'Fitness center & spa'
+    ],
+    gallery: [
+      'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1200&auto=format&fit=crop'
+    ],
+    services: ['Project Development', 'Construction Management', 'Interior Design Coordination'],
+    tags: ['Residential', 'High-Rise', 'Waterfront', 'Luxury']
+  },
+  '4': {
+    id: '4',
+    title: 'Emirates Hills Estate',
+    subtitle: 'Exclusive Private Villa',
+    category: 'Private Villa',
+    location: 'Emirates Hills, Dubai',
+    client: 'Private Client',
+    year: '2023',
+    duration: '24 Months',
+    value: '$45 Million',
+    area: '3,500 sqm',
+    status: 'Completed',
+    heroImage: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=2000&auto=format&fit=crop',
+    description: 'An ultra-luxury private villa in the prestigious Emirates Hills community, featuring contemporary architecture, expansive gardens, and unparalleled privacy. This bespoke residence represents the pinnacle of private luxury living.',
+    challenge: 'Creating a unique architectural masterpiece that meets the exacting standards of the client while integrating seamlessly with the exclusive Emirates Hills community.',
+    solution: 'Our team worked closely with world-renowned architects and interior designers to deliver a truly bespoke residence that exceeds expectations in every detail.',
+    features: [
+      'Private infinity pool',
+      'Home cinema',
+      'Wine cellar',
+      'Smart home automation',
+      'Landscaped gardens',
+      'Guest house',
+      'Private gym',
+      'Covered parking for 10 cars'
+    ],
+    gallery: [
+      'https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=80&w=1200&auto=format&fit=crop'
+    ],
+    services: ['Project Development', 'Construction Management', 'Interior Design', 'Landscaping'],
+    tags: ['Residential', 'Villa', 'Ultra-Luxury', 'Private']
+  },
+  '5': {
+    id: '5',
+    title: 'Downtown Views',
+    subtitle: 'Premium Downtown Living',
+    category: 'Luxury Apartments',
+    location: 'Downtown Dubai',
+    client: 'Meraas Holdings',
+    year: '2024',
+    duration: '30 Months',
+    value: '$620 Million',
+    area: '185,000 sqm',
+    status: 'Completed',
+    heroImage: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2000&auto=format&fit=crop',
+    description: 'Downtown Views offers an exclusive collection of luxury apartments with stunning views of Burj Khalifa and the Dubai Fountain. Located in the heart of Downtown Dubai, residents enjoy immediate access to world-class shopping, dining, and entertainment.',
+    challenge: 'Delivering a luxury residential project in the heart of Downtown Dubai while maintaining the highest construction standards and meeting aggressive timelines.',
+    solution: 'Our expert team coordinated complex logistics in a dense urban environment, implementing innovative construction methods to ensure quality and efficiency.',
+    features: [
+      'Burj Khalifa views',
+      'Dubai Fountain views',
+      'Direct mall access',
+      'Rooftop infinity pool',
+      'Concierge services',
+      'Valet parking',
+      'Premium appliances',
+      'Floor-to-ceiling windows'
+    ],
+    gallery: [
+      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=1200&auto=format&fit=crop'
+    ],
+    services: ['Project Development', 'Construction Management', 'Quality Assurance'],
+    tags: ['Residential', 'High-Rise', 'Downtown', 'Luxury']
+  }
 };
 
 // Related projects (for the related section)
@@ -787,85 +897,16 @@ export default function ProjectDetailsPage() {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, [projectId]);
 
-  // Fetch project from Supabase or use static data
-  // Fetch project from Supabase or use static data
+  // Use static data only
   useEffect(() => {
-    const fetchProject = async () => {
-      setLoading(true);
+    setLoading(true);
 
-      // 1. First check if it's a static project ID (1-15)
-      if (staticProjectsData[projectId]) {
-        setProject(staticProjectsData[projectId]);
-        setLoading(false);
-        return;
-      }
-
-      // 2. VALIDATION: Check if projectId is a valid UUID
-      // This prevents sending "16", "abc", etc. to Supabase which causes "invalid input syntax for type uuid"
-      const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(projectId);
-
-      if (!isUuid) {
-        console.warn(`Project ID "${projectId}" is not in static data and is not a valid UUID.`);
-        setProject(null);
-        setLoading(false);
-        return;
-      }
-
-      // 3. Try to fetch from Supabase (Only if it's a UUID)
-      try {
-        const { data, error } = await supabase
-          .from('projects')
-          .select('*')
-          .eq('id', projectId)
-          .single();
-
-        if (error) throw error;
-
-        if (data) {
-          // Transform Supabase data to match expected format
-          const heroImage = data.hero_image || data.image_url || defaultImages[data.category?.toLowerCase()] || defaultImages.default;
-          
-          const transformedProject = {
-            id: data.id.toString(),
-            title: data.title || 'Untitled Project',
-            subtitle: data.subtitle || data.description?.substring(0, 50) || 'Project Details',
-            category: data.category || 'Commercial',
-            location: data.location || 'Dubai',
-            client: data.client || 'Private Client',
-            year: data.year || new Date().getFullYear().toString(),
-            duration: data.duration || '24 Months',
-            value: data.value || 'N/A',
-            area: data.area || 'N/A',
-            status: data.status || 'In Progress',
-            heroImage: heroImage,
-            description: data.description || 'A prestigious project showcasing excellence in construction and design.',
-            challenge: data.challenge || 'Delivering exceptional quality while meeting strict timelines and budget constraints.',
-            solution: data.solution || 'Our team implemented innovative solutions and maintained rigorous quality control throughout the project lifecycle.',
-            features: data.features || [
-              'Premium quality materials',
-              'Sustainable design',
-              'Smart building systems'
-            ],
-            gallery: data.gallery && data.gallery.length > 0 ? data.gallery : [heroImage, ...defaultGalleryImages.slice(0, 5)],
-            services: data.services || ['Project Development', 'Construction Management'],
-            tags: data.tags || [data.category || 'Commercial']
-          };
-          setProject(transformedProject);
-        } else {
-          setProject(null);
-        }
-      } catch (error) {
-        // Improved error logging to see the actual message
-        console.error('Supabase Error:', error.message || error);
-        setProject(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (projectId) {
-      fetchProject();
+    if (staticProjectsData[projectId]) {
+      setProject(staticProjectsData[projectId]);
+    } else {
+      setProject(null);
     }
+    setLoading(false);
   }, [projectId]);
 
   // Loading state

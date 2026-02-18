@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useRef } from 'react';
+import Link from 'next/link';
 
 const HomeBanner = () => {
   const [loaded, setLoaded] = useState(false);
@@ -169,12 +170,12 @@ const HomeBanner = () => {
                     {content?.hero?.subheadline}
                   </p>
 
-                  <button className="group relative px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4 bg-white/10 backdrop-blur-sm border border-white/20 overflow-hidden rounded-sm hover:bg-[#ed1b24] hover:border-[#ed1b24] transition-all duration-300">
+                  <Link href="/services" className="group relative inline-block px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4 bg-white/10 backdrop-blur-sm border border-white/20 overflow-hidden rounded-sm hover:bg-[#ed1b24] hover:border-[#ed1b24] transition-all duration-300">
                     <span className="relative z-10 flex items-center gap-2 md:gap-3 text-white text-xs md:text-sm font-semibold tracking-wider md:tracking-widest uppercase">
                       {content?.hero?.cta}
                       <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
                     </span>
-                  </button>
+                  </Link>
                </div>
             </div>
           </div>

@@ -2,6 +2,7 @@
 
 import React, { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
+import Link from 'next/link';
 
 const ProjectShowcase = ({ theme = 'dark' }) => {
   const sectionRef = useRef(null);
@@ -11,6 +12,7 @@ const ProjectShowcase = ({ theme = 'dark' }) => {
 
   const services = [
     {
+      id: "project-development",
       number: "01",
       title: "Project Development Consultancy",
       description: "Comprehensive project development services from conception to completion, ensuring strategic planning and flawless execution.",
@@ -18,6 +20,7 @@ const ProjectShowcase = ({ theme = 'dark' }) => {
       features: ["Feasibility Studies", "Master Planning", "Risk Assessment", "Value Engineering"]
     },
     {
+      id: "consultancy",
       number: "02",
       title: "Construction Management",
       description: "Expert oversight of construction projects with focus on quality, timeline adherence, and budget optimization.",
@@ -25,6 +28,7 @@ const ProjectShowcase = ({ theme = 'dark' }) => {
       features: ["Quality Control", "Timeline Management", "Budget Oversight", "Contractor Coordination"]
     },
     {
+      id: "cost-management",
       number: "03",
       title: "Project Control & Monitoring",
       description: "Advanced project control systems ensuring milestones are met and resources are optimally allocated.",
@@ -200,69 +204,70 @@ const ProjectShowcase = ({ theme = 'dark' }) => {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-16"
         >
           {services.map((service, index) => (
-            <motion.div
-              key={index}
-              variants={cardVariants}
-              onHoverStart={() => setHoveredCard(index)}
-              onHoverEnd={() => setHoveredCard(null)}
-              className={`project-card rounded-2xl overflow-hidden cursor-pointer group border ${
-                isDark 
-                  ? 'bg-gradient-to-br from-[#0f0f0f] to-[#191919] border-white/10' 
-                  : 'bg-white border-gray-200 shadow-lg'
-              }`}
-            >
-              {/* Image */}
-              <div className="image-container aspect-[16/10] relative">
-                <img 
-                  src={service.image}
-                  alt={service.title}
-                  className="w-full h-full object-cover"
-                />
-                
-                {/* Overlay Content */}
-                <div className="absolute inset-0 z-10 p-6 sm:p-8 flex flex-col justify-end">
-                  <div className="transform translate-y-0 transition-transform duration-500 group-hover:-translate-y-2">
-                    <h3 className="heading-font text-2xl sm:text-3xl md:text-4xl font-medium text-white mb-2 leading-tight">
-                      {service.title}
-                    </h3>
+            <Link href={`/services/${service.id}`} key={index}>
+              <motion.div
+                variants={cardVariants}
+                onHoverStart={() => setHoveredCard(index)}
+                onHoverEnd={() => setHoveredCard(null)}
+                className={`project-card rounded-2xl overflow-hidden cursor-pointer group border h-full ${
+                  isDark
+                    ? 'bg-gradient-to-br from-[#0f0f0f] to-[#191919] border-white/10'
+                    : 'bg-white border-gray-200 shadow-lg'
+                }`}
+              >
+                {/* Image */}
+                <div className="image-container aspect-[16/10] relative">
+                  <img
+                    src={service.image}
+                    alt={service.title}
+                    className="w-full h-full object-cover"
+                  />
+
+                  {/* Overlay Content */}
+                  <div className="absolute inset-0 z-10 p-6 sm:p-8 flex flex-col justify-end">
+                    <div className="transform translate-y-0 transition-transform duration-500 group-hover:-translate-y-2">
+                      <h3 className="heading-font text-2xl sm:text-3xl md:text-4xl font-medium text-white mb-2 leading-tight">
+                        {service.title}
+                      </h3>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Content */}
-              <div className="p-6 sm:p-8 relative z-10">
-                <p className={`body-font text-sm sm:text-base leading-relaxed mb-6 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                  {service.description}
-                </p>
+                {/* Content */}
+                <div className="p-6 sm:p-8 relative z-10">
+                  <p className={`body-font text-sm sm:text-base leading-relaxed mb-6 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                    {service.description}
+                  </p>
 
-                {/* Features */}
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {service.features.map((feature, idx) => (
-                    <span 
-                      key={idx}
-                      className={`feature-tag px-3 py-1.5 rounded-lg text-xs font-semibold body-font cursor-pointer border ${
-                        isDark 
-                          ? 'bg-white/5 border-red-500/30 text-red-500 hover:bg-red-500/10' 
-                          : 'bg-red-50 border-red-200 text-red-600 hover:bg-red-100 hover:border-red-300'
-                      }`}
-                    >
-                      {feature}
-                    </span>
-                  ))}
+                  {/* Features */}
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {service.features.map((feature, idx) => (
+                      <span
+                        key={idx}
+                        className={`feature-tag px-3 py-1.5 rounded-lg text-xs font-semibold body-font cursor-pointer border ${
+                          isDark
+                            ? 'bg-white/5 border-red-500/30 text-red-500 hover:bg-red-500/10'
+                            : 'bg-red-50 border-red-200 text-red-600 hover:bg-red-100 hover:border-red-300'
+                        }`}
+                      >
+                        {feature}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* CTA */}
+                  <motion.div
+                    className={`flex items-center gap-2 font-bold text-sm body-font group-hover:gap-3 transition-all ${isDark ? 'text-white' : 'text-gray-900'}`}
+                    animate={{ x: hoveredCard === index ? 5 : 0 }}
+                  >
+                    <span>Learn More</span>
+                    <svg className="w-4 h-4 text-[#ed1b24]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </motion.div>
                 </div>
-
-                {/* CTA */}
-                <motion.div 
-                  className={`flex items-center gap-2 font-bold text-sm body-font group-hover:gap-3 transition-all ${isDark ? 'text-white' : 'text-gray-900'}`}
-                  animate={{ x: hoveredCard === index ? 5 : 0 }}
-                >
-                  <span>Learn More</span>
-                  <svg className="w-4 h-4 text-[#ed1b24]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
-                  </svg>
-                </motion.div>
-              </div>
-            </motion.div>
+              </motion.div>
+            </Link>
           ))}
         </motion.div>
 
@@ -303,16 +308,18 @@ const ProjectShowcase = ({ theme = 'dark' }) => {
           transition={{ duration: 0.8, delay: 0.9 }}
           className="text-center mt-16 sm:mt-20"
         >
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center gap-3 px-10 py-5 bg-[#ed1b24] text-white font-semibold text-base sm:text-lg rounded-xl transition-all body-font shadow-lg hover:shadow-xl hover:bg-red-700"
-          >
-            <span>View All Services</span>
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-            </svg>
-          </motion.button>
+          <Link href="/services">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="inline-flex items-center gap-3 px-10 py-5 bg-[#ed1b24] text-white font-semibold text-base sm:text-lg rounded-xl transition-all body-font shadow-lg hover:shadow-xl hover:bg-red-700"
+            >
+              <span>View All Services</span>
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </motion.button>
+          </Link>
         </motion.div>
       </div>
     </section>

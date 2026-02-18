@@ -2,6 +2,7 @@
 
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
+import Link from 'next/link';
 
 const ProjectBrochure = ({ theme = 'dark' }) => {
   const sectionRef = useRef(null);
@@ -9,6 +10,7 @@ const ProjectBrochure = ({ theme = 'dark' }) => {
 
   const projects = [
     {
+      id: "project-development",
       number: "01",
       title: "Project Development Consultancy",
       subtitle: "PDC Consult Services",
@@ -17,6 +19,7 @@ const ProjectBrochure = ({ theme = 'dark' }) => {
       tags: ["Feasibility Studies", "Master Planning", "Risk Assessment"]
     },
     {
+      id: "architectural-design",
       number: "02",
       title: "Architectural Design and Urban Planning",
       subtitle: "PDC Consult Services",
@@ -25,6 +28,7 @@ const ProjectBrochure = ({ theme = 'dark' }) => {
       tags: ["Carlos Ott Partnership", "Urban Masterplanning", "Iconic Design"]
     },
     {
+      id: "hospitality-consultancy",
       number: "03",
       title: "Hospitality Projects",
       subtitle: "PDC Consult Services",
@@ -33,6 +37,7 @@ const ProjectBrochure = ({ theme = 'dark' }) => {
       tags: ["Hotel Development", "Resort Planning", "Brand Positioning"]
     },
     {
+      id: "cost-management",
       number: "04",
       title: "Cost Management & Value Engineering",
       subtitle: "PDC Consult Services",
@@ -41,6 +46,7 @@ const ProjectBrochure = ({ theme = 'dark' }) => {
       tags: ["Budget Optimization", "Value Analysis", "Cost Modeling"]
     },
     {
+      id: "pm-training",
       number: "05",
       title: "PM Corporate Training",
       subtitle: "PDC Consult Services",
@@ -296,28 +302,29 @@ const ProjectBrochure = ({ theme = 'dark' }) => {
                   </div>
 
                   {/* CTA Link */}
-                  <motion.button
-                    whileHover={{ x: 8, scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    /* FIXED: Button Colors */
-                    className={`inline-flex items-center gap-3 font-bold text-base sm:text-lg body-font mt-4 transition-colors ${
-                      isDark 
-                        ? 'text-[#ed1b24] hover:text-white' 
-                        : 'text-[#ed1b24] hover:text-black'
-                    }`}
-                  >
-                    <span>Learn More</span>
-                    <motion.svg 
-                      className="w-5 h-5"
-                      animate={{ x: [0, 4, 0] }}
-                      transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                      fill="none" 
-                      stroke="currentColor" 
-                      viewBox="0 0 24 24"
+                  <Link href={`/services/${project.id}`}>
+                    <motion.span
+                      whileHover={{ x: 8, scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className={`inline-flex items-center gap-3 font-bold text-base sm:text-lg body-font mt-4 transition-colors cursor-pointer ${
+                        isDark
+                          ? 'text-[#ed1b24] hover:text-white'
+                          : 'text-[#ed1b24] hover:text-black'
+                      }`}
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
-                    </motion.svg>
-                  </motion.button>
+                      <span>Learn More</span>
+                      <motion.svg
+                        className="w-5 h-5"
+                        animate={{ x: [0, 4, 0] }}
+                        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                      </motion.svg>
+                    </motion.span>
+                  </Link>
                 </div>
               </div>
             </motion.div>

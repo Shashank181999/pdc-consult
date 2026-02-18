@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import HomeBanner from './components/HomeBanner';
+import Link from 'next/link';
+import HomeBanner from './components/Homebanner';
 import Header from './components/Header';
 import Services from './components/Services';
 import OrgDiagram from './components/OrgDiagram'
@@ -42,6 +43,7 @@ export default function Home() {
   // --- DATA: Projects ---
   const projects = [
     {
+      id: 1,
       title: 'The Royal Atlantis',
       category: 'Luxury Hotel',
       location: 'Palm Jumeirah',
@@ -49,6 +51,7 @@ export default function Home() {
       size: 'large'
     },
     {
+      id: 2,
       title: 'Marina Heights',
       category: 'Residential Tower',
       location: 'Dubai Marina',
@@ -56,6 +59,7 @@ export default function Home() {
       size: 'small'
     },
     {
+      id: 4,
       title: 'Emirates Hills Estate',
       category: 'Private Villa',
       location: 'Emirates Hills',
@@ -63,6 +67,7 @@ export default function Home() {
       size: 'small'
     },
     {
+      id: 5,
       title: 'Downtown Views',
       category: 'Luxury Apartments',
       location: 'Downtown Dubai',
@@ -246,33 +251,33 @@ export default function Home() {
       
       {/* Desktop View All Button - Theme Adaptive */}
       <div className="hidden md:block">
-        <button className={`flex items-center gap-3 px-8 py-4 bg-transparent border transition-all duration-300 font-semibold group rounded-full hover:border-[#ed1b24] hover:bg-[#ed1b24] hover:text-white ${
-          theme === 'dark' 
-            ? 'border-white/30 text-white' 
+        <Link href="/projects" className={`flex items-center gap-3 px-8 py-4 bg-transparent border transition-all duration-300 font-semibold group rounded-full hover:border-[#ed1b24] hover:bg-[#ed1b24] hover:text-white ${
+          theme === 'dark'
+            ? 'border-white/30 text-white'
             : 'border-black/20 text-black'
         }`}>
           <span>View All Projects</span>
           <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-        </button>
+        </Link>
       </div>
     </div>
 
     {/* Projects Grid */}
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
       {projects.map((project, index) => (
-        <article
+        <Link
+          href={`/projects/${project.id}`}
           key={index}
-          className={`group relative overflow-hidden rounded-xl cursor-pointer shadow-lg h-[280px] sm:h-[350px] lg:h-[400px] border ${
+          className={`group relative overflow-hidden rounded-xl cursor-pointer shadow-lg h-[280px] sm:h-[350px] lg:h-[400px] border block ${
             project.size === 'large' ? 'sm:col-span-2 lg:col-span-2' : 'col-span-1'
           } ${
-            /* Adaptive Border: Faint White in Dark Mode, Faint Black in Light Mode */
             theme === 'dark' ? 'border-white/10' : 'border-black/5'
           }`}
         >
           {/* Image */}
           <div className="absolute inset-0 w-full h-full">
-            <img 
-              src={project.image} 
+            <img
+              src={project.image}
               alt={`${project.category} in Dubai - ${project.title}`}
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100"
             />
@@ -294,26 +299,26 @@ export default function Home() {
                 {project.location}
               </div>
             </div>
-            
+
             {/* Arrow Icon */}
             <div className="absolute top-6 right-6 w-10 h-10 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 -translate-y-2 group-hover:translate-y-0 transition-all duration-300 border border-white/10">
               <svg className="w-5 h-5 -rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
             </div>
           </div>
-        </article>
+        </Link>
       ))}
     </div>
 
     {/* Mobile View All Button - Theme Adaptive */}
     <div className="mt-12 text-center md:hidden">
-      <button className={`w-full flex items-center justify-center gap-3 px-8 py-4 bg-transparent border font-semibold rounded-lg hover:bg-[#ed1b24] hover:border-[#ed1b24] hover:text-white transition-colors duration-300 ${
-        theme === 'dark' 
-          ? 'border-white/30 text-white' 
+      <Link href="/projects" className={`w-full flex items-center justify-center gap-3 px-8 py-4 bg-transparent border font-semibold rounded-lg hover:bg-[#ed1b24] hover:border-[#ed1b24] hover:text-white transition-colors duration-300 ${
+        theme === 'dark'
+          ? 'border-white/30 text-white'
           : 'border-black/20 text-black'
       }`}>
         <span>View All Projects</span>
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-      </button>
+      </Link>
     </div>
 
   </div>
@@ -344,7 +349,7 @@ export default function Home() {
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {/* Service 1 */}
-            <div className={`p-6 sm:p-8 lg:p-10 border hover:border-[#ed1b24] transition-all duration-300 group hover:-translate-y-2 rounded-xl ${
+            <Link href="/services/project-development" className={`p-6 sm:p-8 lg:p-10 border hover:border-[#ed1b24] transition-all duration-300 group hover:-translate-y-2 rounded-xl block ${
               theme === 'dark' ? 'bg-[#111] border-white/5' : 'bg-white border-gray-200 shadow-sm'
             }`}>
               <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#ed1b24] text-white flex items-center justify-center mb-6 sm:mb-8 rounded-lg group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-red-900/20">
@@ -352,10 +357,10 @@ export default function Home() {
               </div>
               <h3 className={`text-xl sm:text-2xl font-bold mb-3 sm:mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Business Strategy</h3>
               <p className={`leading-relaxed text-sm sm:text-base ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Strategic planning and execution to help your business achieve sustainable growth.</p>
-            </div>
+            </Link>
 
             {/* Service 2 */}
-            <div className={`p-6 sm:p-8 lg:p-10 border hover:border-[#ed1b24] transition-all duration-300 group hover:-translate-y-2 rounded-xl ${
+            <Link href="/services/consultancy" className={`p-6 sm:p-8 lg:p-10 border hover:border-[#ed1b24] transition-all duration-300 group hover:-translate-y-2 rounded-xl block ${
               theme === 'dark' ? 'bg-[#111] border-white/5' : 'bg-white border-gray-200 shadow-sm'
             }`}>
               <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#ed1b24] text-white flex items-center justify-center mb-6 sm:mb-8 rounded-lg group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-red-900/20">
@@ -363,10 +368,10 @@ export default function Home() {
               </div>
               <h3 className={`text-xl sm:text-2xl font-bold mb-3 sm:mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Management Consulting</h3>
               <p className={`leading-relaxed text-sm sm:text-base ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Expert guidance on organizational development and change management.</p>
-            </div>
+            </Link>
 
             {/* Service 3 */}
-            <div className={`p-6 sm:p-8 lg:p-10 border hover:border-[#ed1b24] transition-all duration-300 group hover:-translate-y-2 rounded-xl sm:col-span-2 lg:col-span-1 ${
+            <Link href="/services/architectural-design" className={`p-6 sm:p-8 lg:p-10 border hover:border-[#ed1b24] transition-all duration-300 group hover:-translate-y-2 rounded-xl sm:col-span-2 lg:col-span-1 block ${
               theme === 'dark' ? 'bg-[#111] border-white/5' : 'bg-white border-gray-200 shadow-sm'
             }`}>
               <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#ed1b24] text-white flex items-center justify-center mb-6 sm:mb-8 rounded-lg group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-red-900/20">
@@ -374,7 +379,7 @@ export default function Home() {
               </div>
               <h3 className={`text-xl sm:text-2xl font-bold mb-3 sm:mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Market Analysis</h3>
               <p className={`leading-relaxed text-sm sm:text-base ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>In-depth market research and analysis to identify opportunities and mitigate risks.</p>
-            </div>
+            </Link>
           </div>
         </div>
       </section>
@@ -397,9 +402,9 @@ export default function Home() {
           <p className="text-white/90 text-base sm:text-lg lg:text-xl mb-8 sm:mb-10 max-w-2xl mx-auto font-light leading-relaxed">
             Let's discuss how PDC Consult can help you achieve your business goals and drive sustainable growth.
           </p>
-          <button className="w-full sm:w-auto bg-white text-[#ed1b24] px-8 sm:px-10 py-4 sm:py-5 font-bold text-base sm:text-lg hover:bg-black hover:text-white transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 rounded-xl">
+          <Link href="/contact" className="w-full sm:w-auto inline-block bg-white text-[#ed1b24] px-8 sm:px-10 py-4 sm:py-5 font-bold text-base sm:text-lg hover:bg-black hover:text-white transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 rounded-xl">
             Schedule a Consultation
-          </button>
+          </Link>
         </div>
 
       </section>

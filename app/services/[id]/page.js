@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
-import { supabase } from '../../admin/supabase';
 import { useTheme } from '../../context/ThemeContext';
 
 // ============================================
@@ -104,8 +103,167 @@ const staticServicesData = {
       { title: 'Marina Gate Towers', image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=800&auto=format&fit=crop', value: '$890M' },
       { title: 'DIFC Innovation Hub', image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&auto=format&fit=crop', value: '$620M' }
     ]
+  },
+  'architectural-design': {
+    id: 'architectural-design',
+    number: '02',
+    title: 'Architectural Design & Urban Planning',
+    subtitle: 'Carlos Ott Partnership',
+    heroImage: 'https://images.unsplash.com/photo-1486718448742-163732cd1544?q=80&w=2000&auto=format&fit=crop',
+    description: 'Official representatives of Carlos Ott in UAE, GCC & Middle East. World-class architectural excellence and innovative urban solutions.',
+    longDescription: `As the official representatives of Carlos Ott in the UAE, GCC, and Middle East, we bring world-renowned architectural expertise to every project. Our partnership combines local market knowledge with international design excellence.\n\nFrom iconic skyscrapers to sustainable urban developments, our architectural design services create spaces that inspire and endure. We specialize in creating landmarks that define skylines and communities.`,
+    features: [
+      { title: 'Carlos Ott Partnership', desc: 'Exclusive representation of world-renowned architect' },
+      { title: 'Iconic Design', desc: 'Creating architectural landmarks that define cities' },
+      { title: 'Urban Masterplanning', desc: 'Comprehensive urban development strategies' },
+      { title: 'Sustainable Development', desc: 'Green building and eco-friendly design solutions' },
+      { title: '3D Visualization', desc: 'Advanced rendering and virtual reality presentations' },
+      { title: 'Regulatory Compliance', desc: 'Full compliance with local building codes' }
+    ],
+    stats: [
+      { value: '150+', label: 'Designs Completed' },
+      { value: '$3B+', label: 'Projects Designed' },
+      { value: '25+', label: 'Awards Won' },
+      { value: '18', label: 'Countries' }
+    ],
+    process: [
+      { step: '01', title: 'Concept Development', desc: 'Initial design concepts and vision' },
+      { step: '02', title: 'Schematic Design', desc: 'Detailed architectural drawings' },
+      { step: '03', title: 'Design Development', desc: 'Refined designs and specifications' },
+      { step: '04', title: 'Documentation', desc: 'Complete construction documents' },
+      { step: '05', title: 'Approvals', desc: 'Regulatory submissions and approvals' },
+      { step: '06', title: 'Construction Support', desc: 'On-site design coordination' }
+    ],
+    relatedProjects: []
+  },
+  'hospitality-consultancy': {
+    id: 'hospitality-consultancy',
+    number: '03',
+    title: 'Hospitality Consultancy',
+    subtitle: 'Luxury & Excellence',
+    heroImage: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2000&auto=format&fit=crop',
+    description: 'Strategic advisory services for luxury hotels, resorts, and hospitality ventures in the MENA region.',
+    longDescription: `Our hospitality consultancy services help clients navigate the complex world of luxury hospitality development. From boutique hotels to grand resorts, we provide strategic guidance at every stage.\n\nWith deep expertise in the MENA hospitality market, we help clients identify opportunities, develop brands, and create exceptional guest experiences that drive revenue and reputation.`,
+    features: [
+      { title: 'Brand Positioning', desc: 'Strategic brand development and positioning' },
+      { title: 'Operational Excellence', desc: 'Best-in-class operational frameworks' },
+      { title: 'Experience Design', desc: 'Creating memorable guest experiences' },
+      { title: 'Revenue Optimization', desc: 'Maximizing profitability and yield' },
+      { title: 'Market Analysis', desc: 'Comprehensive market research and feasibility' },
+      { title: 'Operator Selection', desc: 'Finding the right management partner' }
+    ],
+    stats: [
+      { value: '50+', label: 'Hotels Consulted' },
+      { value: '15K+', label: 'Room Keys' },
+      { value: '95%', label: 'Client Retention' },
+      { value: '12', label: 'Countries' }
+    ],
+    process: [
+      { step: '01', title: 'Market Study', desc: 'Comprehensive market analysis' },
+      { step: '02', title: 'Concept Creation', desc: 'Brand and concept development' },
+      { step: '03', title: 'Financial Modeling', desc: 'Detailed pro-forma analysis' },
+      { step: '04', title: 'Design Brief', desc: 'Hospitality-specific design requirements' },
+      { step: '05', title: 'Operator Selection', desc: 'Management company negotiation' },
+      { step: '06', title: 'Pre-Opening', desc: 'Launch preparation and support' }
+    ],
+    relatedProjects: []
+  },
+  'cost-management': {
+    id: 'cost-management',
+    number: '04',
+    title: 'Cost Management & Consultancy',
+    subtitle: 'Value Engineering',
+    heroImage: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2000&auto=format&fit=crop',
+    description: 'Optimize project costs while maximizing value through systematic analysis and innovative engineering solutions.',
+    longDescription: `Our cost management services ensure your projects deliver maximum value within budget constraints. We combine rigorous financial analysis with deep construction knowledge to optimize every aspect of project spending.\n\nFrom early-stage budgeting to final account settlement, our team provides transparent, accurate cost advice that protects your investment and enhances project outcomes.`,
+    features: [
+      { title: 'Budget Optimization', desc: 'Strategic cost planning and control' },
+      { title: 'Value Analysis', desc: 'Maximizing value at every project stage' },
+      { title: 'Cost Modeling', desc: 'Accurate cost forecasting and tracking' },
+      { title: 'Procurement Strategy', desc: 'Optimized contractor and supplier selection' },
+      { title: 'Change Management', desc: 'Controlling scope and cost changes' },
+      { title: 'Final Accounts', desc: 'Accurate project close-out and settlement' }
+    ],
+    stats: [
+      { value: '$2B+', label: 'Costs Managed' },
+      { value: '15%', label: 'Avg. Savings' },
+      { value: '100+', label: 'Projects' },
+      { value: '99%', label: 'Budget Accuracy' }
+    ],
+    process: [
+      { step: '01', title: 'Cost Planning', desc: 'Initial budget development' },
+      { step: '02', title: 'Value Engineering', desc: 'Cost optimization without compromise' },
+      { step: '03', title: 'Procurement', desc: 'Tender management and evaluation' },
+      { step: '04', title: 'Cost Control', desc: 'Ongoing monitoring and reporting' },
+      { step: '05', title: 'Change Control', desc: 'Managing variations and claims' },
+      { step: '06', title: 'Final Account', desc: 'Project financial close-out' }
+    ],
+    relatedProjects: []
+  },
+  'pm-training': {
+    id: 'pm-training',
+    number: '05',
+    title: 'PM Training Services',
+    subtitle: 'Professional Development',
+    heroImage: 'https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2000&auto=format&fit=crop',
+    description: 'Professional development programs designed to elevate project management capabilities across your organization.',
+    longDescription: `Our PM Training Services empower professionals with the skills and knowledge needed to excel in project management. We offer comprehensive programs aligned with international standards and best practices.\n\nFrom PMP certification preparation to specialized workshops in construction management, our training programs are designed to deliver practical skills that drive immediate results.`,
+    features: [
+      { title: 'Certification Programs', desc: 'PMP, PRINCE2, and other certifications' },
+      { title: 'Custom Workshops', desc: 'Tailored training for your organization' },
+      { title: 'Best Practices', desc: 'Industry-leading methodologies' },
+      { title: 'Primavera Training', desc: 'Expert scheduling software training' },
+      { title: 'Soft Skills', desc: 'Leadership and communication training' },
+      { title: 'Continuous Learning', desc: 'Ongoing professional development' }
+    ],
+    stats: [
+      { value: '2000+', label: 'Professionals Trained' },
+      { value: '95%', label: 'Pass Rate' },
+      { value: '50+', label: 'Corporate Clients' },
+      { value: '4.9', label: 'Avg. Rating' }
+    ],
+    process: [
+      { step: '01', title: 'Needs Assessment', desc: 'Understanding training requirements' },
+      { step: '02', title: 'Program Design', desc: 'Customized curriculum development' },
+      { step: '03', title: 'Delivery', desc: 'Expert-led training sessions' },
+      { step: '04', title: 'Assessment', desc: 'Knowledge testing and evaluation' },
+      { step: '05', title: 'Certification', desc: 'Exam preparation and support' },
+      { step: '06', title: 'Follow-up', desc: 'Post-training support and resources' }
+    ],
+    relatedProjects: []
+  },
+  'consultancy': {
+    id: 'consultancy',
+    number: '06',
+    title: 'General Consultancy',
+    subtitle: 'Expert Advisory',
+    heroImage: 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2000&auto=format&fit=crop',
+    description: 'Strategic consulting services to help businesses navigate complex challenges and achieve their goals.',
+    longDescription: `Our consultancy services provide strategic guidance across all aspects of business and project development. We combine deep industry expertise with analytical rigor to deliver actionable insights.\n\nWhether you need help with market entry, organizational transformation, or strategic planning, our consultants bring the experience and perspective to drive results.`,
+    features: [
+      { title: 'Strategic Planning', desc: 'Long-term business strategy development' },
+      { title: 'Market Entry', desc: 'MENA market expansion support' },
+      { title: 'Due Diligence', desc: 'Comprehensive project assessment' },
+      { title: 'Process Optimization', desc: 'Operational efficiency improvements' },
+      { title: 'Risk Assessment', desc: 'Identifying and mitigating business risks' },
+      { title: 'Change Management', desc: 'Organizational transformation support' }
+    ],
+    stats: [
+      { value: '100+', label: 'Clients Served' },
+      { value: '15+', label: 'Years Experience' },
+      { value: '90%', label: 'Repeat Clients' },
+      { value: '25', label: 'Industries' }
+    ],
+    process: [
+      { step: '01', title: 'Discovery', desc: 'Understanding your challenges' },
+      { step: '02', title: 'Analysis', desc: 'Deep-dive research and assessment' },
+      { step: '03', title: 'Strategy', desc: 'Developing recommendations' },
+      { step: '04', title: 'Planning', desc: 'Implementation roadmap' },
+      { step: '05', title: 'Execution', desc: 'Supporting implementation' },
+      { step: '06', title: 'Review', desc: 'Measuring outcomes and refining' }
+    ],
+    relatedProjects: []
   }
-  // Add other static services here as needed...
 };
 
 // ============================================
@@ -839,72 +997,15 @@ export default function ServiceDetailPage() {
   }, [params.id]);
 
   useEffect(() => {
-    const fetchService = async () => {
-      setLoading(true);
+    setLoading(true);
 
-      // 1. Check static data
-      if (staticServicesData[params.id]) {
-        setService(staticServicesData[params.id]);
-        setLoading(false);
-        return;
-      }
-
-      // 2. Validate UUID before querying Supabase
-      const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(params.id);
-
-      if (!isUuid) {
-        console.warn(`Service ID "${params.id}" is not in static data and is not a valid UUID.`);
-        setService(null);
-        setLoading(false);
-        return;
-      }
-
-      // 3. Query Supabase
-      try {
-        const { data, error } = await supabase
-          .from('projects')
-          .select('*')
-          .eq('id', params.id)
-          .single();
-
-        if (error) throw error;
-
-        if (data) {
-          const getServiceImage = () => {
-            if (data.image_url) return data.image_url;
-            // ... (rest of image logic same as before)
-            return defaultServiceImages.default;
-          };
-
-          const transformedService = {
-            // ... (rest of transformation logic same as before)
-            id: data.id?.toString() || params.id,
-            number: '01',
-            title: data.title || 'Service',
-            subtitle: data.subtitle || data.short_description || data.category || 'Professional Service',
-            heroImage: getServiceImage(),
-            description: data.description || 'Professional service offering.',
-            longDescription: data.long_description || data.description || 'We provide comprehensive professional services...',
-            features: data.features || [],
-            stats: data.stats || [],
-            process: data.process || [],
-            relatedProjects: data.related_projects || []
-          };
-          setService(transformedService);
-        } else {
-          setService(null);
-        }
-      } catch (error) {
-        console.error('Error fetching service:', error.message || error);
-        setService(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (params.id) {
-        fetchService();
+    // Use static data only
+    if (staticServicesData[params.id]) {
+      setService(staticServicesData[params.id]);
+    } else {
+      setService(null);
     }
+    setLoading(false);
   }, [params.id]);
 
   if (loading) {
