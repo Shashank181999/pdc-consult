@@ -897,16 +897,59 @@ export default function ProjectDetailsPage() {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, [projectId]);
 
-  // Use static data only
+  // Fetch project from API, fallback to static data
   useEffect(() => {
-    setLoading(true);
+    const fetchProject = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch('/api/projects');
+        const { projects } = await res.json();
 
-    if (staticProjectsData[projectId]) {
-      setProject(staticProjectsData[projectId]);
-    } else {
-      setProject(null);
-    }
-    setLoading(false);
+        // Find project by ID (UUID or numeric)
+        const found = projects?.find(p => p.id === projectId || p.id === parseInt(projectId));
+
+        if (found) {
+          // Map database fields to expected format
+          setProject({
+            id: found.id,
+            title: found.title || 'Untitled Project',
+            subtitle: found.subtitle || '',
+            category: found.category || 'Project',
+            location: found.location || 'Dubai',
+            client: found.client || '',
+            year: found.year || '',
+            duration: found.duration || '',
+            value: found.value || '',
+            area: found.area || '',
+            status: found.status || 'Completed',
+            heroImage: found.hero_image || defaultImages[found.category] || defaultImages.default,
+            description: found.description || '',
+            challenge: found.challenge || '',
+            solution: found.solution || '',
+            features: found.features || [],
+            gallery: found.gallery_images?.length > 0 ? found.gallery_images : defaultGalleryImages,
+            services: found.services || ['Project Management'],
+            tags: [found.category, found.sector, found.location].filter(Boolean)
+          });
+        } else if (staticProjectsData[projectId]) {
+          // Fallback to static data
+          setProject(staticProjectsData[projectId]);
+        } else {
+          setProject(null);
+        }
+      } catch (error) {
+        console.error('Error fetching project:', error);
+        // Fallback to static data on error
+        if (staticProjectsData[projectId]) {
+          setProject(staticProjectsData[projectId]);
+        } else {
+          setProject(null);
+        }
+      }
+      setLoading(false);
+    };
+
+    fetchProject();
   }, [projectId]);
 
   // Loading state
