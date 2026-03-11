@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { supabase } from './supabase';
+import { supabase } from './supabase'; // Keep for storage uploads only
 
 export default function AdminFormPage() {
   const [activeTab, setActiveTab] = useState('projects');
@@ -49,16 +49,10 @@ export default function AdminFormPage() {
 
   const fetchServices = async () => {
     try {
-      const { data, error } = await supabase
-        .from('services')
-        .select('id, title')
-        .order('title');
-      if (error) {
-        console.log('Using default services (Supabase not configured yet)');
-        return;
-      }
-      if (data && data.length > 0) {
-        setServicesList(data);
+      const res = await fetch('/api/services');
+      const { services } = await res.json();
+      if (services && services.length > 0) {
+        setServicesList(services.map(s => ({ id: s.id, title: s.title })));
       }
     } catch (error) {
       console.log('Using default services');
@@ -68,12 +62,9 @@ export default function AdminFormPage() {
   const fetchProjects = async () => {
     setLoadingList(true);
     try {
-      const { data, error } = await supabase
-        .from('projects')
-        .select('*')
-        .order('created_at', { ascending: false });
-      if (error) throw error;
-      setProjectsList(data || []);
+      const res = await fetch('/api/projects');
+      const { projects } = await res.json();
+      setProjectsList(projects || []);
     } catch (error) {
       console.error('Error fetching projects:', error);
       showMessage('error', 'Failed to fetch projects');
@@ -85,12 +76,9 @@ export default function AdminFormPage() {
   const fetchServicesData = async () => {
     setLoadingList(true);
     try {
-      const { data, error } = await supabase
-        .from('services')
-        .select('*')
-        .order('created_at', { ascending: false });
-      if (error) throw error;
-      setServicesListData(data || []);
+      const res = await fetch('/api/services');
+      const { services } = await res.json();
+      setServicesListData(services || []);
     } catch (error) {
       console.error('Error fetching services:', error);
       showMessage('error', 'Failed to fetch services');
@@ -379,12 +367,11 @@ export default function AdminFormPage() {
     const { id, type } = deleteConfirm;
     setLoading(true);
     try {
-      const { error } = await supabase
-        .from(type === 'project' ? 'projects' : 'services')
-        .delete()
-        .eq('id', id);
+      const endpoint = type === 'project' ? '/api/projects' : '/api/services';
+      const res = await fetch(`${endpoint}?id=${id}`, { method: 'DELETE' });
+      const data = await res.json();
 
-      if (error) throw error;
+      if (!data.success) throw new Error(data.error || 'Failed to delete');
 
       showMessage('success', `${type === 'project' ? 'Project' : 'Service'} deleted successfully!`);
 
@@ -432,18 +419,24 @@ export default function AdminFormPage() {
         gallery_thumbnails: projectForm.galleryThumbnails
       };
 
-      let error;
+      let res;
       if (editingId) {
-        // Update existing project
-        const result = await supabase.from('projects').update(projectData).eq('id', editingId);
-        error = result.error;
+        res = await fetch('/api/projects', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: editingId, ...projectData })
+        });
       } else {
-        // Insert new project
-        const result = await supabase.from('projects').insert([projectData]);
-        error = result.error;
+        res = await fetch('/api/projects', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(projectData)
+        });
       }
 
-      if (error) throw error;
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error || 'Failed to save');
+
       showMessage('success', editingId ? 'Project updated successfully!' : 'Project added successfully!');
       resetProjectForm();
     } catch (error) {
@@ -509,18 +502,24 @@ export default function AdminFormPage() {
         process: serviceForm.process.filter(p => p.title.trim() !== '')
       };
 
-      let error;
+      let res;
       if (editingId) {
-        // Update existing service
-        const result = await supabase.from('services').update(serviceData).eq('id', editingId);
-        error = result.error;
+        res = await fetch('/api/services', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: editingId, ...serviceData })
+        });
       } else {
-        // Insert new service
-        const result = await supabase.from('services').insert([serviceData]);
-        error = result.error;
+        res = await fetch('/api/services', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(serviceData)
+        });
       }
 
-      if (error) throw error;
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error || 'Failed to save');
+
       showMessage('success', editingId ? 'Service updated successfully!' : 'Service added successfully!');
       resetServiceForm();
       fetchServices();
