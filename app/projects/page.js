@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { supabase } from '../admin/supabase';
 import { useTheme } from '../context/ThemeContext';
 
 // ============================================
@@ -714,22 +713,18 @@ function ProjectsContent({ theme }) {
   const [visibleCount, setVisibleCount] = useState(INITIAL_PROJECTS);
   const [loadingMore, setLoadingMore] = useState(false);
 
-  // Fetch projects from Supabase
+  // Fetch projects from API
   useEffect(() => {
     const fetchProjects = async () => {
       setLoading(true);
       try {
-        const { data, error } = await supabase
-          .from('projects')
-          .select('*')
-          .order('created_at', { ascending: false });
-
-        if (error) throw error;
+        const res = await fetch('/api/projects');
+        const { projects: data } = await res.json();
 
         if (data && data.length > 0) {
-          // Transform Supabase data to match expected format
+          // Transform API data to match expected format
           const transformedProjects = data.map((project, index) => ({
-            id: project.id.toString(),
+            id: project.id,
             title: project.title,
             category: project.category || 'commercial',
             sector: project.sector || 'high-rise',
